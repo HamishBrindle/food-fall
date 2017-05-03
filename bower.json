@@ -2,11 +2,11 @@
   "name": "Food-Fall",
   "homepage": "https://github.com/HamishBrindle/food-fall",
   "authors": [
-    "Hamish Brindle <hamishbrindle@gmail.com>",
-    "Kerry Regan <kregan86@gmail.com>",
-    "Wei Zhang <ink.wj.zhang@gmail.com>",
-    "Juliana French <julianaefrench@gmail.com>",
-    "Rob Koenig <robert.koenig.email@gmail.com>"
+    "hamish brindle <hamishbrindle@gmail.com>",
+    "kerry regan <kregan86@gmail.com>",
+    "wei zhang <ink.wj.zhang@gmail.com>",
+    "juliana french <julianaefrench@gmail.com>",
+    "rob koenig <robert.koenig.email@gmail.com>"
   ],
   "description": "A JavaScript game based around saving food - not wasting it!",
   "main": "index.html",
@@ -27,7 +27,6 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "grunt": "^1.0.1",
-    "phaser": "^2.6.2",
     "jquery": "^3.2.1"
   }
 }

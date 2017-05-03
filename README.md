@@ -7,10 +7,8 @@ Fun physics-based JavaScript game for our 2017 COMP 2910 project.
 
 ## Installation
 
-### Clone
-`git clone https://github.com/HamishBrindle/food-fall`
-Once the download is complete, navigate to the `food-fall` directory.
+### Clone Repo
+`git clone https://github.com/HamishBrindle/food-fall-2.0`
 
-### Bower
-`bower install` 
-to install project dependencies (Phaser.io, etc.).
+### Install Dependencies
+`bower install`
