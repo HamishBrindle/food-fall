@@ -72,7 +72,8 @@ var bread = {name:"apple", weight:0.5, sprite: 0};
 var orange = {name:"apple", weight:0.5,sprite: 0};
 var broccoli = {name:"broccoli", weight:0.5, sprite: 0};
 
-var fallingObjects = [apple, banana, bread, orange, broccoli];
+fallingObjects = [apple, banana, bread, orange, broccoli];
+
 /*
 Main game driver.
  */
@@ -85,23 +86,23 @@ function setup() {
         resources['assets/img/entities/basket.png'].texture
     );
 
-    var appleSprite = new Sprite(
+    appleSprite = new Sprite(
         resources['assets/img/food/apple.png'].texture
     );
 
-    var bananaSprite = new Sprite(
+    bananaSprite = new Sprite(
         resources['assets/img/food/banana.png'].texture
     );
 
-    var breadSprite = new Sprite(
+    breadSprite = new Sprite(
         resources['assets/img/food/bread.png'].texture
     );
 
-    var orangeSprite = new Sprite(
+    orangeSprite = new Sprite(
         resources['assets/img/food/orange.png'].texture
     );
 
-    var broccoliSprite = new Sprite(
+    broccoliSprite = new Sprite(
         resources['assets/img/food/broccoli.png'].texture
     );
 
@@ -117,6 +118,7 @@ function setup() {
     catcher.speed = 0.2;
     catcher.drag = 0.9;
 
+
     keycontrol();
     apple.sprite = appleSprite;
     banana.sprite = bananaSprite;
@@ -125,11 +127,10 @@ function setup() {
     broccoli.sprite = broccoliSprite;
     // Add sprites to stage
     stage.addChild(catcher);
-    stage.addChild(appleSprite);
-    stage.addChild(bananaSprite);
-    stage.addChild(orangeSprite);
-    stage.addChild(broccoliSprite);
-
+    // stage.addChild(appleSprite);
+    // stage.addChild(bananaSprite);
+    // stage.addChild(orangeSprite);
+    // stage.addChild(broccoliSprite);
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
@@ -146,12 +147,23 @@ var state = play;
 function gameLoop() {
 
     // //Loop this function 60 times per second
-    console.log(fallingObjects[0].name);
     // var newObj = makeFood(fallingObjects[0]);
     // console.log("new object" + newObj.name);
-    // stage.addChild(appleSprite);
-    //
+    //need to make a
+    for (var i in stage.children) {
+        if(i == 0) {
+            continue;
+        }
+        var item = stage.children[i];
+        item.y += 1;
+    }
+    // appleSprite.x = getRandomInt(0, GAME_WIDTH);
+    // appleSprite.y = 0;
+    stage.addChild(appleSprite);
+    stage.addChild(broccoliSprite);
+
     requestAnimationFrame(gameLoop);
+    // foodFalling(fallingObjects[0]);
 
     state();
 
@@ -244,6 +256,10 @@ function keycontrol() {
     };
 }
 
+function foodFalling(fallingObj) {
+    console.log(typeof fallingObj);
+    fallingObj.style.top = parseInt(fallingObj.style.top + 1) + 'px';
+}
 
 function makeFood(fallingObj) {
     console.log("in rand fall" + name);
@@ -312,4 +328,10 @@ function keyboard(keyCode) {
       "keyup", key.upHandler.bind(key), false
     );
     return key;
+}
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
 }
