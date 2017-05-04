@@ -2,6 +2,8 @@
 var GAME_WIDTH = 500;
 var GAME_HEIGHT = 800;
 
+var Container = PIXI.Container;
+
 //Aliases.
 var Container = PIXI.Container,
     autoDetectRenderer = PIXI.autoDetectRenderer,
@@ -104,7 +106,7 @@ Resize canvas to fit the size of the window.
 function resize() {
 
     // Determine which screen dimension is most constrained
-    ratio = Math.min(window.innerWidth / GAME_WIDTH,
+    var ratio = Math.min(window.innerWidth / GAME_WIDTH,
         window.innerHeight / GAME_HEIGHT);
 
     // Scale the view appropriately to fill that dimension
