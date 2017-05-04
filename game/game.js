@@ -118,7 +118,6 @@ function setup() {
     catcher.speed = 0.2;
     catcher.drag = 0.9;
 
-
     keycontrol();
     apple.sprite = appleSprite;
     banana.sprite = bananaSprite;
@@ -127,10 +126,6 @@ function setup() {
     broccoli.sprite = broccoliSprite;
     // Add sprites to stage
     stage.addChild(catcher);
-    // stage.addChild(appleSprite);
-    // stage.addChild(bananaSprite);
-    // stage.addChild(orangeSprite);
-    // stage.addChild(broccoliSprite);
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
@@ -139,6 +134,7 @@ function setup() {
     gameLoop();
 
 }
+// setInterval(makeFood(), 300);
 
 //Set the game's current state to `play`:
 var state = play;
@@ -147,18 +143,14 @@ var state = play;
 function gameLoop() {
 
     // //Loop this function 60 times per second
-    // var newObj = makeFood(fallingObjects[0]);
-    // console.log("new object" + newObj.name);
-    //need to make a
     for (var i in stage.children) {
         if(i == 0) {
             continue;
         }
         var item = stage.children[i];
         item.y += 1;
+        //returns the bounds of the basker {x x}
     }
-    // appleSprite.x = getRandomInt(0, GAME_WIDTH);
-    // appleSprite.y = 0;
     stage.addChild(appleSprite);
     stage.addChild(broccoliSprite);
 
@@ -170,6 +162,7 @@ function gameLoop() {
     //Render the stage
     renderer.render(stage);
 }
+
 
 //State definition for "playing" the game
 function play() {
@@ -256,20 +249,8 @@ function keycontrol() {
     };
 }
 
-function foodFalling(fallingObj) {
-    console.log(typeof fallingObj);
-    fallingObj.style.top = parseInt(fallingObj.style.top + 1) + 'px';
-}
-
-function makeFood(fallingObj) {
-    console.log("in rand fall" + name);
-    // center the sprite's anchor point
-    newFall.anchor.set(0.5);
-
-    // move the sprite to the center of the screen
-    newFall.x = renderer.width / 2;
-    newFall.y = renderer.height / 2;
-    return newFall;
+function makeFood() {
+    console.log("in makefood");
 }
 
 
