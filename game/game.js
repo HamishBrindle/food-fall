@@ -2,6 +2,8 @@
 var GAME_WIDTH = 500;
 var GAME_HEIGHT = 800;
 
+var Container = PIXI.Container;
+
 //Aliases.
 var loader = PIXI.loader,
     resources = PIXI.loader.resources,
@@ -19,7 +21,7 @@ var rendererOptions = {
 var renderer = PIXI.autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
 
 // Create new Container for stage.
-var stage = new PIXI.Container();
+var stage = new Container();
 
 // Renderer position on screen.
 renderer.view.style.position = "absolute";
@@ -84,7 +86,7 @@ Resize canvas to fit the size of the window.
 function resize() {
 
     // Determine which screen dimension is most constrained
-    ratio = Math.min(window.innerWidth / GAME_WIDTH,
+    var ratio = Math.min(window.innerWidth / GAME_WIDTH,
         window.innerHeight / GAME_HEIGHT);
 
     // Scale the view appropriately to fill that dimension
