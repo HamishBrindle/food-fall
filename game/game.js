@@ -5,7 +5,9 @@ var GAME_HEIGHT = 800;
 var Container = PIXI.Container;
 
 //Aliases.
-var loader = PIXI.loader,
+var Container = PIXI.Container,
+    autoDetectRenderer = PIXI.autoDetectRenderer,
+    loader = PIXI.loader,
     resources = PIXI.loader.resources,
     Sprite = PIXI.Sprite;
 
@@ -18,7 +20,7 @@ var rendererOptions = {
 };
 
 // Create renderer.
-var renderer = PIXI.autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
+var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
 
 // Create new Container for stage.
 var stage = new Container();
@@ -58,16 +60,19 @@ function loadProgressHandler() {
     console.log("loading");
 }
 
+var catcher;
+var apple;
+
 /*
 Main game driver.
  */
 function setup() {
 
     console.log("setup");
-    var catcher = new Sprite(
+    catcher = new Sprite(
         resources['assets/img/entities/basket.png'].texture
     );
-    var apple = new Sprite(
+    apple = new Sprite(
         resources["assets/img/food/apple.png"].texture
     );
 
@@ -78,6 +83,21 @@ function setup() {
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
 
+    //Start the game loop
+    gameLoop();
+
+}
+
+function gameLoop() {
+
+    //Loop this function 60 times per second
+    requestAnimationFrame(gameLoop);
+
+    //Move the cat 1 pixel per frame
+    catcher.x += 1;
+
+    //Render the stage
+    renderer.render(stage);
 }
 
 /*
