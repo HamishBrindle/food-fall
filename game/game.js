@@ -65,6 +65,14 @@ function loadProgressHandler() {
 }
 
 
+var catcher;
+var apple = {name:"apple", weight:0.5, sprite: 0};
+var banana = {name:"banana", weight:0.5, sprite: 0};
+var bread = {name:"apple", weight:0.5, sprite: 0};
+var orange = {name:"apple", weight:0.5,sprite: 0};
+var broccoli = {name:"broccoli", weight:0.5, sprite: 0};
+
+var fallingObjects = [apple, banana, bread, orange, broccoli];
 /*
 Main game driver.
  */
@@ -76,8 +84,25 @@ function setup() {
     catcher = new Sprite(
         resources['assets/img/entities/basket.png'].texture
     );
-    apple = new Sprite(
-        resources["assets/img/food/apple.png"].texture
+
+    var appleSprite = new Sprite(
+        resources['assets/img/food/apple.png'].texture
+    );
+
+    var bananaSprite = new Sprite(
+        resources['assets/img/food/banana.png'].texture
+    );
+
+    var breadSprite = new Sprite(
+        resources['assets/img/food/bread.png'].texture
+    );
+
+    var orangeSprite = new Sprite(
+        resources['assets/img/food/orange.png'].texture
+    );
+
+    var broccoliSprite = new Sprite(
+        resources['assets/img/food/broccoli.png'].texture
     );
 
     //Catcher movement
@@ -91,12 +116,20 @@ function setup() {
     catcher.frictionY = 1;
     catcher.speed = 0.2;
     catcher.drag = 0.9;
-    
-    keycontrol();
 
+    keycontrol();
+    apple.sprite = appleSprite;
+    banana.sprite = bananaSprite;
+    bread.sprite = breadSprite;
+    orange.sprite = orangeSprite;
+    broccoli.sprite = broccoliSprite;
     // Add sprites to stage
     stage.addChild(catcher);
-    stage.addChild(apple);
+    stage.addChild(appleSprite);
+    stage.addChild(bananaSprite);
+    stage.addChild(orangeSprite);
+    stage.addChild(broccoliSprite);
+
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
@@ -112,7 +145,12 @@ var state = play;
 //Animation loop
 function gameLoop() {
 
-    //Loop this function 60 times per second
+    // //Loop this function 60 times per second
+    console.log(fallingObjects[0].name);
+    // var newObj = makeFood(fallingObjects[0]);
+    // console.log("new object" + newObj.name);
+    // stage.addChild(appleSprite);
+    //
     requestAnimationFrame(gameLoop);
 
     state();
@@ -127,7 +165,7 @@ function play() {
     //Implementing acceleration
     catcher.vx += catcher.accelerationX;
     catcher.vy += catcher.accelerationY;
-    
+
     //Implementing friction
     catcher.vx *= catcher.frictionX;
     catcher.vy *= catcher.frictionY;
@@ -206,6 +244,19 @@ function keycontrol() {
     };
 }
 
+
+function makeFood(fallingObj) {
+    console.log("in rand fall" + name);
+    // center the sprite's anchor point
+    newFall.anchor.set(0.5);
+
+    // move the sprite to the center of the screen
+    newFall.x = renderer.width / 2;
+    newFall.y = renderer.height / 2;
+    return newFall;
+}
+
+
 /*
 Resize canvas to fit the size of the window.
  */
@@ -223,6 +274,7 @@ function resize() {
         Math.ceil(GAME_HEIGHT * ratio));
 
 }
+
 
 //Keyboard object definition
 function keyboard(keyCode) {
@@ -261,4 +313,3 @@ function keyboard(keyCode) {
     );
     return key;
 }
-
