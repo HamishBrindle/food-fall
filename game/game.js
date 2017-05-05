@@ -55,9 +55,6 @@ function isCollide(basket, food) {
 function foodCatchCollisionDetection() {
     // //Loop this function 60 times per second
     for (var i in stage.children) {
-        if (i == 0) {
-            continue;
-        }
         var item = stage.children[i];
         if (item.isFood) {
             item.y += 2;
@@ -69,7 +66,6 @@ function foodCatchCollisionDetection() {
             else if (item.y === GAME_HEIGHT) {
                 item.destroy();
             }
-            //returns the bounds of the basker {x x}
         }
     }
 }
