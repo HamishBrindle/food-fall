@@ -207,7 +207,7 @@ function keycontrol() {
         and the catcher isn't moving vertically, Stop the catcher*/
         if (!right.isDown) {
             catcher.accelerationX = 0;
-            // catcher.frictionX = catcher.drag;
+            catcher.frictionX = catcher.drag;
         }
     };
 
@@ -257,7 +257,6 @@ function makeFood() {
     newFood.anchor.x = 0.5 + (0.0001 * Math.random());
     console.log("asdf" + newFood.anchor.x);
     newFood.anchor.y = 0.5;
-    // newFood.rotation = Math.random() * 0.01;
     stage.addChild(newFood);
 }
 
