@@ -75,7 +75,8 @@ loader
         "assets/img/food/apple.png",
         "assets/img/food/banana.png",
         "assets/img/food/bread.png",
-        "assets/img/food/broccoli.png"
+        "assets/img/food/broccoli.png",
+        "assets/img/food/orange.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
