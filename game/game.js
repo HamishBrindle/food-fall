@@ -3,8 +3,6 @@ var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
 
 //Variables
-var catcher;
-var apple;
 var maxXspeed = 50;
 var maxYspeed = 25;
 
@@ -35,8 +33,7 @@ var Container = PIXI.Container,
     autoDetectRenderer = PIXI.autoDetectRenderer,
     loader = PIXI.loader,
     resources = PIXI.loader.resources,
-    Sprite = PIXI.Sprite,
-    TileSprite = PIXI.extras.TilingSprite;
+    Sprite = PIXI.Sprite;
 
 // Rendering Options.
 var rendererOptions = {
@@ -68,6 +65,7 @@ window.addEventListener("resize", resize);
 
 // Texture Cache
 loadBackgroundTextures();
+
 loader
     .add([
         "assets/img/entities/basket.png",
@@ -87,8 +85,6 @@ Prints loading log to console.
 function loadProgressHandler() {
     console.log("loading");
 }
-
-
 var catcher;
 var apple = {name:"apple", weight:0.2, sprite: 0};
 var banana = {name:"banana", weight:0.2, sprite: 0};
@@ -146,10 +142,9 @@ function setup() {
     initBackground();
 
     keyControls();
+
     // Add sprites to stage
     stage.addChild(catcher);
-
-    stage.addChild(apple);
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
@@ -160,10 +155,6 @@ function setup() {
 }
 setInterval(makeFood, 4000);
 
-function myFunction() {
-
-    alert("Hello");
-}
 //Set the game's current state to `play`:
 var state = play;
 
@@ -176,16 +167,19 @@ function gameLoop() {
             continue;
         }
         var item = stage.children[i];
-        item.y += 2;
-        item.rotation += item.rotateFactor;
-        if (isCollide(catcher, item)) {
-            console.log("collided");
+        if (item.isFood) {
+            item.y += 2;
+            item.rotation += item.rotateFactor;
+            if (isCollide(catcher, item)) {
+                console.log("collided");
+                item.destroy();
+            }
+            else if (item.y === GAME_HEIGHT) {
+                console.log("literally dying");
+                item.destroy();
+            }
+            //returns the bounds of the basker {x x}
         }
-        if (item.y == GAME_HEIGHT)  {
-            console.log("literally dying");
-            item.destroy();
-        }
-        //returns the bounds of the basker {x x}
     }
     requestAnimationFrame(gameLoop);
     // foodFalling(fallingObjects[0]);
@@ -193,6 +187,7 @@ function gameLoop() {
     state();
 
     lastTime = new Date().getTime();
+
     //Render the stage
     renderer.render(stage);
 }
@@ -300,6 +295,7 @@ function makeFood() {
     console.log("asdf" + newFood.anchor.x);
     newFood.anchor.x = 0.5;
     newFood.anchor.y = 0.5;
+    newFood.isFood = true;
     var randomBoolean = Math.random() >= 0.5;
     if(randomBoolean) {
         newFood.rotateFactor = Math.random() * 0.1;
@@ -381,11 +377,11 @@ function playerMovement() {
 }
 
 function initBackground() {
+
     /*
      Layer order:
      sky | mtnFar | mtnMid | ground | clouds | trees | grass
      */
-
     sky =
         new PIXI.extras.TilingSprite(PIXI.loader.resources.sky.texture,
             GAME_WIDTH, GAME_HEIGHT);
