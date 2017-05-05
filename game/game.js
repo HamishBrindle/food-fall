@@ -149,8 +149,6 @@ function setup() {
     // Add sprites to stage
     stage.addChild(catcher);
 
-    stage.addChild(apple);
-
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
 
