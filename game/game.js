@@ -53,7 +53,6 @@ function isCollide(basket, food) {
     (basket.x > (food.x + food.width)))
 }
 
-<<<<<<< HEAD
 function foodCatchCollision() {
     // //Loop this function 60 times per second
     for (var i in stage.children) {
@@ -71,20 +70,18 @@ function foodCatchCollision() {
             else if (item.y === GAME_HEIGHT) {
                 item.destroy();
             }
-            //returns the bounds of the basker {x x}
         }
+      }
     }
-=======
-function addScore() {
-  var score = new PIXI.Text('Score: 0', {
-    fontSize: 30,
-    fontFamily: 'Arial',
-    fill: '#FF69B4'
-  });
-  score.x = GAME_WIDTH - 100;
-  score.y = GAME_HEIGHT - 50;
-  score.anchor.x = 0.5;
-  stage.addChild(score);
 
->>>>>>> display unmoving score
-}
+    function addScore() {
+      var score = new PIXI.Text('Score: 0', {
+        fontSize: 30,
+        fontFamily: 'Arial',
+        fill: '#FF69B4'
+      });
+      score.x = GAME_WIDTH - 100;
+      score.y = GAME_HEIGHT - 50;
+      score.anchor.x = 0.5;
+      stage.addChild(score);
+    }
