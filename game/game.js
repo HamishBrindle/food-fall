@@ -69,7 +69,7 @@ var catcher;
 var apple = {name:"apple", weight:0.2, sprite: 0};
 var banana = {name:"banana", weight:0.2, sprite: 0};
 var bread = {name:"bread", weight:0.2, sprite: 0};
-var orange = {name:"apple", weight:0.2,sprite: 0};
+var orange = {name:"orange", weight:0.2,sprite: 0};
 var broccoli = {name:"broccoli", weight:0.2, sprite: 0};
 
 fallingObjects = [apple, banana, bread, orange, broccoli];
