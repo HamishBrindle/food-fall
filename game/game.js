@@ -107,7 +107,7 @@ function setup() {
     );
 
     //Catcher movement
-    catcher.y = GAME_HEIGHT / 2;
+    catcher.y = GAME_HEIGHT / 1.5;
     catcher.x = GAME_WIDTH / 2;
     catcher.vx = 0;
     catcher.vy = 0;
@@ -119,6 +119,10 @@ function setup() {
     catcher.drag = 0.9;
 
     keycontrol();
+
+    //Debugg
+    console.log(renderer.width);
+    console.log(renderer.height);
 
     // Add sprites to stage
     stage.addChild(catcher);
@@ -180,6 +184,9 @@ function play() {
     //Implementing movement
     catcher.x += catcher.vx;
     catcher.y += catcher.vy;
+
+    //Restrict movement
+    bound();
 }
 
 //Keyboard Controls Definition
@@ -194,7 +201,7 @@ function keycontrol() {
     left.press = function () {
 
         //Change the catcher velocity when the key is pressed
-        if (catcher.vx > -maxXspeed) {
+        if (catcher.vx > -maxXspeed && catcher.x > 0) {
             catcher.accelerationX = -catcher.speed;
             catcher.frictionX = 1;
         }
@@ -213,8 +220,10 @@ function keycontrol() {
 
     //Up
     up.press = function () {
-        catcher.accelerationY = -catcher.speed;
-        catcher.frictionY = 1;
+        if (catcher.vy > -maxYspeed && catcher.y > GAME_HEIGHT/3) {
+            catcher.accelerationY = -catcher.speed;
+            catcher.frictionY = 1;
+        }
     };
     up.release = function () {
         if (!down.isDown) {
@@ -225,7 +234,7 @@ function keycontrol() {
 
     //Right
     right.press = function () {
-        if (catcher.vx < maxXspeed) {
+        if (catcher.vx < maxXspeed && catcher.x < GAME_WIDTH) {
             catcher.accelerationX = catcher.speed;
             catcher.frictionX = 1;
         }
@@ -239,6 +248,7 @@ function keycontrol() {
 
     //Down
     down.press = function () {
+        if (catcher.vy < maxYspeed && catcher.y < GAME_WIDTH)
         catcher.accelerationY = catcher.speed;
         catcher.frictionY = 1;
     };
@@ -250,6 +260,22 @@ function keycontrol() {
     };
 }
 
+//Binds catcher to part of the screen
+function bound() {
+    if (catcher.vy < 0 && catcher.y < GAME_HEIGHT / 4) {
+        catcher.vy = 0;
+    }
+    if (catcher.vy > 0 && catcher.y > GAME_HEIGHT * 0.85) {
+        catcher.vy = 0;
+    }
+    if (catcher.vx < 0 && catcher.x < 0) {
+        catcher.vx = 0;
+    }
+    if (catcher.vx > 0 && catcher.x > GAME_WIDTH * 0.85) {
+        catcher.vx = 0;
+    }
+}
+  
 function makeFood() {
     var newFoodIndex = weightedRand(fallingObjects);
     var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
@@ -275,7 +301,6 @@ function resize() {
     // Update the renderer dimensions
     renderer.resize(Math.ceil(GAME_WIDTH * ratio),
         Math.ceil(GAME_HEIGHT * ratio));
-
 }
 
 
