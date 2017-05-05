@@ -65,6 +65,15 @@ function loadProgressHandler() {
 }
 
 
+var catcher;
+var apple = {name:"apple", weight:0.2, sprite: 0};
+var banana = {name:"banana", weight:0.2, sprite: 0};
+var bread = {name:"bread", weight:0.2, sprite: 0};
+var orange = {name:"orange", weight:0.2,sprite: 0};
+var broccoli = {name:"broccoli", weight:0.2, sprite: 0};
+
+fallingObjects = [apple, banana, bread, orange, broccoli];
+
 /*
 Main game driver.
  */
@@ -76,8 +85,25 @@ function setup() {
     catcher = new Sprite(
         resources['assets/img/entities/basket.png'].texture
     );
-    apple = new Sprite(
-        resources["assets/img/food/apple.png"].texture
+
+    apple.sprite  = new Sprite(
+        resources['assets/img/food/apple.png'].texture
+    );
+
+    banana.sprite = new Sprite(
+        resources['assets/img/food/banana.png'].texture
+    );
+
+    bread.sprite = new Sprite(
+        resources['assets/img/food/bread.png'].texture
+    );
+
+    orange.sprite = new Sprite(
+        resources['assets/img/food/orange.png'].texture
+    );
+
+    broccoli.sprite = new Sprite(
+        resources['assets/img/food/broccoli.png'].texture
     );
 
     //Catcher movement
@@ -91,12 +117,11 @@ function setup() {
     catcher.frictionY = 1;
     catcher.speed = 0.2;
     catcher.drag = 0.9;
-    
+
     keycontrol();
 
     // Add sprites to stage
     stage.addChild(catcher);
-    stage.addChild(apple);
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
@@ -105,15 +130,34 @@ function setup() {
     gameLoop();
 
 }
+setInterval(makeFood, 1000);
 
+function myFunction() {
+
+    alert("Hello");
+}
 //Set the game's current state to `play`:
 var state = play;
 
 //Animation loop
 function gameLoop() {
 
-    //Loop this function 60 times per second
+    // //Loop this function 60 times per second
+    for (var i in stage.children) {
+        if(i == 0) {
+            continue;
+        }
+        var item = stage.children[i];
+        item.y += 2;
+        item.rotation += 1000 * (item.anchor.x - 0.5);
+        if (item.y == GAME_HEIGHT)  {
+            console.log("literally dying");
+            item.destroy();
+        }
+        //returns the bounds of the basker {x x}
+    }
     requestAnimationFrame(gameLoop);
+    // foodFalling(fallingObjects[0]);
 
     state();
 
@@ -121,13 +165,14 @@ function gameLoop() {
     renderer.render(stage);
 }
 
+
 //State definition for "playing" the game
 function play() {
 
     //Implementing acceleration
     catcher.vx += catcher.accelerationX;
     catcher.vy += catcher.accelerationY;
-    
+
     //Implementing friction
     catcher.vx *= catcher.frictionX;
     catcher.vy *= catcher.frictionY;
@@ -158,9 +203,8 @@ function keycontrol() {
     //Left arrow key `release` method
     left.release = function () {
 
-        //If the left arrow has been released, and the right arrow isn't down,
-        //and the catcher isn't moving vertically:
-        //Stop the catcher
+        /*If the left arrow has been released, and the right arrow isn't down,
+        and the catcher isn't moving vertically, Stop the catcher*/
         if (!right.isDown) {
             catcher.accelerationX = 0;
             catcher.frictionX = catcher.drag;
@@ -206,6 +250,16 @@ function keycontrol() {
     };
 }
 
+function makeFood() {
+    var newFoodIndex = weightedRand(fallingObjects);
+    var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
+    newFood.x = getRandomInt(0, GAME_WIDTH);
+    newFood.anchor.x = 0.5 + (0.0001 * Math.random());
+    console.log("asdf" + newFood.anchor.x);
+    newFood.anchor.y = 0.5;
+    stage.addChild(newFood);
+}
+
 /*
 Resize canvas to fit the size of the window.
  */
@@ -223,6 +277,7 @@ function resize() {
         Math.ceil(GAME_HEIGHT * ratio));
 
 }
+
 
 //Keyboard object definition
 function keyboard(keyCode) {
@@ -262,3 +317,18 @@ function keyboard(keyCode) {
     return key;
 }
 
+function weightedRand(weightedList) {
+  var i;
+  var sum = 0;
+  var r = Math.random();
+  for (i in weightedList) {
+    sum += weightedList[i].weight;
+    if (r <= sum)
+        return i;
+  }
+}
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
