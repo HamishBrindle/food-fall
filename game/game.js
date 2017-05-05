@@ -8,12 +8,35 @@ var apple;
 var maxXspeed = 50;
 var maxYspeed = 25;
 
+var backgroundScrollSpeed = {
+    mtnFar: 0.125,
+    mtnMid: 0.25,
+    clouds: 0.30,
+    trees: -1,
+    grass: 2
+};
+
+// Background textures
+var sky,
+    mtnFar,
+    mtnMid,
+    ground,
+    clouds,
+    trees,
+    grass;
+
+var BG_RATE = 50;
+var FG_RATE = 125;
+
+var lastTime;
+
 //Aliases.
 var Container = PIXI.Container,
     autoDetectRenderer = PIXI.autoDetectRenderer,
     loader = PIXI.loader,
     resources = PIXI.loader.resources,
-    Sprite = PIXI.Sprite;
+    Sprite = PIXI.Sprite,
+    TileSprite = PIXI.extras.TilingSprite;
 
 // Rendering Options.
 var rendererOptions = {
@@ -32,7 +55,7 @@ var stage = new Container();
 // Renderer position on screen.
 renderer.view.style.position = "absolute";
 renderer.view.style.top = "0px";
-renderer.view.style.left = (GAME_WIDTH / 2) - (stage.width / 2); // Centers window.
+renderer.view.style.left = "0px"; // Centers window.
 
 // Resize the stage depending on size of window.
 resize();
@@ -44,6 +67,7 @@ document.body.appendChild(renderer.view);
 window.addEventListener("resize", resize);
 
 // Texture Cache
+loadBackgroundTextures();
 loader
     .add([
         "assets/img/entities/basket.png",
@@ -51,8 +75,7 @@ loader
         "assets/img/food/apple.png",
         "assets/img/food/banana.png",
         "assets/img/food/bread.png",
-        "assets/img/food/broccoli.png",
-        "assets/img/food/orange.png"
+        "assets/img/food/broccoli.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -113,19 +136,19 @@ function setup() {
     catcher.vy = 0;
     catcher.accelerationX = 0;
     catcher.accelerationY = 0;
-    catcher.frictionX = 1;
-    catcher.frictionY = 1;
+    catcher.frictionX = 0.5;
+    catcher.frictionY = 0.5;
     catcher.speed = 0.2;
-    catcher.drag = 0.9;
+    catcher.drag = 0.8;
 
-    keycontrol();
+    // Initialize the the level background
+    initBackground();
 
-    //Debugg
-    console.log(renderer.width);
-    console.log(renderer.height);
-
+    keyControls();
     // Add sprites to stage
     stage.addChild(catcher);
+
+    stage.addChild(apple);
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
@@ -165,6 +188,7 @@ function gameLoop() {
 
     state();
 
+    lastTime = new Date().getTime();
     //Render the stage
     renderer.render(stage);
 }
@@ -173,24 +197,13 @@ function gameLoop() {
 //State definition for "playing" the game
 function play() {
 
-    //Implementing acceleration
-    catcher.vx += catcher.accelerationX;
-    catcher.vy += catcher.accelerationY;
+    animateBackground();
 
-    //Implementing friction
-    catcher.vx *= catcher.frictionX;
-    catcher.vy *= catcher.frictionY;
-
-    //Implementing movement
-    catcher.x += catcher.vx;
-    catcher.y += catcher.vy;
-
-    //Restrict movement
-    bound();
+    playerMovement();
 }
 
 //Keyboard Controls Definition
-function keycontrol() {
+function keyControls() {
     //Capture the keyboard arrow keys
     var left = keyboard(37),
         up = keyboard(38),
@@ -347,6 +360,109 @@ function keyboard(keyCode) {
       "keyup", key.upHandler.bind(key), false
     );
     return key;
+}
+
+function playerMovement() {
+    //Implementing acceleration
+    catcher.vx += catcher.accelerationX;
+    catcher.vy += catcher.accelerationY;
+
+    //Implementing friction
+    catcher.vx *= catcher.frictionX;
+    catcher.vy *= catcher.frictionY;
+
+    //Implementing movement
+    catcher.x += catcher.vx;
+    catcher.y += catcher.vy;
+}
+
+function initBackground() {
+    /*
+     Layer order:
+     sky | mtnFar | mtnMid | ground | clouds | trees | grass
+     */
+
+    sky =
+        new PIXI.extras.TilingSprite(PIXI.loader.resources.sky.texture,
+            GAME_WIDTH, GAME_HEIGHT);
+    stage.addChild(sky);
+
+    mtnFar =
+        new PIXI.extras.TilingSprite(PIXI.loader.resources.mtnFar.texture,
+            GAME_WIDTH, GAME_HEIGHT);
+    stage.addChild(mtnFar);
+
+    mtnMid =
+        new PIXI.extras.TilingSprite(PIXI.loader.resources.mtnMid.texture,
+            GAME_WIDTH, GAME_HEIGHT);
+    stage.addChild(mtnMid);
+
+    ground =
+        new PIXI.extras.TilingSprite(PIXI.loader.resources.ground.texture,
+            GAME_WIDTH, GAME_HEIGHT);
+    stage.addChild(ground);
+
+    clouds =
+        new PIXI.extras.TilingSprite(PIXI.loader.resources.clouds.texture,
+            GAME_WIDTH, GAME_HEIGHT);
+    stage.addChild(clouds);
+
+    trees =
+        new PIXI.extras.TilingSprite(PIXI.loader.resources.trees.texture,
+            GAME_WIDTH, GAME_HEIGHT);
+    stage.addChild(trees);
+
+    grass =
+        new PIXI.extras.TilingSprite(PIXI.loader.resources.grass.texture,
+            GAME_WIDTH, GAME_HEIGHT);
+    stage.addChild(grass);
+
+    // Prepare for first frame of game loop/animation
+    lastTime = new Date().getTime();
+
+}
+
+function animateBackground() {
+
+    // Determine seconds elapsed since last frame
+    var currtime = new Date().getTime();
+    var delta = (currtime - lastTime) / 1000;
+
+    // Scroll the terrain
+    mtnFar.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnFar;
+    mtnMid.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnMid;
+    clouds.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.clouds;
+    trees.tilePosition.x -= FG_RATE * delta + backgroundScrollSpeed.trees;
+    grass.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.grass;
+
+    // Draw the stage and prepare for the next frame
+    lastTime = currtime;
+
+}
+
+function loadBackgroundTextures() {
+
+    if (window.devicePixelRatio >= 2 &&
+        renderer instanceof PIXI.WebGLRenderer) {
+        // WebGL clause works around an apparent issues with
+        // TilingSprites on high-res devices using canvas:
+        // https://github.com/pixijs/pixi.js/issues/2083
+        loader.add("sky", "assets/img/level/sky@2x.png");
+        loader.add("mtnFar", "assets/img/level/mtn-far@2x.png");
+        loader.add("mtnMid", "assets/img/level/mtn-mid@2x.png");
+        loader.add("ground", "assets/img/level/ground@2x.png");
+        loader.add("clouds", "assets/img/level/clouds@2x.png");
+        loader.add("trees", "assets/img/level/trees@2x.png");
+        loader.add("grass", "assets/img/level/grass@2x.png");
+    } else {
+        loader.add("sky", "assets/img/level/sky.png");
+        loader.add("mtnFar", "assets/img/level/mtn-far.png");
+        loader.add("mtnMid", "assets/img/level/mtn-mid.png");
+        loader.add("ground", "assets/img/level/ground.png");
+        loader.add("clouds", "assets/img/level/clouds.png");
+        loader.add("trees", "assets/img/level/trees.png");
+        loader.add("grass", "assets/img/level/grass.png");
+    }
 }
 
 function weightedRand(weightedList) {
