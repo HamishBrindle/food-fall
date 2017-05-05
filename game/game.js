@@ -448,9 +448,6 @@ function loadBackgroundTextures() {
 
     if (window.devicePixelRatio >= 2 &&
         renderer instanceof PIXI.WebGLRenderer) {
-        // WebGL clause works around an apparent issues with
-        // TilingSprites on high-res devices using canvas:
-        // https://github.com/pixijs/pixi.js/issues/2083
         loader.add("sky", "assets/img/level/sky@2x.png");
         loader.add("mtnFar", "assets/img/level/mtn-far@2x.png");
         loader.add("mtnMid", "assets/img/level/mtn-mid@2x.png");
@@ -479,6 +476,7 @@ function weightedRand(weightedList) {
         return i;
   }
 }
+
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
