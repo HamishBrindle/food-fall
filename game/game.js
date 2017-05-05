@@ -221,13 +221,13 @@ function bound() {
     if (catcher.vy < 0 && catcher.y < GAME_HEIGHT / 4) {
         catcher.vy = 0;
     }
-    if (catcher.vy > 0 && catcher.y > GAME_HEIGHT * 0.9) {
+    if (catcher.vy > 0 && catcher.y > GAME_HEIGHT * 0.85) {
         catcher.vy = 0;
     }
     if (catcher.vx < 0 && catcher.x < 0) {
         catcher.vx = 0;
     }
-    if (catcher.vx > 0 && catcher.x > GAME_WIDTH * 0.9) {
+    if (catcher.vx > 0 && catcher.x > GAME_WIDTH * 0.85) {
         catcher.vx = 0;
     }
 }
