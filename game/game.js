@@ -40,6 +40,7 @@ function gameLoop() {
 function play() {
     animateBackground();
     playerMovement();
+    addScore();
 }
 
 
@@ -66,4 +67,17 @@ function isCollide(basket, food) {
     (basket.y > (food.y + food.height)) ||
     ((basket.x + basket.width) < food.x) ||
     (basket.x > (food.x + food.width)))
+}
+
+function addScore() {
+  var score = new PIXI.Text('Score: 0', {
+    fontSize: 30,
+    fontFamily: 'Arial',
+    fill: '#FF69B4'
+  });
+  score.x = GAME_WIDTH - 100;
+  score.y = GAME_HEIGHT - 50;
+  score.anchor.x = 0.5;
+  stage.addChild(score);
+
 }
