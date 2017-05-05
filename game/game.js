@@ -134,7 +134,7 @@ function setup() {
     gameLoop();
 
 }
-setInterval(makeFood, 1000);
+setInterval(makeFood, 4000);
 
 function myFunction() {
 
@@ -154,6 +154,9 @@ function gameLoop() {
         var item = stage.children[i];
         item.y += 2;
         item.rotation += item.rotateFactor;
+        if (isCollide(catcher, item)) {
+            console.log("collided");
+        }
         if (item.y == GAME_HEIGHT)  {
             console.log("literally dying");
             item.destroy();
@@ -275,7 +278,7 @@ function bound() {
         catcher.vx = 0;
     }
 }
-  
+
 function makeFood() {
     var newFoodIndex = weightedRand(fallingObjects);
     var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
@@ -363,4 +366,12 @@ function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
+}
+
+// Determine if basket and food are colliding
+function isCollide(basket, food) {
+  return !(((basket.y + basket.height) < food.y) ||
+    (basket.y > (food.y + food.height)) ||
+    ((basket.x + basket.width) < food.x) ||
+    (basket.x > (food.x + food.width)))
 }
