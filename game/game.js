@@ -21,7 +21,7 @@ function gameLoop() {
 
 //State definition for "playing" the game
 function play() {
-    foodCatchCollisionDetection();
+    foodCatchCollision();
     animateBackground();
     playerMovement();
 }
@@ -52,7 +52,7 @@ function isCollide(basket, food) {
     (basket.x > (food.x + food.width)))
 }
 
-function foodCatchCollisionDetection() {
+function foodCatchCollision() {
     // //Loop this function 60 times per second
     for (var i in stage.children) {
         if (i == 0) {
