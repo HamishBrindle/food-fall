@@ -3,8 +3,6 @@
 *   Main file for Food Fall!
  */
 
-
-
 // Speed of Game
 setInterval(makeFood, 1000);
 
