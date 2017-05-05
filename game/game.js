@@ -156,7 +156,7 @@ function setup() {
     gameLoop();
 
 }
-setInterval(makeFood, 4000);
+setInterval(makeFood, 1000);
 
 function myFunction() {
 
@@ -176,13 +176,16 @@ function gameLoop() {
         var item = stage.children[i];
         item.y += 2;
         item.rotation += item.rotateFactor;
-        if (isCollide(catcher, item)) {
-            console.log("collided");
+        if (item.isFood) {
+            if(isCollide(catcher, item)) {
+                console.log("collided");
+            }
+            if (item.y == GAME_HEIGHT)  {
+                console.log("literally dying");
+                item.destroy();
+            }
         }
-        if (item.y == GAME_HEIGHT)  {
-            console.log("literally dying");
-            item.destroy();
-        }
+
         //returns the bounds of the basker {x x}
     }
     requestAnimationFrame(gameLoop);
@@ -295,9 +298,9 @@ function makeFood() {
     var newFoodIndex = weightedRand(fallingObjects);
     var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
     newFood.x = getRandomInt(0, GAME_WIDTH);
-    console.log("asdf" + newFood.anchor.x);
     newFood.anchor.x = 0.5;
     newFood.anchor.y = 0.5;
+    newFood.isFood = true;
     var randomBoolean = Math.random() >= 0.5;
     if(randomBoolean) {
         newFood.rotateFactor = Math.random() * 0.1;
