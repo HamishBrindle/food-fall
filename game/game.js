@@ -88,6 +88,15 @@ function loadProgressHandler() {
 }
 
 
+var catcher;
+var apple = {name:"apple", weight:0.2, sprite: 0};
+var banana = {name:"banana", weight:0.2, sprite: 0};
+var bread = {name:"bread", weight:0.2, sprite: 0};
+var orange = {name:"orange", weight:0.2,sprite: 0};
+var broccoli = {name:"broccoli", weight:0.2, sprite: 0};
+
+fallingObjects = [apple, banana, bread, orange, broccoli];
+
 /*
 Main game driver.
  */
@@ -99,12 +108,29 @@ function setup() {
     catcher = new Sprite(
         resources['assets/img/entities/basket.png'].texture
     );
-    apple = new Sprite(
-        resources["assets/img/food/apple.png"].texture
+
+    apple.sprite  = new Sprite(
+        resources['assets/img/food/apple.png'].texture
+    );
+
+    banana.sprite = new Sprite(
+        resources['assets/img/food/banana.png'].texture
+    );
+
+    bread.sprite = new Sprite(
+        resources['assets/img/food/bread.png'].texture
+    );
+
+    orange.sprite = new Sprite(
+        resources['assets/img/food/orange.png'].texture
+    );
+
+    broccoli.sprite = new Sprite(
+        resources['assets/img/food/broccoli.png'].texture
     );
 
     //Catcher movement
-    catcher.y = GAME_HEIGHT / 2;
+    catcher.y = GAME_HEIGHT / 1.5;
     catcher.x = GAME_WIDTH / 2;
     catcher.vx = 0;
     catcher.vy = 0;
@@ -131,15 +157,34 @@ function setup() {
     gameLoop();
 
 }
+setInterval(makeFood, 1000);
 
+function myFunction() {
+
+    alert("Hello");
+}
 //Set the game's current state to `play`:
 var state = play;
 
 //Animation loop
 function gameLoop() {
 
-    //Loop this function 60 times per second
+    // //Loop this function 60 times per second
+    for (var i in stage.children) {
+        if(i == 0) {
+            continue;
+        }
+        var item = stage.children[i];
+        item.y += 2;
+        item.rotation += item.rotateFactor;
+        if (item.y == GAME_HEIGHT)  {
+            console.log("literally dying");
+            item.destroy();
+        }
+        //returns the bounds of the basker {x x}
+    }
     requestAnimationFrame(gameLoop);
+    // foodFalling(fallingObjects[0]);
 
     state();
 
@@ -148,13 +193,13 @@ function gameLoop() {
     renderer.render(stage);
 }
 
+
 //State definition for "playing" the game
 function play() {
 
     animateBackground();
 
     playerMovement();
-
 }
 
 //Keyboard Controls Definition
@@ -169,7 +214,7 @@ function keyControls() {
     left.press = function () {
 
         //Change the catcher velocity when the key is pressed
-        if (catcher.vx > -maxXspeed) {
+        if (catcher.vx > -maxXspeed && catcher.x > 0) {
             catcher.accelerationX = -catcher.speed;
             catcher.frictionX = 1;
         }
@@ -178,9 +223,8 @@ function keyControls() {
     //Left arrow key `release` method
     left.release = function () {
 
-        //If the left arrow has been released, and the right arrow isn't down,
-        //and the catcher isn't moving vertically:
-        //Stop the catcher
+        /*If the left arrow has been released, and the right arrow isn't down,
+        and the catcher isn't moving vertically, Stop the catcher*/
         if (!right.isDown) {
             catcher.accelerationX = 0;
             catcher.frictionX = catcher.drag;
@@ -189,8 +233,10 @@ function keyControls() {
 
     //Up
     up.press = function () {
-        catcher.accelerationY = -catcher.speed;
-        catcher.frictionY = 1;
+        if (catcher.vy > -maxYspeed && catcher.y > GAME_HEIGHT/3) {
+            catcher.accelerationY = -catcher.speed;
+            catcher.frictionY = 1;
+        }
     };
     up.release = function () {
         if (!down.isDown) {
@@ -201,7 +247,7 @@ function keyControls() {
 
     //Right
     right.press = function () {
-        if (catcher.vx < maxXspeed) {
+        if (catcher.vx < maxXspeed && catcher.x < GAME_WIDTH) {
             catcher.accelerationX = catcher.speed;
             catcher.frictionX = 1;
         }
@@ -215,6 +261,7 @@ function keyControls() {
 
     //Down
     down.press = function () {
+        if (catcher.vy < maxYspeed && catcher.y < GAME_WIDTH)
         catcher.accelerationY = catcher.speed;
         catcher.frictionY = 1;
     };
@@ -224,6 +271,39 @@ function keyControls() {
             catcher.frictionY = catcher.drag;
         }
     };
+}
+
+//Binds catcher to part of the screen
+function bound() {
+    if (catcher.vy < 0 && catcher.y < GAME_HEIGHT / 4) {
+        catcher.vy = 0;
+    }
+    if (catcher.vy > 0 && catcher.y > GAME_HEIGHT * 0.85) {
+        catcher.vy = 0;
+    }
+    if (catcher.vx < 0 && catcher.x < 0) {
+        catcher.vx = 0;
+    }
+    if (catcher.vx > 0 && catcher.x > GAME_WIDTH * 0.85) {
+        catcher.vx = 0;
+    }
+}
+  
+function makeFood() {
+    var newFoodIndex = weightedRand(fallingObjects);
+    var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
+    newFood.x = getRandomInt(0, GAME_WIDTH);
+    console.log("asdf" + newFood.anchor.x);
+    newFood.anchor.x = 0.5;
+    newFood.anchor.y = 0.5;
+    var randomBoolean = Math.random() >= 0.5;
+    if(randomBoolean) {
+        newFood.rotateFactor = Math.random() * 0.1;
+    }
+    else
+        newFood.rotateFactor = -Math.random() * 0.1;
+
+    stage.addChild(newFood);
 }
 
 /*
@@ -241,8 +321,8 @@ function resize() {
     // Update the renderer dimensions
     renderer.resize(Math.ceil(GAME_WIDTH * ratio),
         Math.ceil(GAME_HEIGHT * ratio));
-
 }
+
 
 //Keyboard object definition
 function keyboard(keyCode) {
@@ -385,4 +465,18 @@ function loadBackgroundTextures() {
     }
 }
 
-
+function weightedRand(weightedList) {
+  var i;
+  var sum = 0;
+  var r = Math.random();
+  for (i in weightedList) {
+    sum += weightedList[i].weight;
+    if (r <= sum)
+        return i;
+  }
+}
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
