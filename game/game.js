@@ -153,7 +153,7 @@ function gameLoop() {
         }
         var item = stage.children[i];
         item.y += 2;
-        item.rotation += 1000 * (item.anchor.x - 0.5);
+        item.rotation += item.rotateFactor;
         if (item.y == GAME_HEIGHT)  {
             console.log("literally dying");
             item.destroy();
@@ -280,9 +280,16 @@ function makeFood() {
     var newFoodIndex = weightedRand(fallingObjects);
     var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
     newFood.x = getRandomInt(0, GAME_WIDTH);
-    newFood.anchor.x = 0.5 + (0.0001 * Math.random());
     console.log("asdf" + newFood.anchor.x);
+    newFood.anchor.x = 0.5;
     newFood.anchor.y = 0.5;
+    var randomBoolean = Math.random() >= 0.5;
+    if(randomBoolean) {
+        newFood.rotateFactor = Math.random() * 0.1;
+    }
+    else
+        newFood.rotateFactor = -Math.random() * 0.1;
+
     stage.addChild(newFood);
 }
 
