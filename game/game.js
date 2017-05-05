@@ -66,11 +66,11 @@ function loadProgressHandler() {
 
 
 var catcher;
-var apple = {name:"apple", weight:0.5, sprite: 0};
-var banana = {name:"banana", weight:0.5, sprite: 0};
-var bread = {name:"apple", weight:0.5, sprite: 0};
-var orange = {name:"apple", weight:0.5,sprite: 0};
-var broccoli = {name:"broccoli", weight:0.5, sprite: 0};
+var apple = {name:"apple", weight:0.2, sprite: 0};
+var banana = {name:"banana", weight:0.2, sprite: 0};
+var bread = {name:"bread", weight:0.2, sprite: 0};
+var orange = {name:"apple", weight:0.2,sprite: 0};
+var broccoli = {name:"broccoli", weight:0.2, sprite: 0};
 
 fallingObjects = [apple, banana, bread, orange, broccoli];
 
@@ -86,23 +86,23 @@ function setup() {
         resources['assets/img/entities/basket.png'].texture
     );
 
-    appleSprite = new Sprite(
+    apple.sprite  = new Sprite(
         resources['assets/img/food/apple.png'].texture
     );
 
-    bananaSprite = new Sprite(
+    banana.sprite = new Sprite(
         resources['assets/img/food/banana.png'].texture
     );
 
-    breadSprite = new Sprite(
+    bread.sprite = new Sprite(
         resources['assets/img/food/bread.png'].texture
     );
 
-    orangeSprite = new Sprite(
+    orange.sprite = new Sprite(
         resources['assets/img/food/orange.png'].texture
     );
 
-    broccoliSprite = new Sprite(
+    broccoli.sprite = new Sprite(
         resources['assets/img/food/broccoli.png'].texture
     );
 
@@ -119,11 +119,7 @@ function setup() {
     catcher.drag = 0.9;
 
     keycontrol();
-    apple.sprite = appleSprite;
-    banana.sprite = bananaSprite;
-    bread.sprite = breadSprite;
-    orange.sprite = orangeSprite;
-    broccoli.sprite = broccoliSprite;
+
     // Add sprites to stage
     stage.addChild(catcher);
 
@@ -134,8 +130,12 @@ function setup() {
     gameLoop();
 
 }
-// setInterval(makeFood(), 300);
+setInterval(makeFood, 1000);
 
+function myFunction() {
+
+    alert("Hello");
+}
 //Set the game's current state to `play`:
 var state = play;
 
@@ -148,12 +148,14 @@ function gameLoop() {
             continue;
         }
         var item = stage.children[i];
-        item.y += 1;
+        item.y += 2;
+        item.rotation += 0.05;
+        if (item.y == GAME_HEIGHT)  {
+            console.log("literally dying");
+            item.destroy();
+        }
         //returns the bounds of the basker {x x}
     }
-    stage.addChild(appleSprite);
-    stage.addChild(broccoliSprite);
-
     requestAnimationFrame(gameLoop);
     // foodFalling(fallingObjects[0]);
 
@@ -201,12 +203,11 @@ function keycontrol() {
     //Left arrow key `release` method
     left.release = function () {
 
-        //If the left arrow has been released, and the right arrow isn't down,
-        //and the catcher isn't moving vertically:
-        //Stop the catcher
+        /*If the left arrow has been released, and the right arrow isn't down,
+        and the catcher isn't moving vertically, Stop the catcher*/
         if (!right.isDown) {
             catcher.accelerationX = 0;
-            catcher.frictionX = catcher.drag;
+            // catcher.frictionX = catcher.drag;
         }
     };
 
@@ -250,9 +251,14 @@ function keycontrol() {
 }
 
 function makeFood() {
-    console.log("in makefood");
+    var newFoodIndex = weightedRand(fallingObjects);
+    var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
+    newFood.x = getRandomInt(0, GAME_WIDTH);
+    newFood.anchor.x = 0.5;
+    newFood.anchor.y = 0.5;
+    // newFood.rotation = Math.random() * 0.01;
+    stage.addChild(newFood);
 }
-
 
 /*
 Resize canvas to fit the size of the window.
@@ -311,6 +317,16 @@ function keyboard(keyCode) {
     return key;
 }
 
+function weightedRand(weightedList) {
+  var i;
+  var sum = 0;
+  var r = Math.random();
+  for (i in weightedList) {
+    sum += weightedList[i].weight;
+    if (r <= sum)
+        return i;
+  }
+}
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
