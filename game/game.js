@@ -57,15 +57,18 @@ function foodCatchCollision() {
     for (var i in stage.children) {
         var item = stage.children[i];
         if (item.isFood) {
-            item.y += 2;
+            item.y += 4;
             item.rotation += item.rotateFactor;
              if (item.y === GAME_HEIGHT) {
                 item.destroy();
             }
-            if (isCollide(catcher, item)) {
-                item.destroy();
-                sound.play('coin');
-            }
+            try {
+                if (isCollide(catcher, item)) {
+                    item.destroy();
+                    sound.play('coin');
+                }
+            } catch(err) {}
+
         }
     }
 }
