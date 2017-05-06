@@ -32,6 +32,7 @@ function makeFood() {
     newFood.anchor.x = 0.5;
     newFood.anchor.y = 0.5;
     newFood.isFood = true;
+    newFood.collideOne = false;
     var randomBoolean = Math.random() >= 0.5;
     if (randomBoolean) {
         newFood.rotateFactor = Math.random() * 0.1;
@@ -44,10 +45,11 @@ function makeFood() {
 
 // Determine if basket and food are colliding
 function isCollide(basket, food) {
-    return !(((basket.y + basket.height) < food.y) ||
-    (basket.y > (food.y + food.height)) ||
-    ((basket.x + basket.width) < food.x) ||
-    (basket.x > (food.x + food.width)))
+    var upperLeft = {x:basket.x, y:basket.y};
+    var lowerRight = {x:(basket.x + basket.width), y:(basket.y + 1)};
+    var inBasket = (food.x > upperLeft.x) && (food.y > upperLeft.y)
+                    && (food.x < lowerRight.x) && (food.y < lowerRight.y);
+    return inBasket;
 }
 
 function foodCatchCollision() {
@@ -57,12 +59,12 @@ function foodCatchCollision() {
         if (item.isFood) {
             item.y += 2;
             item.rotation += item.rotateFactor;
+             if (item.y === GAME_HEIGHT) {
+                item.destroy();
+            }
             if (isCollide(catcher, item)) {
                 item.destroy();
                 sound.play('coin');
-            }
-            else if (item.y === GAME_HEIGHT) {
-                item.destroy();
             }
         }
     }

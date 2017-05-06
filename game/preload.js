@@ -188,7 +188,6 @@ function loadProgressHandler() {
     console.log("loading");
 }
 
-var catcher;
 var apple = {name:"apple", weight:0.2, sprite: 0};
 var banana = {name:"banana", weight:0.2, sprite: 0};
 var bread = {name:"bread", weight:0.2, sprite: 0};
