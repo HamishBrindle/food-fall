@@ -8,11 +8,15 @@ setInterval(makeFood, 1000);
 
 //Set the game's current state to `play`:
 var state = play;
-var graphics = new PIXI.Graphics();
+var scoreCount = 0;
+var score = new PIXI.Text('Score: ', {
+  fontSize: 30,
+  fontFamily: 'Arial',
+  fill: '#FF69B4'
+});
 
 //Animation loop
 function gameLoop() {
-    graphics.clear();
     requestAnimationFrame(gameLoop);
     state();
     lastTime = new Date().getTime();
@@ -24,6 +28,7 @@ function play() {
     foodCatchCollision();
     animateBackground();
     playerMovement();
+    addScore();
 }
 
 
@@ -55,7 +60,7 @@ function isCollide(basket, food) {
 }
 
 function foodCatchCollision() {
-    // //Loop this function 60 times per second
+    //Loop this function 60 times per second
     for (var i in stage.children) {
         var item = stage.children[i];
         if (item.isFood) {
@@ -68,9 +73,17 @@ function foodCatchCollision() {
                 if (isCollide(catcher, item)) {
                     item.destroy();
                     sound.play('coin');
+                    scoreCount++;
+                    stage.removeChild(score);
                 }
             } catch(err) {}
-
         }
+      }
     }
-}
+    function addScore() {
+      score.x = GAME_WIDTH - 100;
+      score.y = GAME_HEIGHT - 50;
+      score.anchor.x = 0.5;
+      score.text = 'Score: ' + scoreCount;
+      stage.addChild(score);
+    }
