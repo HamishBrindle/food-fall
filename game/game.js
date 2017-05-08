@@ -9,12 +9,18 @@ setInterval(makeFood, 1000);
 //Set the game's current state to `play`:
 var state = play;
 
+// let fallingObjects = new PIXI.ParticleContainer();
+
+
 //Animation loop
 function gameLoop() {
+    // state();
+    var frameRate = 1000 / ((new Date().getTime()) - lastTime);
     requestAnimationFrame(gameLoop);
     state();
-    lastTime = new Date().getTime();
+    // console.log("frameRate", frameRate);
     renderer.render(stage);
+    lastTime = new Date().getTime();
 }
 
 //State definition for "playing" the game
@@ -24,14 +30,18 @@ function play() {
     playerMovement();
 }
 
-
+var foodCount = 0;
 function makeFood() {
-    var newFoodIndex = weightedRand(fallingObjects);
-    var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
+    const MAX_FOOD = 5;
+    if(foodCount >= MAX_FOOD) return;
+
+    var newFoodIndex = weightedRand(fallingFood);
+    var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingFood[newFoodIndex].name + '.png');
     newFood.x = getRandomInt(0, GAME_WIDTH);
     newFood.anchor.x = 0.5;
     newFood.anchor.y = 0.5;
     newFood.isFood = true;
+    newFood.velocity = 100; //10 pixels per second
     newFood.collideOne = false;
     var randomBoolean = Math.random() >= 0.5;
     if (randomBoolean) {
@@ -39,10 +49,16 @@ function makeFood() {
     }
     else
         newFood.rotateFactor = -Math.random() * 0.1;
-
+    foodCount++;
+    // fallingObjects.addChild(newFood);
     stage.addChild(newFood);
 }
 
+function removeFood(childToDelete) {
+    console.log("removing")
+    stage.removeChild(childToDelete);
+    foodCount--;
+}
 // Determine if basket and food are colliding
 function isCollide(basket, food) {
     var upperLeft = {x:basket.x, y:basket.y};
@@ -53,22 +69,33 @@ function isCollide(basket, food) {
 }
 
 function foodCatchCollision() {
+    var deltaTime = (new Date().getTime()) - lastTime;
+    var childrenToDelete = [];
     // //Loop this function 60 times per second
     for (var i in stage.children) {
-        var item = stage.children[i];
-        if (item.isFood) {
-            item.y += 4;
-            item.rotation += item.rotateFactor;
-             if (item.y === GAME_HEIGHT) {
-                item.destroy();
+        var fallingItem = stage.children[i];
+
+        if (fallingItem.isFood) {
+            var deltaY = fallingItem.velocity * deltaTime / 1000;
+            fallingItem.y += deltaY;
+            fallingItem.rotation += fallingItem.rotateFactor;
+            // console.log(fallingItem);
+             if (fallingItem.y > GAME_HEIGHT) {
+                childrenToDelete.push(fallingItem);
+                fallingItem.destroy();
+                console.log("destroyed, ", fallingItem);
             }
             try {
-                if (isCollide(catcher, item)) {
-                    item.destroy();
+                if (isCollide(catcher, fallingItem)) {
+                    childrenToDelete.push(fallingItem);
+                    fallingItem.destroy();
+                    console.log("destroyed, ", fallingItem);
                     sound.play('coin');
                 }
-            } catch(err) {}
-
+            } catch(err) {console.log("incatch", err);}
         }
+    }
+    for (var i = 0; i < childrenToDelete.length; i++) {
+        removeFood(childrenToDelete[i]);
     }
 }
