@@ -20,7 +20,7 @@ var backgroundScrollSpeed = {
     mtnFar: 0.125,
     mtnMid: 0.25,
     clouds: 0.30,
-    trees: -1,
+    trees: 1,
     grass: 2
 };
 
@@ -137,17 +137,16 @@ function initBackground() {
 }
 
 function animateBackground() {
-
     // Determine seconds elapsed since last frame
     var currtime = new Date().getTime();
-    var delta = (currtime - lastTime) / 1000;
+    var delta = parseFloat((currtime - lastTime)/1000);
 
     // Scroll the terrain
-    mtnFar.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnFar;
-    mtnMid.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnMid;
-    clouds.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.clouds;
-    trees.tilePosition.x -= FG_RATE * delta + backgroundScrollSpeed.trees;
-    grass.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.grass;
+    mtnFar.tilePosition.x -= BG_RATE * delta * backgroundScrollSpeed.mtnFar;
+    mtnMid.tilePosition.x -= BG_RATE * delta * backgroundScrollSpeed.mtnMid;
+    clouds.tilePosition.x -= BG_RATE * delta * backgroundScrollSpeed.clouds;
+    trees.tilePosition.x -= FG_RATE * delta * backgroundScrollSpeed.trees;
+    grass.tilePosition.x -= BG_RATE * delta * backgroundScrollSpeed.grass;
 
     // Draw the stage and prepare for the next frame
     lastTime = currtime;

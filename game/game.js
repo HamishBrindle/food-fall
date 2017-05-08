@@ -14,10 +14,13 @@ var state = play;
 //Animation loop
 function gameLoop() {
     var frameRate = 1000 / ((new Date().getTime()) - lastTime);
-    requestAnimationFrame(gameLoop);
+    console.log("frameRate ", frameRate);
+    // requestAnimationFrame(gameLoop);
     state();
     renderer.render(stage);
     lastTime = new Date().getTime();
+
+    setTimeout(gameLoop, 1000 / 45);
 }
 
 //State definition for "playing" the game
