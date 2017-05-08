@@ -9,6 +9,11 @@ setInterval(makeFood, 1000);
 //Set the game's current state to `play`:
 var state = play;
 var scoreCount = 0;
+var score = new PIXI.Text('Score: ', {
+  fontSize: 30,
+  fontFamily: 'Arial',
+  fill: '#FF69B4'
+});
 
 //Animation loop
 function gameLoop() {
@@ -69,18 +74,13 @@ function foodCatchCollision() {
                     item.destroy();
                     sound.play('coin');
                     scoreCount++;
+                    stage.removeChild(score);
                 }
             } catch(err) {}
         }
       }
     }
-
     function addScore() {
-      var score = new PIXI.Text('Score: ', {
-        fontSize: 30,
-        fontFamily: 'Arial',
-        fill: '#FF69B4'
-      });
       score.x = GAME_WIDTH - 100;
       score.y = GAME_HEIGHT - 50;
       score.anchor.x = 0.5;
