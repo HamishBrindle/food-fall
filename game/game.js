@@ -9,16 +9,13 @@ setInterval(makeFood, 1000);
 //Set the game's current state to `play`:
 var state = play;
 
-// let fallingObjects = new PIXI.ParticleContainer();
 
 
 //Animation loop
 function gameLoop() {
-    // state();
     var frameRate = 1000 / ((new Date().getTime()) - lastTime);
     requestAnimationFrame(gameLoop);
     state();
-    // console.log("frameRate", frameRate);
     renderer.render(stage);
     lastTime = new Date().getTime();
 }
@@ -50,7 +47,6 @@ function makeFood() {
     else
         newFood.rotateFactor = -Math.random() * 0.1;
     foodCount++;
-    // fallingObjects.addChild(newFood);
     stage.addChild(newFood);
 }
 
@@ -71,15 +67,12 @@ function isCollide(basket, food) {
 function foodCatchCollision() {
     var deltaTime = (new Date().getTime()) - lastTime;
     var childrenToDelete = [];
-    // //Loop this function 60 times per second
     for (var i in stage.children) {
         var fallingItem = stage.children[i];
-
         if (fallingItem.isFood) {
             var deltaY = fallingItem.velocity * deltaTime / 1000;
             fallingItem.y += deltaY;
             fallingItem.rotation += fallingItem.rotateFactor;
-            // console.log(fallingItem);
              if (fallingItem.y > GAME_HEIGHT) {
                 childrenToDelete.push(fallingItem);
                 fallingItem.destroy();
