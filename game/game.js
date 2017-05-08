@@ -8,9 +8,11 @@ setInterval(makeFood, 1000);
 
 //Set the game's current state to `play`:
 var state = play;
+var graphics = new PIXI.Graphics();
 
 //Animation loop
 function gameLoop() {
+    graphics.clear();
     requestAnimationFrame(gameLoop);
     state();
     lastTime = new Date().getTime();

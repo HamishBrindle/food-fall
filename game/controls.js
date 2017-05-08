@@ -1,140 +1,175 @@
+//Capture the keyboard arrow keys
+var left = keyboard(37),
+    up = keyboard(38),
+    right = keyboard(39),
+    down = keyboard(40)
 
 //Keyboard Controls Definition
 function keyControls() {
-    //Capture the keyboard arrow keys
-    var left = keyboard(37),
-        up = keyboard(38),
-        right = keyboard(39),
-        down = keyboard(40);
+    ;
 
     //Left arrow key `press` method
     left.press = function () {
-
-        //Change the catcher velocity when the key is pressed
-        if (catcher.vx > -maxXspeed && catcher.x > 0) {
-            catcher.accelerationX = -catcher.speed;
-            catcher.frictionX = 1;
-        }
+        leftpress();
     };
 
     //Left arrow key `release` method
     left.release = function () {
-
-        /*If the left arrow has been released, and the right arrow isn't down,
-        and the catcher isn't moving vertically, Stop the catcher*/
-        if (!right.isDown) {
-            catcher.accelerationX = 0;
-            catcher.frictionX = catcher.drag;
-        }
+        leftrelease();
     };
 
     //Up
     up.press = function () {
-        if (catcher.vy > -maxYspeed && catcher.y > GAME_HEIGHT/3) {
-            catcher.accelerationY = -catcher.speed;
-            catcher.frictionY = 1;
-        }
+        uppress();
     };
     up.release = function () {
-        if (!down.isDown) {
-            catcher.accelerationY = 0;
-            catcher.frictionY = catcher.drag;
-        }
+        uprelease();
     };
 
     //Right
     right.press = function () {
-        if (catcher.vx < maxXspeed && catcher.x < GAME_WIDTH) {
-            catcher.accelerationX = catcher.speed;
-            catcher.frictionX = 1;
-        }
+        rightpress();
     };
     right.release = function () {
-        if (!left.isDown) {
-            catcher.accelerationX = 0;
-            catcher.frictionX = catcher.drag;
-        }
+        rightrelease();
     };
 
     //Down
     down.press = function () {
-        if (catcher.vy < maxYspeed && catcher.y < GAME_WIDTH)
-        catcher.accelerationY = catcher.speed;
-        catcher.frictionY = 1;
+        downpress();
     };
     down.release = function () {
-        if (!up.isDown) {
-            catcher.accelerationY = 0;
-            catcher.frictionY = catcher.drag;
-        }
+        downrelease();
     };
 }
 
-//Binds catcher to part of the screen
-function bound() {
-    if (catcher.vy < 0 && catcher.y < GAME_HEIGHT / 4) {
-        catcher.vy = 0;
-    }
-    if (catcher.vy > 0 && catcher.y > GAME_HEIGHT * 0.85) {
-        catcher.vy = 0;
-    }
-    if (catcher.vx < 0 && catcher.x < 0) {
-        catcher.vx = 0;
-    }
-    if (catcher.vx > 0 && catcher.x > GAME_WIDTH * 0.85) {
-        catcher.vx = 0;
+function leftpress() {
+    //Change the catcher velocity when the key is pressed
+    if (catcher.vx > -maxXspeed && catcher.x > 0) {
+        catcher.accelerationX = -catcher.speed;
+        catcher.frictionX = 1;
     }
 }
-//Keyboard object definition
-function keyboard(keyCode) {
-    var key = {};
-    key.code = keyCode;
-    key.isDown = false;
-    key.isUp = true;
-    key.press = undefined;
-    key.release = undefined;
-    //The `downHandler`
-    key.downHandler = function (event) {
-        if (event.keyCode === key.code) {
-            if (key.isUp && key.press) key.press();
-            key.isDown = true;
-            key.isUp = false;
+
+function leftrelease() {
+    /*If the left arrow has been released, and the right arrow isn't down,
+        and the catcher isn't moving vertically, Stop the catcher*/
+    if (!right.isDown) {
+        catcher.accelerationX = 0;
+        catcher.frictionX = catcher.drag;
+    }
+}
+
+function uppress() {
+    if (catcher.vy > -maxYspeed && catcher.y > GAME_HEIGHT / 6) {
+        catcher.accelerationY = -catcher.speed;
+        catcher.frictionY = 1;
+    }
+}
+
+function uprelease() {
+    if (!down.isDown) {
+        catcher.accelerationY = 0;
+        catcher.frictionY = catcher.drag;
+    }
+}
+
+function rightpress() {
+    if (catcher.vx < maxXspeed && catcher.x < GAME_WIDTH * 0.82) {
+        catcher.accelerationX = catcher.speed;
+        catcher.frictionX = 1;
+    }
+}
+
+function rightrelease() {
+    if (!left.isDown) {
+        catcher.accelerationX = 0;
+        catcher.frictionX = catcher.drag;
+    }
+}
+
+function downpress() {
+    if (catcher.vy < maxYspeed && catcher.y < GAME_WIDTH * 0.82)
+        catcher.accelerationY = catcher.speed;
+    catcher.frictionY = 1;
+}
+
+function downrelease() {
+    if (!up.isDown) {
+        catcher.accelerationY = 0;
+        catcher.frictionY = catcher.drag;
+    }
+}
+
+    //Binds catcher to part of the screen
+    function bound() {
+        if (catcher.vy < 0 && catcher.y < GAME_HEIGHT / 6) {
+            catcher.vy = 0;
+            uprelease();
         }
-        event.preventDefault();
-    };
-
-    //The `upHandler`
-    key.upHandler = function (event) {
-        if (event.keyCode === key.code) {
-            if (key.isDown && key.release) key.release();
-            key.isDown = false;
-            key.isUp = true;
+        if (catcher.vy > 0 && catcher.y > GAME_HEIGHT * 0.82) {
+            catcher.vy = 0;
+            downrelease();
         }
-        event.preventDefault();
-    };
+        if (catcher.vx < 0 && catcher.x < 0) {
+            catcher.vx = 0;
+            leftrelease();
+        }
+        if (catcher.vx > 0 && catcher.x > GAME_WIDTH * 0.82) {
+            catcher.vx = 0;
+            rightrelease();
+        }
+    }
+    //Keyboard object definition
+    function keyboard(keyCode) {
+        var key = {};
+        key.code = keyCode;
+        key.isDown = false;
+        key.isUp = true;
+        key.press = undefined;
+        key.release = undefined;
+        //The `downHandler`
+        key.downHandler = function (event) {
+            if (event.keyCode === key.code) {
+                if (key.isUp && key.press) key.press();
+                key.isDown = true;
+                key.isUp = false;
+            }
+            event.preventDefault();
+        };
 
-    //Attach event listeners
-    window.addEventListener(
-      "keydown", key.downHandler.bind(key), false
-    );
-    window.addEventListener(
-      "keyup", key.upHandler.bind(key), false
-    );
-    return key;
-}
+        //The `upHandler`
+        key.upHandler = function (event) {
+            if (event.keyCode === key.code) {
+                if (key.isDown && key.release) key.release();
+                key.isDown = false;
+                key.isUp = true;
+            }
+            event.preventDefault();
+        };
 
-function playerMovement() {
-    //Implementing acceleration
-    catcher.vx += catcher.accelerationX;
-    catcher.vy += catcher.accelerationY;
+        //Attach event listeners
+        window.addEventListener(
+          "keydown", key.downHandler.bind(key), false
+        );
+        window.addEventListener(
+          "keyup", key.upHandler.bind(key), false
+        );
+        return key;
+    }
 
-    //Implementing friction
-    catcher.vx *= catcher.frictionX;
-    catcher.vy *= catcher.frictionY;
+    function playerMovement() {
+        //Implementing acceleration
+        catcher.vx += catcher.accelerationX;
+        catcher.vy += catcher.accelerationY;
 
-    //Implementing movement
-    catcher.x += catcher.vx;
-    catcher.y += catcher.vy;
+        //Implementing friction
+        catcher.vx *= catcher.frictionX;
+        catcher.vy *= catcher.frictionY;
 
-    bound();
-}
+        //Implementing movement
+        catcher.x += catcher.vx;
+        catcher.y += catcher.vy;
+
+        bound();
+    }
