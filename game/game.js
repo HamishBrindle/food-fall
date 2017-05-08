@@ -37,11 +37,12 @@ function makeFood() {
 
     var newFoodIndex = weightedRand(fallingFood);
     var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingFood[newFoodIndex].name + '.png');
-    newFood.x = getRandomInt(0, GAME_WIDTH);
+    newFood.x = getRandomInt(newFood.width, GAME_WIDTH - newFood.width);
     newFood.anchor.x = 0.5;
     newFood.anchor.y = 0.5;
     newFood.isFood = true;
-    newFood.velocity = 100; //10 pixels per second
+    newFood.velocity = 0; //10 pixels per second
+    newFood.accelerationY = 90; //
     newFood.collideOne = false;
     var randomBoolean = Math.random() >= 0.5;
     if (randomBoolean) {
@@ -74,7 +75,9 @@ function foodCatchCollision() {
         var fallingItem = stage.children[i];
         if (fallingItem.isFood) {
             var deltaY = fallingItem.velocity * deltaTime / 1000;
+            var deltaVy = fallingItem.accelerationY * deltaTime / 1000;
             fallingItem.y += deltaY;
+            fallingItem.velocity += deltaVy;
             fallingItem.rotation += fallingItem.rotateFactor;
              if (fallingItem.y > GAME_HEIGHT) {
                 childrenToDelete.push(fallingItem);
