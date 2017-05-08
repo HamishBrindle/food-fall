@@ -203,7 +203,7 @@ var bread = {name:"bread", weight:0.2, sprite: 0};
 var orange = {name:"orange", weight:0.2,sprite: 0};
 var broccoli = {name:"broccoli", weight:0.2, sprite: 0};
 
-fallingFood = [apple, banana, bread, orange, broccoli];
+fallingObjects = [apple, banana, bread, orange, broccoli];
 
 /*
 Main game driver.
@@ -247,7 +247,7 @@ function setup() {
     catcher.frictionX = 0.5;
     catcher.frictionY = 0.5;
     catcher.speed = 0.2;
-    catcher.drag = 0.8;
+    catcher.drag = 0.98;
 
     // Initialize the the level background
     initBackground();
