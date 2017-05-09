@@ -20,7 +20,8 @@ function gameLoop() {
     var frameRate = 1000 / ((new Date().getTime()) - lastTime);
     state();
     lastTime = new Date().getTime();
-    setTimeout(gameLoop, 1000 / 45);
+    console.log("frameRate ", frameRate);
+    setTimeout(gameLoop, 1000 / 35);
     renderer.render(stage);
 }
 
