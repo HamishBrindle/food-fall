@@ -105,7 +105,6 @@ function foodCatchCollision() {
 function addScore() {
     score.x = GAME_WIDTH - 100;
     score.y = GAME_HEIGHT - 50;
-    score.anchor.x = 0.5;
     score.text = 'Score: ' + scoreCount;
     stage.addChild(score);
 }
