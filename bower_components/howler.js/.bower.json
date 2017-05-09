@@ -44,5 +44,6 @@
   },
   "_source": "https://github.com/goldfire/howler.js.git",
   "_target": "^2.0.3",
-  "_originalSource": "howler"
+  "_originalSource": "howler",
+  "_direct": true
 }
