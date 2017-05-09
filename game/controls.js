@@ -6,7 +6,6 @@ var left = keyboard(37),
 
 //Keyboard Controls Definition
 function keyControls() {
-    ;
 
     //Left arrow key `press` method
     left.press = function () {
