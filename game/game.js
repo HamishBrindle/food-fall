@@ -12,7 +12,7 @@ var scoreCount = 0;
 var score = new PIXI.Text('Score: ', {
   fontSize: 30,
   fontFamily: 'Arial',
-  fill: '#FF69B4'
+  fill: 'white'
 });
 
 //Animation loop
@@ -91,7 +91,7 @@ function foodCatchCollision() {
                     childrenToDelete.push(fallingItem);
                     fallingItem.destroy();
                     sound.play('coin');
-                    ++scoreCount;
+                    scoreCount += 10;
                     stage.removeChild(score);
                 }
             } catch(err) {}
