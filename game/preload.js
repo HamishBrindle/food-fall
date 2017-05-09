@@ -249,6 +249,9 @@ function setup() {
     catcher.frictionY = 0.5;
     catcher.speed = 0.2;
     catcher.drag = 0.98;
+    catcher.anchor.x = 0.5;
+    catcher.anchor.y = 0.5;
+    catcher.interactive = true;
 
     // Initialize the the level background
     initBackground();

@@ -52,8 +52,10 @@ function makeFood() {
 
 // Determine if basket and food are colliding
 function isCollide(basket, food) {
-    var upperLeft = {x:basket.x, y:basket.y};
-    var lowerRight = {x:(basket.x + basket.width), y:(basket.y + 10)};
+    var xoffset = basket.width / 2;
+    var yoffset = basket.height / 2;
+    var upperLeft = {x:basket.x - xoffset, y:basket.y - yoffset};
+    var lowerRight = {x:(basket.x + basket.width - xoffset), y:(basket.y + 10 - yoffset)};
     var inBasket = (food.x > upperLeft.x) && (food.y > upperLeft.y)
                     && (food.x < lowerRight.x) && (food.y < lowerRight.y);
     return inBasket;

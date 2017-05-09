@@ -4,6 +4,71 @@ var left = keyboard(37),
     right = keyboard(39),
     down = keyboard(40)
 
+stage.interactive = true;
+document.interactive = true;
+touch();
+
+var currentMousePos = { x: -1, y: -1 };
+var keepmoving = false;
+
+function touch() {  
+    document.addEventListener("pointerdown", onTouchStart, true);  
+    document.addEventListener("pointerup", onTouchEnd, true);  
+    document.addEventListener("pointermove", onTouchMove, true);
+}
+function onTouchStart(event){  
+    currentMousePos.x = event.pageX;  
+    currentMousePos.y = event.pageY;
+    console.log("Down started");
+    
+}
+function onTouchMove(event) {
+    if (keepmoving) {
+        onpointerdown();
+    }
+    currentMousePos.x = event.pageX;  
+    currentMousePos.y = event.pageY;
+    console.log("Move started");
+}
+function onTouchEnd(event){  
+    currentMousePos.x = event.pageX;  
+    currentMousePos.y = event.pageY;
+    console.log("Up started");
+}
+stage.on('pointerdown', movemore);
+function movemore() {
+    keepmoving = true;
+}
+
+stage.on('pointerdown', onpointerdown);
+
+function onpointerdown() {
+    console.log("clicked");
+    if (currentMousePos.x < catcher.x) {
+        leftpress();
+        console.log("X: " + currentMousePos.x);
+    }
+    if (currentMousePos.y < catcher.y) {
+        uppress();
+    }
+    if (currentMousePos.x > catcher.x) {
+        rightpress();
+        console.log("X: " + currentMousePos.x);
+    }
+    if (currentMousePos.y > catcher.y) {
+        downpress();
+    }
+}
+
+stage.pointerup = function () {
+    console.log("released");
+    keepmoving = false;
+    catcher.accelerationX = 0;
+    catcher.accelerationY = 0;
+    catcher.frictionX = catcher.drag;
+    catcher.frictionY = catcher.drag;
+}
+
 //Keyboard Controls Definition
 function keyControls() {
     ;
@@ -76,6 +141,7 @@ function uprelease() {
 
 function rightpress() {
     if (catcher.vx < maxXspeed && catcher.x < GAME_WIDTH * 0.82) {
+        console.log("Right press engaged"); 
         catcher.accelerationX = catcher.speed;
         catcher.frictionX = 1;
     }
@@ -159,6 +225,25 @@ function downrelease() {
     }
 
     function playerMovement() {
+        //Touch
+        if (currentMousePos.x >= catcher.x && catcher.vx < 0) {
+            leftrelease();
+            catcher.vx = 0;
+        }
+        if (currentMousePos.x <= catcher.x && catcher.vx > 0) {
+            rightrelease();
+            catcher.vx = 0;
+        }
+        if (currentMousePos.y <= catcher.y && catcher.vy > 0) {
+            downrelease
+            catcher.vy = 0;
+        }
+        if (currentMousePos.y >= catcher.y && catcher.vy < 0) {
+            uprelease();
+            catcher.vy = 0;
+        }
+
+
         //Implementing acceleration
         catcher.vx += catcher.accelerationX;
         catcher.vy += catcher.accelerationY;
