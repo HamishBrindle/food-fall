@@ -1,7 +1,17 @@
 // Stage-size parameters; aspect ratio.
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
+/*
+    TO DO: ADD SPRITES TO ONE CONTAINER IN ORDER TO OPTIMIZE REFRESH
+    REDUCE LAG
 
+    https://github.com/kittykatattack/learningPixi/blob/master/README.md
+
+    control + f: var superFastSprites = new ParticleContainer();
+
+    We will also need to put scorebar in it's own container, and add children
+    to make incremental changes.
+*/
 //Variables
 var maxXspeed = 50;
 var maxYspeed = 25;
@@ -10,8 +20,8 @@ var backgroundScrollSpeed = {
     mtnFar: 0.125,
     mtnMid: 0.25,
     clouds: 0.30,
-    trees: 0,
-    grass: 3
+    trees: -1,
+    grass: 2
 };
 
 // Background textures
@@ -64,7 +74,7 @@ document.body.appendChild(renderer.view);
 window.addEventListener("resize", resize);
 
 /*
- Resize canvas to fit the size of the window.
+Resize canvas to fit the size of the window.
  */
 function resize() {
 
@@ -119,7 +129,6 @@ function initBackground() {
     grass =
         new PIXI.extras.TilingSprite(PIXI.loader.resources.grass.texture,
             GAME_WIDTH, GAME_HEIGHT);
-    stage.addChild(grass);
 
     // Prepare for first frame of game loop/animation
     lastTime = new Date().getTime();
@@ -129,24 +138,22 @@ function initBackground() {
 function animateBackground() {
 
     // Determine seconds elapsed since last frame
-    var currentTime = new Date().getTime();
-    var delta = (currentTime - lastTime) / 1000;
+    var currtime = new Date().getTime();
+    var delta = (currtime - lastTime) / 1000;
 
     // Scroll the terrain
     mtnFar.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnFar;
     mtnMid.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnMid;
     clouds.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.clouds;
     trees.tilePosition.x -= FG_RATE * delta + backgroundScrollSpeed.trees;
-    grass.tilePosition.x -= FG_RATE * delta + backgroundScrollSpeed.grass;
+    grass.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.grass;
 
     // Draw the stage and prepare for the next frame
-    lastTime = currentTime;
+    lastTime = currtime;
 
 }
 
 function loadBackgroundTextures() {
-
-    console.log(window.devicePixelRatio);
 
     if (window.devicePixelRatio >= 2 &&
         renderer instanceof PIXI.WebGLRenderer) {
@@ -184,23 +191,22 @@ loader
     .load(setup);
 
 /*
- Prints loading log to console.
+Prints loading log to console.
  */
 function loadProgressHandler() {
     console.log("loading");
 }
 
-var catcher;
-var apple = {name: "apple", weight: 0.2, sprite: 0};
-var banana = {name: "banana", weight: 0.2, sprite: 0};
-var bread = {name: "bread", weight: 0.2, sprite: 0};
-var orange = {name: "orange", weight: 0.2, sprite: 0};
-var broccoli = {name: "broccoli", weight: 0.2, sprite: 0};
+var apple = {name:"apple", weight:0.2};
+var banana = {name:"banana", weight:0.2};
+var bread = {name:"bread", weight:0.2};
+var orange = {name:"orange", weight:0.2};
+var broccoli = {name:"broccoli", weight:0.2};
 
 fallingObjects = [apple, banana, bread, orange, broccoli];
 
 /*
- Main game driver.
+Main game driver.
  */
 function setup() {
 
@@ -211,26 +217,6 @@ function setup() {
         resources['assets/img/entities/basket.png'].texture
     );
 
-    apple.sprite = new Sprite(
-        resources['assets/img/food/apple.png'].texture
-    );
-
-    banana.sprite = new Sprite(
-        resources['assets/img/food/banana.png'].texture
-    );
-
-    bread.sprite = new Sprite(
-        resources['assets/img/food/bread.png'].texture
-    );
-
-    orange.sprite = new Sprite(
-        resources['assets/img/food/orange.png'].texture
-    );
-
-    broccoli.sprite = new Sprite(
-        resources['assets/img/food/broccoli.png'].texture
-    );
-
     //Catcher movement
     catcher.y = GAME_HEIGHT / 1.5;
     catcher.x = GAME_WIDTH / 2;
@@ -238,10 +224,10 @@ function setup() {
     catcher.vy = 0;
     catcher.accelerationX = 0;
     catcher.accelerationY = 0;
-    catcher.frictionX = 0.5;
-    catcher.frictionY = 0.5;
+    catcher.frictionX = 0.8;
+    catcher.frictionY = 0.8;
     catcher.speed = 0.2;
-    catcher.drag = 0.8;
+    catcher.drag = 0.98;
 
     // Initialize the the level background
     initBackground();
@@ -250,6 +236,7 @@ function setup() {
 
     // Add sprites to stage
     stage.addChild(catcher);
+    stage.addChild(grass);
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);

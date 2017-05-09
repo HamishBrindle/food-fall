@@ -7,13 +7,13 @@
 setInterval(makeFood, 1000);
 
 //Set the game's current state to `play`:
-let state = play;
-
-// Array of all the dropping food.
-let foods = [];
-
-// Falling speed of the food.
-let foodFallingSpeed = 3;
+var state = play;
+var scoreCount = 0;
+var score = new PIXI.Text('Score: ', {
+  fontSize: 30,
+  fontFamily: 'Arial',
+  fill: '#FF69B4'
+});
 
 //Animation loop
 function gameLoop() {
@@ -28,9 +28,8 @@ function play() {
     foodCatchCollision();
     animateBackground();
     playerMovement();
+    addScore();
 }
-
-
 
 function makeFood() {
     var newFoodIndex = weightedRand(fallingObjects);
@@ -39,6 +38,7 @@ function makeFood() {
     newFood.anchor.x = 0.5;
     newFood.anchor.y = 0.5;
     newFood.isFood = true;
+    newFood.collideOne = false;
     var randomBoolean = Math.random() >= 0.5;
     if (randomBoolean) {
         newFood.rotateFactor = Math.random() * 0.1;
@@ -46,36 +46,43 @@ function makeFood() {
     else
         newFood.rotateFactor = -Math.random() * 0.1;
 
-    foods.push(newFood);
     stage.addChild(newFood);
 }
 
 // Determine if basket and food are colliding
 function isCollide(basket, food) {
-    return !(((basket.y + basket.height) < food.y) ||
-    (basket.y > (food.y + food.height)) ||
-    ((basket.x + basket.width) < food.x) ||
-    (basket.x > (food.x + food.width)))
+    var upperLeft = {x:basket.x, y:basket.y};
+    var lowerRight = {x:(basket.x + basket.width), y:(basket.y + 10)};
+    var inBasket = (food.x > upperLeft.x) && (food.y > upperLeft.y)
+                    && (food.x < lowerRight.x) && (food.y < lowerRight.y);
+    return inBasket;
 }
 
 function foodCatchCollision() {
-    // //Loop this function 60 times per second
+//Loop this function 60 times per second
     for (var i in stage.children) {
-        if (i == 0) {
-            continue;
-        }
         var item = stage.children[i];
         if (item.isFood) {
-            item.y += foodFallingSpeed;
+            item.y += 4;
             item.rotation += item.rotateFactor;
-            if (isCollide(catcher, item)) {
-                item.destroy();
-                sound.play('coin');
-            }
-            else if (item.y === GAME_HEIGHT) {
+             if (item.y > GAME_HEIGHT) {
                 item.destroy();
             }
-            //returns the bounds of the basker {x x}
+            try {
+                if (isCollide(catcher, item)) {
+                    item.destroy();
+                    sound.play('coin');
+                    scoreCount++;
+                    stage.removeChild(score);
+                }
+            } catch(err) {}
         }
     }
+}
+function addScore() {
+      score.x = GAME_WIDTH - 100;
+      score.y = GAME_HEIGHT - 50;
+      score.anchor.x = 0.5;
+      score.text = 'Score: ' + scoreCount;
+      stage.addChild(score);
 }

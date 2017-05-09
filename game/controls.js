@@ -1,88 +1,123 @@
+//Capture the keyboard arrow keys
+var left = keyboard(37),
+    up = keyboard(38),
+    right = keyboard(39),
+    down = keyboard(40)
 
 //Keyboard Controls Definition
 function keyControls() {
-    //Capture the keyboard arrow keys
-    var left = keyboard(37),
-        up = keyboard(38),
-        right = keyboard(39),
-        down = keyboard(40);
+    ;
 
     //Left arrow key `press` method
     left.press = function () {
-
-        //Change the catcher velocity when the key is pressed
-        if (catcher.vx > -maxXspeed && catcher.x > 0) {
-            catcher.accelerationX = -catcher.speed;
-            catcher.frictionX = 1;
-        }
+        leftPress();
     };
 
     //Left arrow key `release` method
     left.release = function () {
-
-        /*If the left arrow has been released, and the right arrow isn't down,
-        and the catcher isn't moving vertically, Stop the catcher*/
-        if (!right.isDown || (!right.isDown && left.isDown)) {
-            catcher.accelerationX = 0;
-            catcher.frictionX = catcher.drag;
-        }
+        leftRelease();
     };
 
     //Up
     up.press = function () {
-        if (catcher.vy > -maxYspeed && catcher.y > GAME_HEIGHT/3) {
-            catcher.accelerationY = -catcher.speed;
-            catcher.frictionY = 1;
-        }
+        upPress();
     };
     up.release = function () {
-        if (!down.isDown) {
-            catcher.accelerationY = 0;
-            catcher.frictionY = catcher.drag;
-        }
+        upRelease();
     };
 
     //Right
     right.press = function () {
-        if (catcher.vx < maxXspeed && catcher.x < GAME_WIDTH) {
-            catcher.accelerationX = catcher.speed;
-            catcher.frictionX = 1;
-        }
+        rightPress();
     };
     right.release = function () {
-        if (!left.isDown) {
-            catcher.accelerationX = 0;
-            catcher.frictionX = catcher.drag;
-        }
+        rightRelease();
     };
 
     //Down
     down.press = function () {
-        if (catcher.vy < maxYspeed && catcher.y < GAME_WIDTH)
-        catcher.accelerationY = catcher.speed;
-        catcher.frictionY = 1;
+        downPress();
     };
     down.release = function () {
-        if (!up.isDown) {
-            catcher.accelerationY = 0;
-            catcher.frictionY = catcher.drag;
-        }
+        downRelease();
     };
+}
+
+function leftPress() {
+    //Change the catcher velocity when the key is pressed
+    if (catcher.vx > -maxXspeed && catcher.x > 0) {
+        catcher.accelerationX = -catcher.speed;
+        catcher.frictionX = 1;
+    }
+}
+
+function leftRelease() {
+    /*If the left arrow has been released, and the right arrow isn't down,
+        and the catcher isn't moving vertically, Stop the catcher*/
+    if (!right.isDown) {
+        catcher.accelerationX = 0;
+        catcher.frictionX = catcher.drag;
+    }
+}
+
+function upPress() {
+    if (catcher.vy > -maxYspeed && catcher.y > GAME_HEIGHT / 6) {
+        catcher.accelerationY = -catcher.speed;
+        catcher.frictionY = 1;
+    }
+}
+
+function upRelease() {
+    if (!down.isDown) {
+        catcher.accelerationY = 0;
+        catcher.frictionY = catcher.drag;
+    }
+}
+
+function rightPress() {
+    if (catcher.vx < maxXspeed && catcher.x < GAME_WIDTH * 0.82) {
+        catcher.accelerationX = catcher.speed;
+        catcher.frictionX = 1;
+    }
+}
+
+function rightRelease() {
+    if (!left.isDown) {
+        catcher.accelerationX = 0;
+        catcher.frictionX = catcher.drag;
+    }
+}
+
+function downPress() {
+    if (catcher.vy < maxYspeed && catcher.y < GAME_WIDTH * 0.82)
+        catcher.accelerationY = catcher.speed;
+    catcher.frictionY = 1;
+}
+
+function downRelease() {
+    if (!up.isDown) {
+        catcher.accelerationY = 0;
+        catcher.frictionY = catcher.drag;
+    }
 }
 
 //Binds catcher to part of the screen
 function bound() {
-    if (catcher.vy < 0 && catcher.y < GAME_HEIGHT / 4) {
+    if (catcher.vy < 0 && catcher.y < GAME_HEIGHT / 6) {
         catcher.vy = 0;
+        upRelease();
     }
-    if (catcher.vy > 0 && catcher.y > GAME_HEIGHT * 0.85) {
+    if (catcher.vy > 0 && catcher.y > GAME_HEIGHT * 0.82) {
         catcher.vy = 0;
+        downRelease();
     }
     if (catcher.vx < 0 && catcher.x < 0) {
         catcher.vx = 0;
+        leftRelease();
     }
-    if (catcher.vx > 0 && catcher.x > GAME_WIDTH * 0.85) {
+    if (catcher.vx > 0 && catcher.x > GAME_WIDTH * 0.82) {
         catcher.vx = 0;
+        rightRelease();
     }
 }
 //Keyboard object definition
