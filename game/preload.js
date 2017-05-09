@@ -132,7 +132,6 @@ function initBackground() {
 
     // Prepare for first frame of game loop/animation
     lastTime = new Date().getTime();
-
 }
 
 function animateBackground() {
@@ -208,8 +207,6 @@ fallingObjects = [apple, banana, bread, orange, broccoli];
 Main game driver.
  */
 function setup() {
-
-    console.log("setup");
 
     //Setting up sprites
     catcher = new Sprite(
