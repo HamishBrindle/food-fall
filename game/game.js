@@ -18,9 +18,6 @@ var score = new PIXI.Text('Score: ', {
 //Animation loop
 function gameLoop() {
     var frameRate = 1000 / ((new Date().getTime()) - lastTime);
-//    console.log("frameRate ", frameRate);
-    // requestAnimationFrame(gameLoop);
-
     state();
     lastTime = new Date().getTime();
     setTimeout(gameLoop, 1000 / 45);

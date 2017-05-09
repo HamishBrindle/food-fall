@@ -129,7 +129,6 @@ function initBackground() {
     grass =
         new PIXI.extras.TilingSprite(PIXI.loader.resources.grass.texture,
             GAME_WIDTH, GAME_HEIGHT);
-    stage.addChild(grass);
 
     // Prepare for first frame of game loop/animation
     lastTime = new Date().getTime();
@@ -197,11 +196,11 @@ function loadProgressHandler() {
     console.log("loading");
 }
 
-var apple = {name:"apple", weight:0.2, sprite: 0};
-var banana = {name:"banana", weight:0.2, sprite: 0};
-var bread = {name:"bread", weight:0.2, sprite: 0};
-var orange = {name:"orange", weight:0.2,sprite: 0};
-var broccoli = {name:"broccoli", weight:0.2, sprite: 0};
+var apple = {name:"apple", weight:0.2};
+var banana = {name:"banana", weight:0.2};
+var bread = {name:"bread", weight:0.2};
+var orange = {name:"orange", weight:0.2};
+var broccoli = {name:"broccoli", weight:0.2};
 
 fallingObjects = [apple, banana, bread, orange, broccoli];
 
@@ -217,26 +216,6 @@ function setup() {
         resources['assets/img/entities/basket.png'].texture
     );
 
-    apple.sprite  = new Sprite(
-        resources['assets/img/food/apple.png'].texture
-    );
-
-    banana.sprite = new Sprite(
-        resources['assets/img/food/banana.png'].texture
-    );
-
-    bread.sprite = new Sprite(
-        resources['assets/img/food/bread.png'].texture
-    );
-
-    orange.sprite = new Sprite(
-        resources['assets/img/food/orange.png'].texture
-    );
-
-    broccoli.sprite = new Sprite(
-        resources['assets/img/food/broccoli.png'].texture
-    );
-
     //Catcher movement
     catcher.y = GAME_HEIGHT / 1.5;
     catcher.x = GAME_WIDTH / 2;
@@ -244,8 +223,8 @@ function setup() {
     catcher.vy = 0;
     catcher.accelerationX = 0;
     catcher.accelerationY = 0;
-    catcher.frictionX = 0.5;
-    catcher.frictionY = 0.5;
+    catcher.frictionX = 0.8;
+    catcher.frictionY = 0.8;
     catcher.speed = 0.2;
     catcher.drag = 0.98;
 
@@ -256,6 +235,7 @@ function setup() {
 
     // Add sprites to stage
     stage.addChild(catcher);
+    stage.addChild(grass);
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
