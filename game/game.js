@@ -4,7 +4,7 @@
  */
 
 // Speed of Game
-setInterval(makeFood, 1000);
+setInterval(makeFood, 10);
 
 //Set the game's current state to `play`:
 var state = play;
@@ -42,26 +42,28 @@ function makeFood() {
     var newFoodIndex = weightedRand(fallingObjects);
     var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
     newFood.x = getRandomInt(newFood.width, GAME_WIDTH - newFood.width);
+    newFood.y = -newFood.height;
+
     newFood.anchor.x = 0.5;
     newFood.anchor.y = 0.5;
     newFood.isFood = true;
     newFood.velocity = 0; //10 pixels per second
-    newFood.accelerationY = 90; //
+    newFood.accelerationY = 210; //
     var randomBoolean = Math.random() >= 0.5;
     if (randomBoolean) {
         newFood.rotateFactor = Math.random() * 0.1;
     }
     else
         newFood.rotateFactor = -Math.random() * 0.1;
-    foodCount++;
+    ++foodCount;
 
     stage.addChild(newFood);
 }
 
 function removeFood(childToDelete) {
-    console.log("removing")
+    --foodCount;
+    console.log("foodCount ", foodCount);
     stage.removeChild(childToDelete);
-    foodCount--;
 }
 // Determine if basket and food are colliding
 function isCollide(basket, food) {
@@ -90,9 +92,10 @@ function foodCatchCollision() {
             }
             try {
                 if (isCollide(catcher, fallingItem)) {
+                    childrenToDelete.push(fallingItem);
                     fallingItem.destroy();
                     sound.play('coin');
-                    scoreCount++;
+                    ++scoreCount;
                     stage.removeChild(score);
                 }
             } catch(err) {}
@@ -102,6 +105,7 @@ function foodCatchCollision() {
         removeFood(childrenToDelete[i]);
     }
 }
+
 function addScore() {
     score.x = GAME_WIDTH - 100;
     score.y = GAME_HEIGHT - 50;
