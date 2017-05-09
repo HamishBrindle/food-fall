@@ -31,7 +31,6 @@ function play() {
     addScore();
 }
 
-
 function makeFood() {
     var newFoodIndex = weightedRand(fallingObjects);
     var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
@@ -60,13 +59,13 @@ function isCollide(basket, food) {
 }
 
 function foodCatchCollision() {
-    //Loop this function 60 times per second
+//Loop this function 60 times per second
     for (var i in stage.children) {
         var item = stage.children[i];
         if (item.isFood) {
             item.y += 4;
             item.rotation += item.rotateFactor;
-             if (item.y === GAME_HEIGHT) {
+             if (item.y > GAME_HEIGHT) {
                 item.destroy();
             }
             try {
@@ -78,12 +77,12 @@ function foodCatchCollision() {
                 }
             } catch(err) {}
         }
-      }
     }
-    function addScore() {
+}
+function addScore() {
       score.x = GAME_WIDTH - 100;
       score.y = GAME_HEIGHT - 50;
       score.anchor.x = 0.5;
       score.text = 'Score: ' + scoreCount;
       stage.addChild(score);
-    }
+}
