@@ -20,8 +20,7 @@ function gameLoop() {
     var frameRate = 1000 / ((new Date().getTime()) - lastTime);
     state();
     lastTime = new Date().getTime();
-    console.log("frameRate ", frameRate);
-    setTimeout(gameLoop, 1000 / 35);
+    setTimeout(gameLoop, 1000 / 50);
     renderer.render(stage);
 }
 
@@ -41,7 +40,6 @@ function makeFood() {
     var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
     newFood.x = getRandomInt(newFood.width, GAME_WIDTH - newFood.width);
     newFood.y = -newFood.height;
-
     newFood.anchor.x = 0.5;
     newFood.anchor.y = 0.5;
     newFood.isFood = true;
