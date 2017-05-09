@@ -10,8 +10,8 @@ var backgroundScrollSpeed = {
     mtnFar: 0.125,
     mtnMid: 0.25,
     clouds: 0.30,
-    trees: -1,
-    grass: 2
+    trees: 0,
+    grass: 3
 };
 
 // Background textures
@@ -64,7 +64,7 @@ document.body.appendChild(renderer.view);
 window.addEventListener("resize", resize);
 
 /*
-Resize canvas to fit the size of the window.
+ Resize canvas to fit the size of the window.
  */
 function resize() {
 
@@ -129,22 +129,24 @@ function initBackground() {
 function animateBackground() {
 
     // Determine seconds elapsed since last frame
-    var currtime = new Date().getTime();
-    var delta = (currtime - lastTime) / 1000;
+    var currentTime = new Date().getTime();
+    var delta = (currentTime - lastTime) / 1000;
 
     // Scroll the terrain
     mtnFar.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnFar;
     mtnMid.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnMid;
     clouds.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.clouds;
     trees.tilePosition.x -= FG_RATE * delta + backgroundScrollSpeed.trees;
-    grass.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.grass;
+    grass.tilePosition.x -= FG_RATE * delta + backgroundScrollSpeed.grass;
 
     // Draw the stage and prepare for the next frame
-    lastTime = currtime;
+    lastTime = currentTime;
 
 }
 
 function loadBackgroundTextures() {
+
+    console.log(window.devicePixelRatio);
 
     if (window.devicePixelRatio >= 2 &&
         renderer instanceof PIXI.WebGLRenderer) {
@@ -182,23 +184,23 @@ loader
     .load(setup);
 
 /*
-Prints loading log to console.
+ Prints loading log to console.
  */
 function loadProgressHandler() {
     console.log("loading");
 }
 
 var catcher;
-var apple = {name:"apple", weight:0.2, sprite: 0};
-var banana = {name:"banana", weight:0.2, sprite: 0};
-var bread = {name:"bread", weight:0.2, sprite: 0};
-var orange = {name:"orange", weight:0.2,sprite: 0};
-var broccoli = {name:"broccoli", weight:0.2, sprite: 0};
+var apple = {name: "apple", weight: 0.2, sprite: 0};
+var banana = {name: "banana", weight: 0.2, sprite: 0};
+var bread = {name: "bread", weight: 0.2, sprite: 0};
+var orange = {name: "orange", weight: 0.2, sprite: 0};
+var broccoli = {name: "broccoli", weight: 0.2, sprite: 0};
 
 fallingObjects = [apple, banana, bread, orange, broccoli];
 
 /*
-Main game driver.
+ Main game driver.
  */
 function setup() {
 
@@ -209,7 +211,7 @@ function setup() {
         resources['assets/img/entities/basket.png'].texture
     );
 
-    apple.sprite  = new Sprite(
+    apple.sprite = new Sprite(
         resources['assets/img/food/apple.png'].texture
     );
 

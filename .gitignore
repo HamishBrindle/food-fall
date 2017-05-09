@@ -8,7 +8,6 @@ yarn-error.log*
 .grunt
 
 # Bower dependency directory (https://bower.io/)
-bower_components
 
 # Optional npm cache directory
 .npm

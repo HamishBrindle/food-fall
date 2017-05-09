@@ -22,7 +22,7 @@ function keyControls() {
 
         /*If the left arrow has been released, and the right arrow isn't down,
         and the catcher isn't moving vertically, Stop the catcher*/
-        if (!right.isDown) {
+        if (!right.isDown || (!right.isDown && left.isDown)) {
             catcher.accelerationX = 0;
             catcher.frictionX = catcher.drag;
         }

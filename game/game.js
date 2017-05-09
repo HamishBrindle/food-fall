@@ -3,13 +3,17 @@
 *   Main file for Food Fall!
  */
 
-
-
 // Speed of Game
 setInterval(makeFood, 1000);
 
 //Set the game's current state to `play`:
-var state = play;
+let state = play;
+
+// Array of all the dropping food.
+let foods = [];
+
+// Falling speed of the food.
+let foodFallingSpeed = 3;
 
 //Animation loop
 function gameLoop() {
@@ -27,6 +31,7 @@ function play() {
 }
 
 
+
 function makeFood() {
     var newFoodIndex = weightedRand(fallingObjects);
     var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
@@ -41,6 +46,7 @@ function makeFood() {
     else
         newFood.rotateFactor = -Math.random() * 0.1;
 
+    foods.push(newFood);
     stage.addChild(newFood);
 }
 
@@ -60,7 +66,7 @@ function foodCatchCollision() {
         }
         var item = stage.children[i];
         if (item.isFood) {
-            item.y += 2;
+            item.y += foodFallingSpeed;
             item.rotation += item.rotateFactor;
             if (isCollide(catcher, item)) {
                 item.destroy();
