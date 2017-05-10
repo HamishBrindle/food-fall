@@ -38,7 +38,7 @@ function makeFood() {
     const MAX_FOOD = 5;
     if(foodCount >= MAX_FOOD) return;
     var newFoodIndex = weightedRand(fallingObjects);
-    var newFood = PIXI.Sprite.fromImage('assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png');
+    var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
     newFood.x = getRandomInt(newFood.width, GAME_WIDTH - newFood.width);
     newFood.y = -newFood.height;
     newFood.anchor.x = 0.5;
@@ -75,37 +75,35 @@ function isCollide(basket, food) {
 }
 
 function foodCatchCollision() {
-    var currtime = new Date().getTime();
-    var deltaTime = parseFloat((currtime - lastTime)/1000);
-    var childrenToDelete = [];
-    for (var i in stage.children) {
-        var fallingItem = stage.children[i];
-        if (fallingItem.isFood) {
-            var deltaY = fallingItem.velocity * deltaTime;
-            var deltaVy = fallingItem.accelerationY * deltaTime;
-            fallingItem.y += deltaY;
-            fallingItem.velocity += deltaVy;
-            fallingItem.rotation += fallingItem.rotateFactor;
-             if (fallingItem.y > GAME_HEIGHT) {
-                childrenToDelete.push(fallingItem);
-                fallingItem.destroy();
-            }
-            try {
-                if (isCollide(catcher, fallingItem)) {
-                    childrenToDelete.push(fallingItem);
-                    fallingItem.destroy();
-                    sound.play('coin');
-                    scoreCount += 10;
-                    stage.removeChild(score);
-                }
-            } catch(err) {}
-        }
-    }
-    console.log("Item to delete");
-    for (var i = 0; i < childrenToDelete.length; i++) {
-        removeFood(childrenToDelete[i]);
-    }
-
+    // var currtime = new Date().getTime();
+    // var deltaTime = parseFloat((currtime - lastTime)/1000);
+    // var childrenToDelete = [];
+    // for (var i in stage.children) {
+    //     var fallingItem = stage.children[i];
+    //     if (fallingItem.isFood) {
+    //         var deltaY = fallingItem.velocity * deltaTime;
+    //         var deltaVy = fallingItem.accelerationY * deltaTime;
+    //         fallingItem.y += deltaY;
+    //         fallingItem.velocity += deltaVy;
+    //         fallingItem.rotation += fallingItem.rotateFactor;
+    //          if (fallingItem.y > GAME_HEIGHT) {
+    //             childrenToDelete.push(fallingItem);
+    //             fallingItem.destroy();
+    //         }
+    //         try {
+    //             if (isCollide(catcher, fallingItem)) {
+    //                 childrenToDelete.push(fallingItem);
+    //                 fallingItem.destroy();
+    //                 sound.play('coin');
+    //                 scoreCount += 10;
+    //                 stage.removeChild(score);
+    //             }
+    //         } catch(err) {}
+    //     }
+    // }
+    // for (var i = 0; i < childrenToDelete.length; i++) {
+    //     removeFood(childrenToDelete[i]);
+    // }
 }
 
 function addScore() {

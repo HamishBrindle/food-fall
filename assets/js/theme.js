@@ -1,8 +1,7 @@
 (function ($) {
 
-    /* Start of Logo-Navbar detection */
-    // Upon first load, proper logo color is detected and put in.
-    $(document).ready(function(){
+    $(document).one('ready',function(){
+        // Perform something here...
         if($(window).width() > 767) {
             $('#logo-black').css("display", "none");
             $('#logo-white').css("display", "inline");
@@ -12,7 +11,6 @@
         }
     });
 
-    // If window is re-sized, logo is switched appropriately.
     $(window).resize(function(){
         // Perform something here...
         if($(window).width() > 767) {
@@ -24,7 +22,6 @@
         }
     });
 
-    // Change logo to fit white-background of nav bar once scrolled from top.
     $(window).scroll(function(){
         if($(window).width() >= 768) {
             if ($(this).scrollTop() === 0) {
@@ -38,8 +35,7 @@
             $('#logo-white').css("display", "none");
             $('#logo-black').css("display", "inline");
         }
-    }); /* End of Logo-Navbar detection */
-
+    });
 
     "use strict"; // Start of use strict
 

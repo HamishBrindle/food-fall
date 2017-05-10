@@ -339,7 +339,7 @@ function loadTask(filepath) {
 
 // Log a message when loading tasks.
 function loadTasksMessage(info) {
-  // Only keep track of names of top-tiling-sprites loaded tasks and collections,
+  // Only keep track of names of top-level loaded tasks and collections,
   // not sub-tasks.
   if (loadTaskDepth === 0) { lastInfo = info; }
   grunt.verbose.subhead('Registering ' + info + ' tasks.');
