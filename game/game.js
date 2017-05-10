@@ -4,8 +4,7 @@
  */
 
 // Speed of Game
-setInterval(makeFood, 10);
-
+// setInterval(makeFood, 10);
 
 var scoreCount = 0;
 var score = new PIXI.Text('Score: ', {
@@ -106,6 +105,9 @@ function foodCatchCollision() {
 
 }
 
+function addObstacle() {
+    var newObstacle = PIXI.Sprite.fromImage('assets/img/obstacle.png');
+}
 function addScore() {
       score.x = GAME_WIDTH - 100;
       score.y = GAME_HEIGHT - 50;

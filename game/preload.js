@@ -18,7 +18,6 @@ var gameboundh = GAME_HEIGHT;
 //Variables
 var maxXspeed = 50;
 var maxYspeed = 25;
-
 var backgroundScrollSpeed = {
     mtnFar: 5.4,
     mtnMid: 5.5,
@@ -172,6 +171,7 @@ function loadBackgroundTextures() {
         loader.add("clouds", "assets/img/tiling-sprites/clouds@2x.png");
         loader.add("trees", "assets/img/tiling-sprites/trees@2x.png");
         loader.add("grass", "assets/img/tiling-sprites/grass@2x.png");
+        loader.add("obstacle", "assets/img/obstacle.png");
     } else {
         loader.add("sky", "assets/img/tiling-sprites/sky.png");
         loader.add("mtnFar", "assets/img/tiling-sprites/mtn-far.png");
@@ -180,6 +180,7 @@ function loadBackgroundTextures() {
         loader.add("clouds", "assets/img/tiling-sprites/clouds.png");
         loader.add("trees", "assets/img/tiling-sprites/trees.png");
         loader.add("grass", "assets/img/tiling-sprites/grass.png");
+        loader.add("obstacle", "assets/img/obstacle.png");
     }
 }
 // Texture Cache
@@ -225,6 +226,7 @@ function setup() {
         resources['assets/img/sprites/basket.png'].texture
     );
 
+
     //Catcher movement
     catcher.y = GAME_HEIGHT / 2;
     catcher.x = GAME_WIDTH / 2;
@@ -239,7 +241,7 @@ function setup() {
     catcher.anchor.x = 0.5;
     catcher.anchor.y = 0.5;
     catcher.interactive = true;
-  
+
     // Initialize the the tiling-sprites background
     initBackground();
     // Initialize the the level background
@@ -262,5 +264,3 @@ function setup() {
     gameLoop();
 
 }
-
-
