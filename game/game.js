@@ -4,8 +4,8 @@
  */
 
 // Speed of Game
-setInterval(makeFood, 100);
-setInterval(makeObstacle, 100);
+setInterval(makeFood, 10);
+setInterval(makeObstacle, 10);
 
 var scoreCount = 0;
 var score = new PIXI.Text('Score: ', {
@@ -85,8 +85,8 @@ function foodCatchCollision() {
         var fallingItem = stage.children[i];
         if(fallingItem.isObstacle) {
             fallingItem.x -= 3;
-            if(fallingItem.x < (-fallingItem.width))
-            {
+            obstacleCollision(catcher, fallingItem);
+            if(fallingItem.x < (-fallingItem.width)) {
                 childrenToDelete.push(fallingItem);
                 fallingItem.destroy();
                 --obstacleCount;
@@ -123,7 +123,7 @@ function moveObstacle(obstacle) {
 
 var obstacleCount = 0;
 function makeObstacle() {
-    const MAX_OBSTACLE = 10;
+    const MAX_OBSTACLE = 3;
     if(obstacleCount >= MAX_OBSTACLE) return;
     var newObstacle = PIXI.Sprite.fromImage('assets/img/sprites/obstacle.png');
     newObstacle.x = newObstacle.width + GAME_WIDTH;
@@ -134,7 +134,7 @@ function makeObstacle() {
     ++obstacleCount;
     stage.addChild(newObstacle);
 }
-function obstacleCollision() {
+function obstacleCollision(catcher, obstacle) {
     if (isCollide(catcher, obstacle)) {
         console.log("game over");
         state = gameOver;
