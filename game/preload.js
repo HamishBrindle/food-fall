@@ -93,8 +93,7 @@ function resize() {
         Math.ceil(GAME_HEIGHT * ratio));
     gameboundw = Math.ceil(GAME_WIDTH * ratio);
     gameboundh = Math.ceil(GAME_HEIGHT * ratio);
-    console.log("gboundw" + gameboundw);
-    console.log("gboundh" + gameboundh);
+
 }
 
 function initBackground() {
@@ -171,7 +170,6 @@ function loadBackgroundTextures() {
         loader.add("clouds", "assets/img/tiling-sprites/clouds@2x.png");
         loader.add("trees", "assets/img/tiling-sprites/trees@2x.png");
         loader.add("grass", "assets/img/tiling-sprites/grass@2x.png");
-        loader.add("obstacle", "assets/img/obstacle.png");
     } else {
         loader.add("sky", "assets/img/tiling-sprites/sky.png");
         loader.add("mtnFar", "assets/img/tiling-sprites/mtn-far.png");
@@ -180,7 +178,6 @@ function loadBackgroundTextures() {
         loader.add("clouds", "assets/img/tiling-sprites/clouds.png");
         loader.add("trees", "assets/img/tiling-sprites/trees.png");
         loader.add("grass", "assets/img/tiling-sprites/grass.png");
-        loader.add("obstacle", "assets/img/obstacle.png");
     }
 }
 // Texture Cache
@@ -194,7 +191,7 @@ loader
         "assets/img/sprites/banana.png",
         "assets/img/sprites/bread.png",
         "assets/img/sprites/broccoli.png",
-        "assets/img/sprites/orange.png"
+        "assets/img/sprites/orange.png",
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -218,14 +215,10 @@ fallingObjects = [apple, banana, bread, orange, broccoli];
 Main game driver.
  */
 function setup() {
-
-    console.log("setup");
-
     //Setting up sprites
     catcher = new Sprite(
         resources['assets/img/sprites/basket.png'].texture
     );
-
 
     //Catcher movement
     catcher.y = GAME_HEIGHT / 2;
