@@ -157,18 +157,18 @@ function keyboard(keyCode) {
     return key;
 }
 
-function playerMovement() {
-    //Implementing acceleration
-    catcher.vx += catcher.accelerationX;
-    catcher.vy += catcher.accelerationY;
-
-    //Implementing friction
-    catcher.vx *= catcher.frictionX;
-    catcher.vy *= catcher.frictionY;
-
-    //Implementing movement
-    catcher.x += catcher.vx;
-    catcher.y += catcher.vy;
-
-    bound();
-}
+// function playerMovement() {
+//     //Implementing acceleration
+//     catcher.vx += catcher.accelerationX;
+//     catcher.vy += catcher.accelerationY;
+//
+//     //Implementing friction
+//     catcher.vx *= catcher.frictionX;
+//     catcher.vy *= catcher.frictionY;
+//
+//     //Implementing movement
+//     catcher.x += catcher.vx;
+//     catcher.y += catcher.vy;
+//
+//     bound();
+// }

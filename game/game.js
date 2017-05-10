@@ -25,10 +25,10 @@ function gameLoop() {
 
 //State definition for "playing" the game
 function play() {
-    foodCatchCollision();
+    // foodCatchCollision();
     animateBackground();
-    playerMovement();
-    addScore();
+    // playerMovement();
+    // addScore();
 }
 
 var foodCount = 0;
@@ -71,35 +71,35 @@ function isCollide(basket, food) {
 }
 
 function foodCatchCollision() {
-    var currtime = new Date().getTime();
-    var deltaTime = parseFloat((currtime - lastTime)/1000);
-    var childrenToDelete = [];
-    for (var i in stage.children) {
-        var fallingItem = stage.children[i];
-        if (fallingItem.isFood) {
-            var deltaY = fallingItem.velocity * deltaTime;
-            var deltaVy = fallingItem.accelerationY * deltaTime;
-            fallingItem.y += deltaY;
-            fallingItem.velocity += deltaVy;
-            fallingItem.rotation += fallingItem.rotateFactor;
-             if (fallingItem.y > GAME_HEIGHT) {
-                childrenToDelete.push(fallingItem);
-                fallingItem.destroy();
-            }
-            try {
-                if (isCollide(catcher, fallingItem)) {
-                    childrenToDelete.push(fallingItem);
-                    fallingItem.destroy();
-                    sound.play('coin');
-                    scoreCount += 10;
-                    stage.removeChild(score);
-                }
-            } catch(err) {}
-        }
-    }
-    for (var i = 0; i < childrenToDelete.length; i++) {
-        removeFood(childrenToDelete[i]);
-    }
+    // var currtime = new Date().getTime();
+    // var deltaTime = parseFloat((currtime - lastTime)/1000);
+    // var childrenToDelete = [];
+    // for (var i in stage.children) {
+    //     var fallingItem = stage.children[i];
+    //     if (fallingItem.isFood) {
+    //         var deltaY = fallingItem.velocity * deltaTime;
+    //         var deltaVy = fallingItem.accelerationY * deltaTime;
+    //         fallingItem.y += deltaY;
+    //         fallingItem.velocity += deltaVy;
+    //         fallingItem.rotation += fallingItem.rotateFactor;
+    //          if (fallingItem.y > GAME_HEIGHT) {
+    //             childrenToDelete.push(fallingItem);
+    //             fallingItem.destroy();
+    //         }
+    //         try {
+    //             if (isCollide(catcher, fallingItem)) {
+    //                 childrenToDelete.push(fallingItem);
+    //                 fallingItem.destroy();
+    //                 sound.play('coin');
+    //                 scoreCount += 10;
+    //                 stage.removeChild(score);
+    //             }
+    //         } catch(err) {}
+    //     }
+    // }
+    // for (var i = 0; i < childrenToDelete.length; i++) {
+    //     removeFood(childrenToDelete[i]);
+    // }
 }
 
 function addScore() {

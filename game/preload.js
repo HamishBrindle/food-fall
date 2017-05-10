@@ -213,21 +213,21 @@ function setup() {
     console.log("setup");
 
     //Setting up sprites
-    catcher = new Sprite(
-        resources['assets/img/entities/basket.png'].texture
-    );
-
-    //Catcher movement
-    catcher.y = GAME_HEIGHT / 1.5;
-    catcher.x = GAME_WIDTH / 2;
-    catcher.vx = 0;
-    catcher.vy = 0;
-    catcher.accelerationX = 0;
-    catcher.accelerationY = 0;
-    catcher.frictionX = 0.8;
-    catcher.frictionY = 0.8;
-    catcher.speed = 0.2;
-    catcher.drag = 0.98;
+    // catcher = new Sprite(
+    //     resources['assets/img/entities/basket.png'].texture
+    // );
+    //
+    // //Catcher movement
+    // catcher.y = GAME_HEIGHT / 1.5;
+    // catcher.x = GAME_WIDTH / 2;
+    // catcher.vx = 0;
+    // catcher.vy = 0;
+    // catcher.accelerationX = 0;
+    // catcher.accelerationY = 0;
+    // catcher.frictionX = 0.8;
+    // catcher.frictionY = 0.8;
+    // catcher.speed = 0.2;
+    // catcher.drag = 0.98;
 
     // Initialize the the level background
     initBackground();
@@ -235,7 +235,7 @@ function setup() {
     keyControls();
 
     // Add sprites to stage
-    stage.addChild(catcher);
+    // stage.addChild(catcher);
     stage.addChild(grass);
 
     // Tell the 'renderer' to 'render' the 'stage'.
