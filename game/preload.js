@@ -17,10 +17,10 @@ var maxXspeed = 50;
 var maxYspeed = 25;
 
 var backgroundScrollSpeed = {
-    mtnFar: 0.125,
-    mtnMid: 0.25,
-    clouds: 0.30,
-    trees: -1,
+    mtnFar: 5.4,
+    mtnMid: 5.5,
+    clouds: 6,
+    trees: 4,
     grass: 2
 };
 
