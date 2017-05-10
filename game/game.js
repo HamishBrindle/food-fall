@@ -4,7 +4,7 @@
  */
 
 // Speed of Game
-setInterval(makeFood, 10);
+// setInterval(makeFood, 10);
 
 //Set the game's current state to `play`:
 var state = play;
