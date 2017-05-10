@@ -69,14 +69,12 @@ renderer.view.style.position = "absolute";
 renderer.view.style.top = "0px";
 renderer.view.style.left = "0px"; // Centers window.
 
-// Resize the stage depending on size of window.
-resize();
+
 
 // Add renderer to page.
 document.getElementById("game-window").appendChild(renderer.view);
 
-// Resize screen when window size is adjusted.
-window.addEventListener("resize", resize);
+
 
 //Globals -------------------------------------------------------------------------------Globals
 var catcher;
@@ -84,6 +82,10 @@ var catcher;
 var tk;
 
 var scale = 1;
+
+var setupdone = false;
+
+var pointer
 
 // Texture Cache
 loadBackgroundTextures();
@@ -101,22 +103,7 @@ loader
     .on("progress", loadProgressHandler)
     .load(setup);
 
-/*
-Resize canvas to fit the size of the window.
- */
-function resize() {
 
-    // Determine which screen dimension is most constrained
-    var ratio = Math.min(window.innerWidth / GAME_WIDTH,
-        window.innerHeight / GAME_HEIGHT);
-
-    // Scale the view appropriately to fill that dimension
-    stage.scale.x = stage.scale.y = ratio;
-    // Update the renderer dimensions
-    renderer.resize(Math.ceil(GAME_WIDTH * ratio),
-        Math.ceil(GAME_HEIGHT * ratio));
-    scale = ratio;
-}
 
 function initBackground() {
 
@@ -261,17 +248,28 @@ function setup() {
     tk = new Tink(PIXI, renderer.view, scale);
     tk.makeDraggable(catcher);
 
+    
+
     //Touch and Mouse Controls
-    var pointer = tk.makePointer();
+    pointer = tk.makePointer();
     //Pointer Definition
     pointer.press = function () {
-        //moveToPointer();
         console.log("The pointer was pressed");
+        console.log("Mouse X: " + pointer.x + " Mouse Y: " + pointer.y);
+        console.log("Catcher X: " + catcher.x + " Mouse Y: " + catcher.y);
     }
     pointer.release = function () {
         console.log("released");
     }
     pointer.tap = () => console.log("The pointer was tapped");
+
+    setupdone = true;
+
+    // Resize screen when window size is adjusted.
+    window.addEventListener("resize", function (event) {
+        let scale = scaleToWindow(renderer.view);
+        tk.scale = scale;
+    });
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
@@ -280,7 +278,6 @@ function setup() {
     gameLoop();
 
 }
-
 //Set the game's current state to `play`:
 var state = play;
 
