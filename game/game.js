@@ -4,7 +4,7 @@
  */
 
 // Speed of Game
-setInterval(makeFood, 100);
+setInterval(makeFood, 10);
 setInterval(makeObstacle, 10);
 
 var scoreCount = 0;
