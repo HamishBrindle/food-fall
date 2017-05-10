@@ -225,26 +225,7 @@ function setup() {
         resources['assets/img/sprites/basket.png'].texture
     );
 
-    apple.sprite  = new Sprite(
-        resources['assets/img/sprites/apple.png'].texture
-    );
-
-    banana.sprite = new Sprite(
-        resources['assets/img/sprites/banana.png'].texture
-    );
-
-    bread.sprite = new Sprite(
-        resources['assets/img/sprites/bread.png'].texture
-    );
-
-    orange.sprite = new Sprite(
-        resources['assets/img/sprites/orange.png'].texture
-    );
-
-    broccoli.sprite = new Sprite(
-        resources['assets/img/sprites/broccoli.png'].texture
-    );
-
+    
     //Catcher movement
     catcher.y = GAME_HEIGHT / 2;
     catcher.x = GAME_WIDTH / 2;
@@ -259,7 +240,7 @@ function setup() {
     catcher.anchor.x = 0.5;
     catcher.anchor.y = 0.5;
     catcher.interactive = true;
-  
+
     // Initialize the the tiling-sprites background
     initBackground();
     // Initialize the the level background
@@ -282,5 +263,3 @@ function setup() {
     gameLoop();
 
 }
-
-
