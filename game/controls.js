@@ -4,16 +4,27 @@ var left = keyboard(37),
     right = keyboard(39),
     down = keyboard(40);
 
-//Tink Setup
-var tk = new Tink(PIXI, renderer.view);
 
-//Touch and Mouse Controls
-var pointer = tk.makePointer();
 
-//Pointer Definition
-pointer.press = () => console.log("The pointer was pressed");
-pointer.release = () => console.log("The pointer was released");
-pointer.tap = () => console.log("The pointer was tapped");
+
+function moveToPointer() {
+    if (pointer.x < catcher.x) {
+        leftPress();
+        console.log("Xmouse: " + pointer.x + "Xcatcher: " + catcher.x);
+    }
+    if (pointer.y < catcher.y) {
+        upPress();
+        console.log("Ymouse: " + pointer.y + "Ycatcher: " + catcher.y);
+    }
+    if (pointer.x > catcher.x) {
+        rightPress();
+        console.log("Xmouse: " + pointer.x + "Xcatcher: " + catcher.x);
+    }
+    if (pointer.y > catcher.y) {
+        console.log("Ymouse: " + pointer.y + "Ycatcher: " + catcher.y);
+        downPress();
+    }
+}
 
 //Keyboard Controls Definition
 function keyControls() {
@@ -75,7 +86,7 @@ function upRelease() {
     }
 }
 function rightPress() {
-    if (catcher.vx < maxXspeed && catcher.x < GAME_WIDTH * 0.82) {
+    if (catcher.vx < maxXspeed && catcher.x < GAME_WIDTH * 0.9) {
         catcher.accelerationX = catcher.speed;
         catcher.frictionX = 1;
     }
@@ -87,7 +98,7 @@ function rightRelease() {
     }
 }
 function downPress() {
-    if (catcher.vy < maxYspeed && catcher.y < GAME_WIDTH * 0.82)
+    if (catcher.vy < maxYspeed && catcher.y < GAME_WIDTH * 0.9)
         catcher.accelerationY = catcher.speed;
     catcher.frictionY = 1;
 }
@@ -103,7 +114,7 @@ function bound() {
         catcher.vy = 0;
         upRelease();
     }
-    if (catcher.vy > 0 && catcher.y > GAME_HEIGHT * 0.82) {
+    if (catcher.vy > 0 && catcher.y > GAME_HEIGHT * 0.9) {
         catcher.vy = 0;
         downRelease();
     }
@@ -111,7 +122,7 @@ function bound() {
         catcher.vx = 0;
         leftRelease();
     }
-    if (catcher.vx > 0 && catcher.x > GAME_WIDTH * 0.82) {
+    if (catcher.vx > 0 && catcher.x > GAME_WIDTH * 0.9) {
         catcher.vx = 0;
         rightRelease();
     }
@@ -152,6 +163,7 @@ function keyboard(keyCode) {
     return key;
 }
 function playerMovement() {
+
     //Implementing acceleration
     catcher.vx += catcher.accelerationX;
     catcher.vy += catcher.accelerationY;

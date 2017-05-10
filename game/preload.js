@@ -78,7 +78,26 @@ document.getElementById("game-window").appendChild(renderer.view);
 // Resize screen when window size is adjusted.
 window.addEventListener("resize", resize);
 
+//Catcher Global
+var catcher;
 
+var tk;
+
+// Texture Cache
+loadBackgroundTextures();
+
+loader
+    .add([
+        "assets/img/sprites/basket.png",
+        "assets/img/sprites/basket_bottom.png",
+        "assets/img/sprites/apple.png",
+        "assets/img/sprites/banana.png",
+        "assets/img/sprites/bread.png",
+        "assets/img/sprites/broccoli.png",
+        "assets/img/sprites/orange.png"
+    ])
+    .on("progress", loadProgressHandler)
+    .load(setup);
 
 /*
 Resize canvas to fit the size of the window.
@@ -180,21 +199,7 @@ function loadBackgroundTextures() {
         loader.add("grass", "assets/img/tiling-sprites/grass.png");
     }
 }
-// Texture Cache
-loadBackgroundTextures();
 
-loader
-    .add([
-        "assets/img/sprites/basket.png",
-        "assets/img/sprites/basket_bottom.png",
-        "assets/img/sprites/apple.png",
-        "assets/img/sprites/banana.png",
-        "assets/img/sprites/bread.png",
-        "assets/img/sprites/broccoli.png",
-        "assets/img/sprites/orange.png"
-    ])
-    .on("progress", loadProgressHandler)
-    .load(setup);
 
 /*
 Prints loading log to console.
@@ -243,8 +248,7 @@ function setup() {
         resources['assets/img/sprites/broccoli.png'].texture
     );
 
-    //Tink Setup
-    tk = new Tink(PIXI, renderer.view);
+
 
     //Catcher movement
     catcher.y = GAME_HEIGHT / 2;
@@ -271,12 +275,47 @@ function setup() {
     stage.addChild(grass);
     stage.addChild(catcher);
 
+    tk = new Tink(PIXI, renderer.view);
+    tk.makeDraggable(catcher);
+
+    //Touch and Mouse Controls
+    var pointer = tk.makePointer();
+    //Pointer Definition
+    pointer.press = function () {
+        //moveToPointer();
+        console.log("The pointer was pressed");
+    }
+    pointer.release = function () {
+        console.log("released");
+    }
+    pointer.tap = () => console.log("The pointer was tapped");
+
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
 
     //Start the game loop
     gameLoop();
 
+}
+
+//Set the game's current state to `play`:
+var state = play;
+
+//Animation loop
+function gameLoop() {
+    requestAnimationFrame(gameLoop);
+    state();
+    lastTime = new Date().getTime();
+    tk.update();
+    renderer.render(stage);
+}
+
+//State definition for "playing" the game
+function play() {
+    foodCatchCollision();
+    animateBackground();
+    playerMovement();
+    addScore();
 }
 
 
