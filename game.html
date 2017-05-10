@@ -30,7 +30,10 @@
 <main>
     <div class="container-fluid text-center" id="game-window">
         <canvas id="game-canvas"></canvas>
-        <div class="overlay1"></div>
+        <div id="inner-box">
+            <p>This is the overlay!</p>
+            <button id="btn-pause" class="btn-default">CLICK ME</button>
+        </div>
     </div>
 </main>
 
@@ -43,6 +46,7 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <!-- Food Fall Driver -->
+<script src="game/menu.js"></script>
 <script src="game/preload.js"></script>
 <script src="game/controls.js"></script>
 <script src="game/utility.js"></script>

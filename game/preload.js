@@ -10,11 +10,11 @@ var maxXspeed = 50;
 var maxYspeed = 25;
 
 var backgroundScrollSpeed = {
-    mtnFar: 5.4,
-    mtnMid: 5.5,
-    clouds: 6,
+    mtnFar: 2,
+    mtnMid: 2.5,
+    clouds: 3,
     trees: 4,
-    grass: 2
+    grass: 7
 };
 
 // Background textures
@@ -27,7 +27,7 @@ var sky,
     grass;
 
 var BG_RATE = 50;
-var FG_RATE = 125;
+var FG_RATE = 50;
 
 var lastTime;
 
@@ -56,7 +56,6 @@ var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
 var stage = new Container();
 
 // Game canvas style options (CSS)
-renderer.view.style.position = "relative";
 renderer.view.style.top = "0px";
 renderer.view.style.left = "0px"; // Centers window.
 
@@ -78,7 +77,7 @@ function resize() {
     // If device is mobile,
     // decrease the window ratio but preserve resizing.
     if (isMobile.any) {
-        renderer.view.style.position = "absolute";
+
     } else {
         // Renderer position on screen.
         ratio /= 1.1;
