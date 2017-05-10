@@ -6,7 +6,6 @@
 // Speed of Game
 setInterval(makeFood, 10);
 
-
 var scoreCount = 0;
 var score = new PIXI.Text('Score: ', {
   fontSize: 30,
@@ -31,6 +30,10 @@ function play() {
     animateBackground();
     playerMovement();
     addScore();
+}
+
+function gameOver() {
+    alert('oh boy game over n00b');
 }
 
 var foodCount = 0;
@@ -106,9 +109,7 @@ function foodCatchCollision() {
     for (var i = 0; i < childrenToDelete.length; i++) {
         removeFood(childrenToDelete[i]);
     }
-
 }
-
 function moveObstacle(obstacle) {
 
 }
@@ -123,6 +124,12 @@ function makeObstacle() {
     newObstacle.isObstacle = true;
     ++obstacleCount;
     stage.addChild(newObstacle);
+
+function obstacleCollision() {
+    if (isCollide(catcher, obstacle)) {
+        console.log("game over");
+        state = gameOver;
+    }
 }
 
 function addScore() {
