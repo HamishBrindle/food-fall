@@ -4,8 +4,8 @@
  */
 
 // Speed of Game
-setInterval(makeFood, 10);
-setInterval(makeObstacle, 10);
+setInterval(makeFood, 100);
+setInterval(makeObstacle, 100);
 
 var scoreCount = 0;
 var score = new PIXI.Text('Score: ', {
@@ -85,6 +85,12 @@ function foodCatchCollision() {
         var fallingItem = stage.children[i];
         if(fallingItem.isObstacle) {
             fallingItem.x -= 3;
+            if(fallingItem.x < (-fallingItem.width))
+            {
+                childrenToDelete.push(fallingItem);
+                fallingItem.destroy();
+                --obstacleCount;
+            }
         }
         if (fallingItem.isFood) {
             var deltaY = fallingItem.velocity * deltaTime;
@@ -117,10 +123,12 @@ function moveObstacle(obstacle) {
 
 var obstacleCount = 0;
 function makeObstacle() {
-    const MAX_OBSTACLE = 3;
+    const MAX_OBSTACLE = 10;
     if(obstacleCount >= MAX_OBSTACLE) return;
     var newObstacle = PIXI.Sprite.fromImage('assets/img/sprites/obstacle.png');
     newObstacle.x = newObstacle.width + GAME_WIDTH;
+    newObstacle.height = 50;
+    newObstacle.width = 50;
     newObstacle.y = getRandomInt(0, GAME_HEIGHT - newObstacle.height);
     newObstacle.isObstacle = true;
     ++obstacleCount;
