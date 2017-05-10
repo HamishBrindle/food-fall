@@ -14,24 +14,7 @@ var score = new PIXI.Text('Score: ', {
   fill: 'white'
 });
 
-//Set the game's current state to `play`:
-var state = play;
 
-//Animation loop
-function gameLoop() {
-    requestAnimationFrame(gameLoop);
-    state();
-    lastTime = new Date().getTime();
-    renderer.render(stage);
-}
-
-//State definition for "playing" the game
-function play() {
-    foodCatchCollision();
-    animateBackground();
-    playerMovement();
-    addScore();
-}
 
 function leaderBoardMenu() {
     console.log('oh boy game over n00b');

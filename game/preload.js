@@ -68,33 +68,36 @@ renderer.view.style.position = "absolute";
 renderer.view.style.top = "0px";
 renderer.view.style.left = "0px"; // Centers window.
 
-// Resize the stage depending on size of window.
-resize();
-
 // Add renderer to page.
 document.getElementById("game-window").appendChild(renderer.view);
 
-// Resize screen when window size is adjusted.
-window.addEventListener("resize", resize);
+//Globals -------------------------------------------------------------------------------Globals
+var catcher;
 
-/*
-Resize canvas to fit the size of the window.
- */
-function resize() {
+var tk;
 
-    // Determine which screen dimension is most constrained
-    var ratio = Math.min(window.innerWidth / GAME_WIDTH,
-        window.innerHeight / GAME_HEIGHT);
+var scale = 1;
 
-    // Scale the view appropriately to fill that dimension
-    stage.scale.x = stage.scale.y = ratio;
-    // Update the renderer dimensions
-    renderer.resize(Math.ceil(GAME_WIDTH * ratio),
-        Math.ceil(GAME_HEIGHT * ratio));
-    gameboundw = Math.ceil(GAME_WIDTH * ratio);
-    gameboundh = Math.ceil(GAME_HEIGHT * ratio);
+var setupdone = false;
 
-}
+var pointer
+
+// Texture Cache
+loadBackgroundTextures();
+
+loader
+    .add([
+        "assets/img/sprites/basket.png",
+        "assets/img/sprites/basket_bottom.png",
+        "assets/img/sprites/apple.png",
+        "assets/img/sprites/banana.png",
+        "assets/img/sprites/bread.png",
+        "assets/img/sprites/broccoli.png",
+        "assets/img/sprites/orange.png"
+    ])
+    .on("progress", loadProgressHandler)
+    .load(setup);
+
 
 function initBackground() {
 
@@ -180,21 +183,7 @@ function loadBackgroundTextures() {
         loader.add("grass", "assets/img/tiling-sprites/grass.png");
     }
 }
-// Texture Cache
-loadBackgroundTextures();
 
-loader
-    .add([
-        "assets/img/sprites/basket.png",
-        "assets/img/sprites/basket_bottom.png",
-        "assets/img/sprites/apple.png",
-        "assets/img/sprites/banana.png",
-        "assets/img/sprites/bread.png",
-        "assets/img/sprites/broccoli.png",
-        "assets/img/sprites/orange.png"
-    ])
-    .on("progress", loadProgressHandler)
-    .load(setup);
 
 /*
 Prints loading log to console.
@@ -245,15 +234,56 @@ function setup() {
     stage.addChild(grass);
     stage.addChild(catcher);
 
+    tk = new Tink(PIXI, renderer.view, scale);
+    tk.makeDraggable(catcher);
+
+    
+
+    //Touch and Mouse Controls
+    pointer = tk.makePointer();
+    //Pointer Definition
+    pointer.press = function () {
+        console.log("The pointer was pressed");
+        console.log("Mouse X: " + pointer.x + " Mouse Y: " + pointer.y);
+        console.log("Catcher X: " + catcher.x + " Mouse Y: " + catcher.y);
+    }
+    pointer.release = function () {
+        console.log("released");
+    }
+    pointer.tap = () => console.log("The pointer was tapped");
+
+    setupdone = true;
+
+    // Resize screen when window size is adjusted.
+    window.addEventListener("resize", function (event) {
+        let scale = scaleToWindow(renderer.view);
+        tk.scale = scale;
+    });
+
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
-
-    catcher.x = null;
-    catcher.y = null;
-    catcher.x = gameboundw/2;
-    catcher.y = gameboundh/2;
 
     //Start the game loop
     gameLoop();
 
 }
+//Set the game's current state to `play`:
+var state = play;
+
+//Animation loop
+function gameLoop() {
+    requestAnimationFrame(gameLoop);
+    state();
+    lastTime = new Date().getTime();
+    tk.update();
+    renderer.render(stage);
+}
+
+//State definition for "playing" the game
+function play() {
+    foodCatchCollision();
+    animateBackground();
+    playerMovement();
+    addScore();
+}
+
