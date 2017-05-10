@@ -18,7 +18,6 @@ var gameboundh = GAME_HEIGHT;
 //Variables
 var maxXspeed = 50;
 var maxYspeed = 25;
-
 var backgroundScrollSpeed = {
     mtnFar: 5.4,
     mtnMid: 5.5,
@@ -69,12 +68,8 @@ renderer.view.style.position = "absolute";
 renderer.view.style.top = "0px";
 renderer.view.style.left = "0px"; // Centers window.
 
-
-
 // Add renderer to page.
 document.getElementById("game-window").appendChild(renderer.view);
-
-
 
 //Globals -------------------------------------------------------------------------------Globals
 var catcher;
@@ -102,7 +97,6 @@ loader
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
-
 
 
 function initBackground() {
@@ -210,15 +204,10 @@ fallingObjects = [apple, banana, bread, orange, broccoli];
 Main game driver.
  */
 function setup() {
-
-    console.log("setup");
-
     //Setting up sprites
     catcher = new Sprite(
         resources['assets/img/sprites/basket.png'].texture
     );
-
-
 
     //Catcher movement
     catcher.y = GAME_HEIGHT / 2;
@@ -234,7 +223,7 @@ function setup() {
     catcher.anchor.x = 0.5;
     catcher.anchor.y = 0.5;
     catcher.interactive = true;
-  
+
     // Initialize the the tiling-sprites background
     initBackground();
     // Initialize the the level background
@@ -297,5 +286,4 @@ function play() {
     playerMovement();
     addScore();
 }
-
 
