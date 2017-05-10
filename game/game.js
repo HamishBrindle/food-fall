@@ -36,7 +36,7 @@ function makeFood() {
     const MAX_FOOD = 5;
     if(foodCount >= MAX_FOOD) return;
     var newFoodIndex = weightedRand(fallingObjects);
-    var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
+    var newFood = PIXI.Sprite.fromImage('assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png');
     newFood.x = getRandomInt(newFood.width, GAME_WIDTH - newFood.width);
     newFood.y = -newFood.height;
     newFood.anchor.x = 0.5;
@@ -97,6 +97,7 @@ function foodCatchCollision() {
             } catch(err) {}
         }
     }
+    console.log("Item to delete");
     for (var i = 0; i < childrenToDelete.length; i++) {
         removeFood(childrenToDelete[i]);
     }

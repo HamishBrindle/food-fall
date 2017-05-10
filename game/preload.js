@@ -183,11 +183,11 @@ loader
     .add([
         "assets/img/sprites/basket.png",
         "assets/img/sprites/basket_bottom.png",
-        "assets/img/food/apple.png",
-        "assets/img/food/banana.png",
-        "assets/img/food/bread.png",
-        "assets/img/food/broccoli.png",
-        "assets/img/food/orange.png"
+        "assets/img/sprites/apple.png",
+        "assets/img/sprites/banana.png",
+        "assets/img/sprites/bread.png",
+        "assets/img/sprites/broccoli.png",
+        "assets/img/sprites/orange.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -236,9 +236,10 @@ function setup() {
 
     keyControls();
 
+
     // Add sprites to stage
-    stage.addChild(catcher);
     stage.addChild(grass);
+    stage.addChild(catcher);
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
