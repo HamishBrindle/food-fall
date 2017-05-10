@@ -226,23 +226,23 @@ function setup() {
     );
 
     apple.sprite  = new Sprite(
-        resources['assets/img/food/apple.png'].texture
+        resources['assets/img/sprites/apple.png'].texture
     );
 
     banana.sprite = new Sprite(
-        resources['assets/img/food/banana.png'].texture
+        resources['assets/img/sprites/banana.png'].texture
     );
 
     bread.sprite = new Sprite(
-        resources['assets/img/food/bread.png'].texture
+        resources['assets/img/sprites/bread.png'].texture
     );
 
     orange.sprite = new Sprite(
-        resources['assets/img/food/orange.png'].texture
+        resources['assets/img/sprites/orange.png'].texture
     );
 
     broccoli.sprite = new Sprite(
-        resources['assets/img/food/broccoli.png'].texture
+        resources['assets/img/sprites/broccoli.png'].texture
     );
 
     //Catcher movement

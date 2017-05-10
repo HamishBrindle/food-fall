@@ -4,7 +4,7 @@
  */
 
 // Speed of Game
-// setInterval(makeFood, 10);
+setInterval(makeFood, 10);
 
 
 var scoreCount = 0;
@@ -27,10 +27,10 @@ function gameLoop() {
 
 //State definition for "playing" the game
 function play() {
-    // foodCatchCollision();
+    foodCatchCollision();
     animateBackground();
-    // playerMovement();
-    // addScore();
+    playerMovement();
+    addScore();
 }
 
 var foodCount = 0;
