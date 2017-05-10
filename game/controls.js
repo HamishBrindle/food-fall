@@ -4,6 +4,77 @@ var left = keyboard(37),
     right = keyboard(39),
     down = keyboard(40)
 
+if (isMobile.any) {
+    stage.interactive = true;
+    document.interactive = true;
+    touch();
+
+    var currentMousePos = { x: -1, y: -1 };
+    var keepmoving = false;
+}
+
+function touch() {  
+    document.addEventListener("pointerdown", onTouchStart, true);  
+    document.addEventListener("pointerup", onTouchEnd, true);  
+    document.addEventListener("pointermove", onTouchMove, true);
+}
+
+function onTouchStart(event){  
+    currentMousePos.x = event.pageX;  
+    currentMousePos.y = event.pageY;
+    console.log("Down started");
+    
+}
+function onTouchMove(event) {
+    if (keepmoving) {
+        onpointerdown();
+    }
+    currentMousePos.x = event.pageX;  
+    currentMousePos.y = event.pageY;
+    console.log("Move started");
+}
+function onTouchEnd(event){  
+    currentMousePos.x = event.pageX;  
+    currentMousePos.y = event.pageY;
+    console.log("Up started");
+}
+
+stage.on('pointerdown', movemore);
+
+function movemore() {
+    keepmoving = true;
+}
+
+stage.on('pointerdown', onpointerdown);
+
+function onpointerdown() {
+    if (currentMousePos.x < catcher.x) {
+        leftpress();
+        console.log("Xmouse: " + currentMousePos.x + "Xcatcher: " + catcher.x);
+    }
+    if (currentMousePos.y < catcher.y) {
+        uppress();
+        console.log("Ymouse: " + currentMousePos.y + "Ycatcher: " + catcher.y);
+    }
+    if (currentMousePos.x > catcher.x) {
+        rightpress();
+        console.log("Xmouse: " + currentMousePos.x + "Xcatcher: " + catcher.x);
+    }
+    if (currentMousePos.y > catcher.y) {
+        console.log("Ymouse: " + currentMousePos.y + "Ycatcher: " + catcher.y);
+        downpress();
+    }
+}
+
+stage.pointerup = function () {
+    console.log("released");
+    keepmoving = false;
+    catcher.accelerationX = 0;
+    catcher.accelerationY = 0;
+    catcher.frictionX = catcher.drag;
+    catcher.frictionY = catcher.drag;
+}
+
 //Keyboard Controls Definition
 function keyControls() {
 
@@ -73,8 +144,9 @@ function upRelease() {
     }
 }
 
-function rightPress() {
-    if (catcher.vx < maxXspeed && catcher.x < GAME_WIDTH * 0.82) {
+function rightpress() {
+    if (catcher.vx < maxXspeed && catcher.x < GAME_WIDTH * 0.85) {
+
         catcher.accelerationX = catcher.speed;
         catcher.frictionX = 1;
     }
@@ -87,8 +159,9 @@ function rightRelease() {
     }
 }
 
-function downPress() {
-    if (catcher.vy < maxYspeed && catcher.y < GAME_WIDTH * 0.82)
+function downpress() {
+    if (catcher.vy < maxYspeed && catcher.y < GAME_WIDTH * 0.85)
+
         catcher.accelerationY = catcher.speed;
     catcher.frictionY = 1;
 }
@@ -104,21 +177,21 @@ function downRelease() {
 function bound() {
     if (catcher.vy < 0 && catcher.y < GAME_HEIGHT / 6) {
         catcher.vy = 0;
-        upRelease();
+        uprelease();
     }
-    if (catcher.vy > 0 && catcher.y > GAME_HEIGHT * 0.82) {
+    if (catcher.vy > 0 && catcher.y > GAME_HEIGHT * 0.85) {
         catcher.vy = 0;
-        downRelease();
+        downrelease();
     }
     if (catcher.vx < 0 && catcher.x < 0) {
         catcher.vx = 0;
-        leftRelease();
+        leftrelease();
     }
-    if (catcher.vx > 0 && catcher.x > GAME_WIDTH * 0.82) {
+    if (catcher.vx > 0 && catcher.x > GAME_WIDTH * 0.85) {
         catcher.vx = 0;
-        rightRelease();
+        rightrelease();
     }
-}
+
 //Keyboard object definition
 function keyboard(keyCode) {
     var key = {};
@@ -136,7 +209,6 @@ function keyboard(keyCode) {
         }
         event.preventDefault();
     };
-
     //The `upHandler`
     key.upHandler = function (event) {
         if (event.keyCode === key.code) {
@@ -146,7 +218,6 @@ function keyboard(keyCode) {
         }
         event.preventDefault();
     };
-
     //Attach event listeners
     window.addEventListener(
       "keydown", key.downHandler.bind(key), false
@@ -157,18 +228,33 @@ function keyboard(keyCode) {
     return key;
 }
 
-// function playerMovement() {
-//     //Implementing acceleration
-//     catcher.vx += catcher.accelerationX;
-//     catcher.vy += catcher.accelerationY;
-//
-//     //Implementing friction
-//     catcher.vx *= catcher.frictionX;
-//     catcher.vy *= catcher.frictionY;
-//
-//     //Implementing movement
-//     catcher.x += catcher.vx;
-//     catcher.y += catcher.vy;
-//
-//     bound();
-// }
+function playerMovement() {
+    if (isMobile.any) {
+        //Touch
+        if (currentMousePos.x >= catcher.x && catcher.vx < 0) {
+            leftrelease();
+            catcher.vx = 0;
+        }
+        if (currentMousePos.x <= catcher.x && catcher.vx > 0) {
+            rightrelease();
+            catcher.vx = 0;
+        }
+        if (currentMousePos.y <= catcher.y && catcher.vy > 0) {
+            downrelease
+            catcher.vy = 0;
+        }
+        if (currentMousePos.y >= catcher.y && catcher.vy < 0) {
+            uprelease();
+            catcher.vy = 0;
+        }
+    }
+
+
+    //Implementing acceleration
+    catcher.vx += catcher.accelerationX;
+    catcher.vy += catcher.accelerationY;
+
+    //Implementing friction
+    catcher.vx *= catcher.frictionX;
+    catcher.vy *= catcher.frictionY;
+}
