@@ -244,8 +244,8 @@ function setup() {
     );
 
     //Catcher movement
-    catcher.y = gameboundw / 1.5;
-    catcher.x = gameboundh / 2;
+    catcher.y = GAME_HEIGHT / 2;
+    catcher.x = GAME_WIDTH / 2;
     catcher.vx = 0;
     catcher.vy = 0;
     catcher.accelerationX = 0;
@@ -268,6 +268,11 @@ function setup() {
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
+
+    catcher.x = null;
+    catcher.y = null;
+    catcher.x = gameboundw/2;
+    catcher.y = gameboundh/2;
 
     //Start the game loop
     gameLoop();
