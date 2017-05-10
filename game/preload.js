@@ -49,8 +49,6 @@ var Container = PIXI.Container,
     Sprite = PIXI.Sprite;
 
 // Rendering Options.
-var myView = document.getElementById('myCanvas');
-
 var rendererOptions = {
     antiAliasing: false,
     transparent: false,
