@@ -17,9 +17,10 @@ var score = new PIXI.Text('Score: ', {
 
 //Animation loop
 function gameLoop() {
-    requestAnimationFrame(gameLoop);
+    var frameRate = 1000 / ((new Date().getTime()) - lastTime);
     state();
     lastTime = new Date().getTime();
+    setTimeout(gameLoop, 1000 / 50);
     renderer.render(stage);
 }
 
@@ -103,9 +104,8 @@ function foodCatchCollision() {
 }
 
 function addScore() {
-      score.x = GAME_WIDTH - 100;
-      score.y = GAME_HEIGHT - 50;
-      score.anchor.x = 0.5;
-      score.text = 'Score: ' + scoreCount;
-      stage.addChild(score);
+    score.x = GAME_WIDTH - 100;
+    score.y = GAME_HEIGHT - 50;
+    score.text = 'Score: ' + scoreCount;
+    stage.addChild(score);
 }
