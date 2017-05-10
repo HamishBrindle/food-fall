@@ -260,7 +260,7 @@ function setup() {
     // Initialize the the level background
     initBackground();
 
-    keyControls();
+    keycontrols();
 
     // Add sprites to stage
     // stage.addChild(catcher);
