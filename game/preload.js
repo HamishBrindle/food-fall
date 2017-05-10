@@ -46,6 +46,8 @@ var Container = PIXI.Container,
     Sprite = PIXI.Sprite;
 
 // Rendering Options.
+var myView = document.getElementById('myCanvas');
+
 var rendererOptions = {
     antiAliasing: false,
     transparent: false,
@@ -54,7 +56,7 @@ var rendererOptions = {
 };
 
 // Create renderer.
-var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
+var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, myView, rendererOptions);
 
 // Create new Container for stage.
 var stage = new Container();
