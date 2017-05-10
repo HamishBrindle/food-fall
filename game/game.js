@@ -6,7 +6,6 @@
 // Speed of Game
 setInterval(makeFood, 10);
 
-
 var scoreCount = 0;
 var score = new PIXI.Text('Score: ', {
   fontSize: 30,
@@ -40,7 +39,7 @@ function makeFood() {
     var newFoodIndex = weightedRand(fallingObjects);
     var newFood = PIXI.Sprite.fromImage('assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png');
     newFood.x = getRandomInt(newFood.width, GAME_WIDTH - newFood.width);
-    newFood.y = -newFood.height;
+    newFood.y = -(newFood.height + 50);
     newFood.anchor.x = 0.5;
     newFood.anchor.y = 0.5;
     newFood.isFood = true;

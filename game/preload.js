@@ -4,17 +4,7 @@ var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
 var gameboundw = GAME_WIDTH;
 var gameboundh = GAME_HEIGHT;
-/*
-    TO DO: ADD SPRITES TO ONE CONTAINER IN ORDER TO OPTIMIZE REFRESH
-    REDUCE LAG
 
-    https://github.com/kittykatattack/learningPixi/blob/master/README.md
-
-    control + f: var superFastSprites = new ParticleContainer();
-
-    We will also need to put scorebar in it's own container, and add children
-    to make incremental changes.
-*/
 //Variables
 var maxXspeed = 50;
 var maxYspeed = 25;
@@ -48,30 +38,30 @@ var Container = PIXI.Container,
     resources = PIXI.loader.resources,
     Sprite = PIXI.Sprite;
 
+var canvas = document.getElementById("game-canvas");
+
 // Rendering Options.
 var rendererOptions = {
     antiAliasing: false,
     transparent: false,
     resolution: window.devicePixelRatio,
-    autoResize: true
+    autoResize: true,
+    view: canvas
 };
 
 // Create renderer.
-var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, myView, rendererOptions);
+var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
 
 // Create new Container for stage.
 var stage = new Container();
 
-// Renderer position on screen.
-renderer.view.style.position = "absolute";
+// Game canvas style options (CSS)
+renderer.view.style.position = "relative";
 renderer.view.style.top = "0px";
 renderer.view.style.left = "0px"; // Centers window.
 
 // Resize the stage depending on size of window.
 resize();
-
-// Add renderer to page.
-document.getElementById("game-window").appendChild(renderer.view);
 
 // Resize screen when window size is adjusted.
 window.addEventListener("resize", resize);
@@ -85,15 +75,22 @@ function resize() {
     var ratio = Math.min(window.innerWidth / GAME_WIDTH,
         window.innerHeight / GAME_HEIGHT);
 
+    // If device is mobile,
+    // decrease the window ratio but preserve resizing.
+    if (isMobile.any) {
+        renderer.view.style.position = "absolute";
+    } else {
+        // Renderer position on screen.
+        ratio /= 1.1;
+    }
+
     // Scale the view appropriately to fill that dimension
     stage.scale.x = stage.scale.y = ratio;
     // Update the renderer dimensions
     renderer.resize(Math.ceil(GAME_WIDTH * ratio),
         Math.ceil(GAME_HEIGHT * ratio));
-    gameboundw = Math.ceil(GAME_WIDTH * ratio);
-    gameboundh = Math.ceil(GAME_HEIGHT * ratio);
-    console.log("gboundw" + gameboundw);
-    console.log("gboundh" + gameboundh);
+
+
 }
 
 function initBackground() {
@@ -193,15 +190,7 @@ loader
         "assets/img/sprites/broccoli.png",
         "assets/img/sprites/orange.png"
     ])
-    .on("progress", loadProgressHandler)
     .load(setup);
-
-/*
-Prints loading log to console.
- */
-function loadProgressHandler() {
-    console.log("loading");
-}
 
 var apple = {name:"apple", weight:0.2};
 var banana = {name:"banana", weight:0.2};
@@ -216,31 +205,9 @@ Main game driver.
  */
 function setup() {
 
-    console.log("setup");
-
     //Setting up sprites
     catcher = new Sprite(
         resources['assets/img/sprites/basket.png'].texture
-    );
-
-    apple.sprite  = new Sprite(
-        resources['assets/img/sprites/apple.png'].texture
-    );
-
-    banana.sprite = new Sprite(
-        resources['assets/img/sprites/banana.png'].texture
-    );
-
-    bread.sprite = new Sprite(
-        resources['assets/img/sprites/bread.png'].texture
-    );
-
-    orange.sprite = new Sprite(
-        resources['assets/img/sprites/orange.png'].texture
-    );
-
-    broccoli.sprite = new Sprite(
-        resources['assets/img/sprites/broccoli.png'].texture
     );
 
     //Catcher movement
@@ -250,10 +217,10 @@ function setup() {
     catcher.vy = 0;
     catcher.accelerationX = 0;
     catcher.accelerationY = 0;
-    catcher.frictionX = 0.5;
-    catcher.frictionY = 0.5;
+    catcher.frictionX = 0.0;
+    catcher.frictionY = 0.0;
     catcher.speed = 0.2;
-    catcher.drag = 0.98;
+    catcher.drag = 0;
     catcher.anchor.x = 0.5;
     catcher.anchor.y = 0.5;
     catcher.interactive = true;
@@ -262,7 +229,6 @@ function setup() {
     initBackground();
     // Initialize the the level background
     keyControls();
-
 
     // Add sprites to stage
     stage.addChild(grass);
