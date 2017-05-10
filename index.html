@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="vendor/simple-line-icons/css/simple-line-icons.css">
     <link rel="stylesheet" href="vendor/device-mockups/device-mockups.min.css">
+    <link rel="stylesheet" href="bower_components/aos/dist/aos.css" />
 
     <!-- Theme CSS -->
     <link href="assets/css/main.css" rel="stylesheet">
@@ -108,11 +109,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <h2 class="section-heading">Fight Against Food Waste</h2>
-                <p>Click the button below to start playing Food Fall. Get your high score up on the leader boards and
+                <h2 class="section-heading">Play Food Fall</h2>
+                <p>Click the button below to start saving falling food! Get your high score up on the leader boards and
                     strike fear in the heart of food waste. </p>
                 <div class="badges">
-                    <a class="badge-link" href="game.html">
+                    <a class="badge-link" href="game.html" data-aos="zoom-in">
                         <img src="assets/img/website/play-badge.svg" alt="Play Food Fall">
                     </a>
                 </div>
@@ -123,7 +124,7 @@
 
 <section id="features" class="features">
     <div class="container">
-        <div class="row">
+        <div class="row ">
             <div class="col-lg-12 text-center">
                 <div class="section-heading">
                     <h2>We have the coolest friends.</h2>
@@ -157,7 +158,7 @@
             <div class="col-md-8">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6" data-aos="fade-up">
                             <div class="feature-item">
                                 <a href="https://overcooked.ca/" target="_blank">
                                     <img class="affiliate-img" src="assets/img/website/affiliates/affiliate-over-cooked.png"
@@ -171,7 +172,7 @@
                                     mouths.</p>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" data-aos="fade-up">
                             <div class="feature-item">
                                 <img class="affiliate-img"
                                      src="assets/img/website/affiliates/affiliate-plenty-of-thyme.png"
@@ -183,7 +184,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6" data-aos="fade-up">
                             <div class="feature-item">
                                 <a href="https://greendeals.me/" target="_blank">
                                     <img class="affiliate-img" src="assets/img/website/affiliates/affiliate-green-deals.png"
@@ -196,7 +197,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" data-aos="fade-up">
                             <div class="feature-item">
                                 <a href="http://use-it-up.azurewebsites.net/index.php" target="_blank">
                                     <img class="affiliate-img" src="assets/img/website/affiliates/affiliate-use-it-up.png"
@@ -229,11 +230,11 @@
 
 <section id="contact" class="contact bg-primary">
     <div class="container">
-        <h2>We <i class="fa fa-heart"></i> new friends!</h2>
+        <h2>We <i class="fa fa-heart" data-aos="flip-left"></i> new friends!</h2>
         <p>Contact us with any questions you may have, or just to say hello!</p>
         <ul class="list-inline list-social">
             <li class="social-twitter">
-                <a href="mailto:isthatfallingfood@gmail.com"><i class="fa fa-envelope"></i></a>
+                <a href="mailto:isthatfallingfood@gmail.com"><i class="fa fa-envelope" data-aos="flip-right"></i></a>
             </li>
             <!-- MORE SOCIAL BUTTONS
             <li class="social-facebook">
@@ -272,9 +273,13 @@
 
 <!-- Plugin JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="bower_components/aos/dist/aos.js"></script>
 
 <!-- Theme JavaScript -->
 <script src="assets/js/theme.js"></script>
+<script>
+    AOS.init();
+</script>
 
 </body>
 
