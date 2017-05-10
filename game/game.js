@@ -6,14 +6,16 @@
 // Speed of Game
 setInterval(makeFood, 10);
 
-//Set the game's current state to `play`:
-var state = play;
+
 var scoreCount = 0;
 var score = new PIXI.Text('Score: ', {
   fontSize: 30,
   fontFamily: 'Arial',
   fill: 'white'
 });
+
+//Set the game's current state to `play`:
+var state = play;
 
 //Animation loop
 function gameLoop() {
@@ -36,7 +38,7 @@ function makeFood() {
     const MAX_FOOD = 5;
     if(foodCount >= MAX_FOOD) return;
     var newFoodIndex = weightedRand(fallingObjects);
-    var newFood = PIXI.Sprite.fromImage('assets/img/food/' + fallingObjects[newFoodIndex].name + '.png');
+    var newFood = PIXI.Sprite.fromImage('assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png');
     newFood.x = getRandomInt(newFood.width, GAME_WIDTH - newFood.width);
     newFood.y = -newFood.height;
     newFood.anchor.x = 0.5;
@@ -57,14 +59,15 @@ function makeFood() {
 
 function removeFood(childToDelete) {
     --foodCount;
-    console.log("foodCount ", foodCount);
     stage.removeChild(childToDelete);
 }
 
 // Determine if basket and food are colliding
 function isCollide(basket, food) {
-    var upperLeft = {x:basket.x, y:basket.y};
-    var lowerRight = {x:(basket.x + basket.width), y:(basket.y + 10)};
+    var xoffset = basket.width / 2;
+    var yoffset = basket.height / 2;
+    var upperLeft = {x:basket.x - xoffset, y:basket.y - yoffset};
+    var lowerRight = {x:(basket.x + basket.width - xoffset), y:(basket.y + 10 - yoffset)};
     var inBasket = (food.x > upperLeft.x) && (food.y > upperLeft.y)
                     && (food.x < lowerRight.x) && (food.y < lowerRight.y);
     return inBasket;
@@ -100,6 +103,7 @@ function foodCatchCollision() {
     for (var i = 0; i < childrenToDelete.length; i++) {
         removeFood(childrenToDelete[i]);
     }
+
 }
 
 function addScore() {

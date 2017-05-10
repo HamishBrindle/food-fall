@@ -1,6 +1,9 @@
 // Stage-size parameters; aspect ratio.
+
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
+var gameboundw = GAME_WIDTH;
+var gameboundh = GAME_HEIGHT;
 /*
     TO DO: ADD SPRITES TO ONE CONTAINER IN ORDER TO OPTIMIZE REFRESH
     REDUCE LAG
@@ -17,10 +20,10 @@ var maxXspeed = 50;
 var maxYspeed = 25;
 
 var backgroundScrollSpeed = {
-    mtnFar: 0.125,
-    mtnMid: 0.25,
-    clouds: 0.30,
-    trees: -1,
+    mtnFar: 5.4,
+    mtnMid: 5.5,
+    clouds: 6,
+    trees: 4,
     grass: 2
 };
 
@@ -70,7 +73,7 @@ renderer.view.style.left = "0px"; // Centers window.
 resize();
 
 // Add renderer to page.
-document.body.appendChild(renderer.view);
+document.getElementById("game-window").appendChild(renderer.view);
 
 // Resize screen when window size is adjusted.
 window.addEventListener("resize", resize);
@@ -86,10 +89,13 @@ function resize() {
 
     // Scale the view appropriately to fill that dimension
     stage.scale.x = stage.scale.y = ratio;
-
     // Update the renderer dimensions
     renderer.resize(Math.ceil(GAME_WIDTH * ratio),
         Math.ceil(GAME_HEIGHT * ratio));
+    gameboundw = Math.ceil(GAME_WIDTH * ratio);
+    gameboundh = Math.ceil(GAME_HEIGHT * ratio);
+    console.log("gboundw" + gameboundw);
+    console.log("gboundh" + gameboundh);
 }
 
 function initBackground() {
@@ -183,11 +189,11 @@ loader
     .add([
         "assets/img/sprites/basket.png",
         "assets/img/sprites/basket_bottom.png",
-        "assets/img/food/apple.png",
-        "assets/img/food/banana.png",
-        "assets/img/food/bread.png",
-        "assets/img/food/broccoli.png",
-        "assets/img/food/orange.png"
+        "assets/img/sprites/apple.png",
+        "assets/img/sprites/banana.png",
+        "assets/img/sprites/bread.png",
+        "assets/img/sprites/broccoli.png",
+        "assets/img/sprites/orange.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -219,31 +225,62 @@ function setup() {
         resources['assets/img/sprites/basket.png'].texture
     );
 
+    apple.sprite  = new Sprite(
+        resources['assets/img/sprites/apple.png'].texture
+    );
+
+    banana.sprite = new Sprite(
+        resources['assets/img/sprites/banana.png'].texture
+    );
+
+    bread.sprite = new Sprite(
+        resources['assets/img/sprites/bread.png'].texture
+    );
+
+    orange.sprite = new Sprite(
+        resources['assets/img/sprites/orange.png'].texture
+    );
+
+    broccoli.sprite = new Sprite(
+        resources['assets/img/sprites/broccoli.png'].texture
+    );
+
     //Catcher movement
-    catcher.y = GAME_HEIGHT / 1.5;
+    catcher.y = GAME_HEIGHT / 2;
     catcher.x = GAME_WIDTH / 2;
     catcher.vx = 0;
     catcher.vy = 0;
     catcher.accelerationX = 0;
     catcher.accelerationY = 0;
-    catcher.frictionX = 0.8;
-    catcher.frictionY = 0.8;
+    catcher.frictionX = 0.5;
+    catcher.frictionY = 0.5;
     catcher.speed = 0.2;
     catcher.drag = 0.98;
-
+    catcher.anchor.x = 0.5;
+    catcher.anchor.y = 0.5;
+    catcher.interactive = true;
+  
     // Initialize the the tiling-sprites background
     initBackground();
-
+    // Initialize the the level background
     keyControls();
 
+
     // Add sprites to stage
-    stage.addChild(catcher);
     stage.addChild(grass);
+    stage.addChild(catcher);
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
+
+    catcher.x = null;
+    catcher.y = null;
+    catcher.x = gameboundw/2;
+    catcher.y = gameboundh/2;
 
     //Start the game loop
     gameLoop();
 
 }
+
+
