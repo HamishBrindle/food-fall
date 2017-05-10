@@ -78,6 +78,8 @@ document.getElementById("game-window").appendChild(renderer.view);
 // Resize screen when window size is adjusted.
 window.addEventListener("resize", resize);
 
+
+
 /*
 Resize canvas to fit the size of the window.
  */
@@ -92,10 +94,6 @@ function resize() {
     // Update the renderer dimensions
     renderer.resize(Math.ceil(GAME_WIDTH * ratio),
         Math.ceil(GAME_HEIGHT * ratio));
-    gameboundw = Math.ceil(GAME_WIDTH * ratio);
-    gameboundh = Math.ceil(GAME_HEIGHT * ratio);
-    console.log("gboundw" + gameboundw);
-    console.log("gboundh" + gameboundh);
 }
 
 function initBackground() {
@@ -245,6 +243,9 @@ function setup() {
         resources['assets/img/sprites/broccoli.png'].texture
     );
 
+    //Tink Setup
+    tk = new Tink(PIXI, renderer.view);
+
     //Catcher movement
     catcher.y = GAME_HEIGHT / 2;
     catcher.x = GAME_WIDTH / 2;
@@ -272,11 +273,6 @@ function setup() {
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
-
-    catcher.x = null;
-    catcher.y = null;
-    catcher.x = gameboundw/2;
-    catcher.y = gameboundh/2;
 
     //Start the game loop
     gameLoop();

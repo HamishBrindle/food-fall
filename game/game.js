@@ -22,6 +22,7 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
     state();
     lastTime = new Date().getTime();
+    tk.update();
     renderer.render(stage);
 }
 

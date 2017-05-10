@@ -3,6 +3,18 @@ var left = keyboard(37),
     up = keyboard(38),
     right = keyboard(39),
     down = keyboard(40);
+
+//Tink Setup
+var tk = new Tink(PIXI, renderer.view);
+
+//Touch and Mouse Controls
+var pointer = tk.makePointer();
+
+//Pointer Definition
+pointer.press = () => console.log("The pointer was pressed");
+pointer.release = () => console.log("The pointer was released");
+pointer.tap = () => console.log("The pointer was tapped");
+
 //Keyboard Controls Definition
 function keyControls() {
     //Left arrow key `press` method
