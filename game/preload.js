@@ -78,10 +78,12 @@ document.getElementById("game-window").appendChild(renderer.view);
 // Resize screen when window size is adjusted.
 window.addEventListener("resize", resize);
 
-//Catcher Global
+//Globals -------------------------------------------------------------------------------Globals
 var catcher;
 
 var tk;
+
+var scale = 1;
 
 // Texture Cache
 loadBackgroundTextures();
@@ -113,6 +115,7 @@ function resize() {
     // Update the renderer dimensions
     renderer.resize(Math.ceil(GAME_WIDTH * ratio),
         Math.ceil(GAME_HEIGHT * ratio));
+    scale = ratio;
 }
 
 function initBackground() {
@@ -228,26 +231,6 @@ function setup() {
         resources['assets/img/sprites/basket.png'].texture
     );
 
-    apple.sprite  = new Sprite(
-        resources['assets/img/sprites/apple.png'].texture
-    );
-
-    banana.sprite = new Sprite(
-        resources['assets/img/sprites/banana.png'].texture
-    );
-
-    bread.sprite = new Sprite(
-        resources['assets/img/sprites/bread.png'].texture
-    );
-
-    orange.sprite = new Sprite(
-        resources['assets/img/sprites/orange.png'].texture
-    );
-
-    broccoli.sprite = new Sprite(
-        resources['assets/img/sprites/broccoli.png'].texture
-    );
-
 
 
     //Catcher movement
@@ -275,7 +258,7 @@ function setup() {
     stage.addChild(grass);
     stage.addChild(catcher);
 
-    tk = new Tink(PIXI, renderer.view);
+    tk = new Tink(PIXI, renderer.view, scale);
     tk.makeDraggable(catcher);
 
     //Touch and Mouse Controls
