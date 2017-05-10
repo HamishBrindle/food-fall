@@ -18,7 +18,6 @@ var gameboundh = GAME_HEIGHT;
 //Variables
 var maxXspeed = 50;
 var maxYspeed = 25;
-
 var backgroundScrollSpeed = {
     mtnFar: 5.4,
     mtnMid: 5.5,
@@ -94,8 +93,7 @@ function resize() {
         Math.ceil(GAME_HEIGHT * ratio));
     gameboundw = Math.ceil(GAME_WIDTH * ratio);
     gameboundh = Math.ceil(GAME_HEIGHT * ratio);
-    console.log("gboundw" + gameboundw);
-    console.log("gboundh" + gameboundh);
+
 }
 
 function initBackground() {
@@ -217,15 +215,11 @@ fallingObjects = [apple, banana, bread, orange, broccoli];
 Main game driver.
  */
 function setup() {
-
-    console.log("setup");
-
     //Setting up sprites
     catcher = new Sprite(
         resources['assets/img/sprites/basket.png'].texture
     );
 
-    
     //Catcher movement
     catcher.y = GAME_HEIGHT / 2;
     catcher.x = GAME_WIDTH / 2;
