@@ -6,14 +6,16 @@
 // Speed of Game
 setInterval(makeFood, 1000);
 
-//Set the game's current state to `play`:
-var state = play;
+
 var scoreCount = 0;
 var score = new PIXI.Text('Score: ', {
   fontSize: 30,
   fontFamily: 'Arial',
   fill: '#FF69B4'
 });
+
+//Set the game's current state to `play`:
+var state = play;
 
 //Animation loop
 function gameLoop() {
@@ -30,7 +32,6 @@ function play() {
     playerMovement();
     addScore();
 }
-
 
 function makeFood() {
     var newFoodIndex = weightedRand(fallingObjects);

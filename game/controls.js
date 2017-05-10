@@ -4,18 +4,21 @@ var left = keyboard(37),
     right = keyboard(39),
     down = keyboard(40)
 
-stage.interactive = true;
-document.interactive = true;
-touch();
+if (isMobile.any) {
+    stage.interactive = true;
+    document.interactive = true;
+    touch();
 
-var currentMousePos = { x: -1, y: -1 };
-var keepmoving = false;
+    var currentMousePos = { x: -1, y: -1 };
+    var keepmoving = false;
+}
 
 function touch() {  
     document.addEventListener("pointerdown", onTouchStart, true);  
     document.addEventListener("pointerup", onTouchEnd, true);  
     document.addEventListener("pointermove", onTouchMove, true);
 }
+
 function onTouchStart(event){  
     currentMousePos.x = event.pageX;  
     currentMousePos.y = event.pageY;
@@ -35,7 +38,9 @@ function onTouchEnd(event){
     currentMousePos.y = event.pageY;
     console.log("Up started");
 }
+
 stage.on('pointerdown', movemore);
+
 function movemore() {
     keepmoving = true;
 }
@@ -43,19 +48,20 @@ function movemore() {
 stage.on('pointerdown', onpointerdown);
 
 function onpointerdown() {
-    console.log("clicked");
     if (currentMousePos.x < catcher.x) {
         leftpress();
-        console.log("X: " + currentMousePos.x);
+        console.log("Xmouse: " + currentMousePos.x + "Xcatcher: " + catcher.x);
     }
     if (currentMousePos.y < catcher.y) {
         uppress();
+        console.log("Ymouse: " + currentMousePos.y + "Ycatcher: " + catcher.y);
     }
     if (currentMousePos.x > catcher.x) {
         rightpress();
-        console.log("X: " + currentMousePos.x);
+        console.log("Xmouse: " + currentMousePos.x + "Xcatcher: " + catcher.x);
     }
     if (currentMousePos.y > catcher.y) {
+        console.log("Ymouse: " + currentMousePos.y + "Ycatcher: " + catcher.y);
         downpress();
     }
 }
@@ -140,8 +146,7 @@ function uprelease() {
 }
 
 function rightpress() {
-    if (catcher.vx < maxXspeed && catcher.x < GAME_WIDTH * 0.82) {
-        console.log("Right press engaged"); 
+    if (catcher.vx < maxXspeed && catcher.x < GAME_WIDTH * 0.85) {
         catcher.accelerationX = catcher.speed;
         catcher.frictionX = 1;
     }
@@ -155,7 +160,7 @@ function rightrelease() {
 }
 
 function downpress() {
-    if (catcher.vy < maxYspeed && catcher.y < GAME_WIDTH * 0.82)
+    if (catcher.vy < maxYspeed && catcher.y < GAME_WIDTH * 0.85)
         catcher.accelerationY = catcher.speed;
     catcher.frictionY = 1;
 }
@@ -173,7 +178,7 @@ function downrelease() {
             catcher.vy = 0;
             uprelease();
         }
-        if (catcher.vy > 0 && catcher.y > GAME_HEIGHT * 0.82) {
+        if (catcher.vy > 0 && catcher.y > GAME_HEIGHT * 0.85) {
             catcher.vy = 0;
             downrelease();
         }
@@ -181,7 +186,7 @@ function downrelease() {
             catcher.vx = 0;
             leftrelease();
         }
-        if (catcher.vx > 0 && catcher.x > GAME_WIDTH * 0.82) {
+        if (catcher.vx > 0 && catcher.x > GAME_WIDTH * 0.85) {
             catcher.vx = 0;
             rightrelease();
         }
@@ -225,22 +230,24 @@ function downrelease() {
     }
 
     function playerMovement() {
-        //Touch
-        if (currentMousePos.x >= catcher.x && catcher.vx < 0) {
-            leftrelease();
-            catcher.vx = 0;
-        }
-        if (currentMousePos.x <= catcher.x && catcher.vx > 0) {
-            rightrelease();
-            catcher.vx = 0;
-        }
-        if (currentMousePos.y <= catcher.y && catcher.vy > 0) {
-            downrelease
-            catcher.vy = 0;
-        }
-        if (currentMousePos.y >= catcher.y && catcher.vy < 0) {
-            uprelease();
-            catcher.vy = 0;
+        if (isMobile.any) {
+            //Touch
+            if (currentMousePos.x >= catcher.x && catcher.vx < 0) {
+                leftrelease();
+                catcher.vx = 0;
+            }
+            if (currentMousePos.x <= catcher.x && catcher.vx > 0) {
+                rightrelease();
+                catcher.vx = 0;
+            }
+            if (currentMousePos.y <= catcher.y && catcher.vy > 0) {
+                downrelease
+                catcher.vy = 0;
+            }
+            if (currentMousePos.y >= catcher.y && catcher.vy < 0) {
+                uprelease();
+                catcher.vy = 0;
+            }
         }
 
 

@@ -1,6 +1,8 @@
 // Stage-size parameters; aspect ratio.
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
+var gameboundw = GAME_WIDTH;
+var gameboundh = GAME_HEIGHT;
 /*
     TO DO: ADD SPRITES TO ONE CONTAINER IN ORDER TO OPTIMIZE REFRESH
     REDUCE LAG
@@ -84,10 +86,13 @@ function resize() {
 
     // Scale the view appropriately to fill that dimension
     stage.scale.x = stage.scale.y = ratio;
-
     // Update the renderer dimensions
     renderer.resize(Math.ceil(GAME_WIDTH * ratio),
         Math.ceil(GAME_HEIGHT * ratio));
+    gameboundw = Math.ceil(GAME_WIDTH * ratio);
+    gameboundh = Math.ceil(GAME_HEIGHT * ratio);
+    console.log("gboundw" + gameboundw);
+    console.log("gboundh" + gameboundh);
 }
 
 function initBackground() {
@@ -239,8 +244,8 @@ function setup() {
     );
 
     //Catcher movement
-    catcher.y = GAME_HEIGHT / 1.5;
-    catcher.x = GAME_WIDTH / 2;
+    catcher.y = gameboundw / 1.5;
+    catcher.x = gameboundh / 2;
     catcher.vx = 0;
     catcher.vy = 0;
     catcher.accelerationX = 0;
@@ -268,3 +273,5 @@ function setup() {
     gameLoop();
 
 }
+
+
