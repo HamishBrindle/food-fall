@@ -19,10 +19,10 @@ var maxXspeed = 50;
 var maxYspeed = 25;
 
 var backgroundScrollSpeed = {
-    mtnFar: 0.125,
-    mtnMid: 0.25,
-    clouds: 0.30,
-    trees: -1,
+    mtnFar: 5.4,
+    mtnMid: 5.5,
+    clouds: 6,
+    trees: 4,
     grass: 2
 };
 
@@ -134,7 +134,6 @@ function initBackground() {
     grass =
         new PIXI.extras.TilingSprite(PIXI.loader.resources.grass.texture,
             GAME_WIDTH, GAME_HEIGHT);
-    stage.addChild(grass);
 
     // Prepare for first frame of game loop/animation
     lastTime = new Date().getTime();
@@ -203,11 +202,11 @@ function loadProgressHandler() {
     console.log("loading");
 }
 
-var apple = {name:"apple", weight:0.2, sprite: 0};
-var banana = {name:"banana", weight:0.2, sprite: 0};
-var bread = {name:"bread", weight:0.2, sprite: 0};
-var orange = {name:"orange", weight:0.2,sprite: 0};
-var broccoli = {name:"broccoli", weight:0.2, sprite: 0};
+var apple = {name:"apple", weight:0.2};
+var banana = {name:"banana", weight:0.2};
+var bread = {name:"bread", weight:0.2};
+var orange = {name:"orange", weight:0.2};
+var broccoli = {name:"broccoli", weight:0.2};
 
 fallingObjects = [apple, banana, bread, orange, broccoli];
 
@@ -257,14 +256,15 @@ function setup() {
     catcher.anchor.x = 0.5;
     catcher.anchor.y = 0.5;
     catcher.interactive = true;
-
+  
     // Initialize the the level background
     initBackground();
 
     keyControls();
 
     // Add sprites to stage
-    stage.addChild(catcher);
+    // stage.addChild(catcher);
+    stage.addChild(grass);
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);

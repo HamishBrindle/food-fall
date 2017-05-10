@@ -28,6 +28,7 @@
     "bootstrap": "^3.3.7",
     "grunt": "^1.0.1",
     "jquery": "^3.2.1",
-    "howler.js": "howler#^2.0.3"
+    "howler.js": "howler#^2.0.3",
+    "isMobile": "^0.4.1"
   }
 }
