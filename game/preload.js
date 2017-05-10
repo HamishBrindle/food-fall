@@ -1,4 +1,5 @@
 // Stage-size parameters; aspect ratio.
+
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
 /*
@@ -70,7 +71,7 @@ renderer.view.style.left = "0px"; // Centers window.
 resize();
 
 // Add renderer to page.
-document.body.appendChild(renderer.view);
+document.getElementById("game-window").appendChild(renderer.view);
 
 // Resize screen when window size is adjusted.
 window.addEventListener("resize", resize);

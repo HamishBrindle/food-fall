@@ -57,7 +57,6 @@ function makeFood() {
 
 function removeFood(childToDelete) {
     --foodCount;
-    console.log("foodCount ", foodCount);
     stage.removeChild(childToDelete);
 }
 
@@ -97,7 +96,6 @@ function foodCatchCollision() {
             } catch(err) {}
         }
     }
-    console.log("Item to delete");
     for (var i = 0; i < childrenToDelete.length; i++) {
         removeFood(childrenToDelete[i]);
     }
