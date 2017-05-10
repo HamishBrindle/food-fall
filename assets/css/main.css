@@ -225,11 +225,11 @@ header {
     width: 100%;
 
     overflow-y: hidden;
-    background: url("../img/website/food-tile.png"), #03a9f4;
+    background: url("../img/web/food-tile.png"), #03a9f4;
     /* fallback for old browsers */
-    background: url("../img/website/food-tile.png"), -webkit-linear-gradient(to left, #03a9f4, #43a047);
+    background: url("../img/web/food-tile.png"), -webkit-linear-gradient(to left, #03a9f4, #43a047);
     /* Chrome 10-25, Safari 5.1-6 */
-    background: url("../img/website/food-tile.png"), linear-gradient(to left, #03a9f4, #43a047);
+    background: url("../img/web/food-tile.png"), linear-gradient(to left, #03a9f4, #43a047);
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     color: white;
 }
@@ -437,7 +437,7 @@ section.cta {
     background-size: cover;
     -o-background-size: cover;
     background-position: center;
-    background-image: url('../img/website/bg-cta.jpg');
+    background-image: url('../img/web/bg-cta.jpg');
     padding: 250px 0;
 }
 
