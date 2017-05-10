@@ -76,11 +76,11 @@ var catcher;
 
 var tk;
 
-var scale = 1;
+var scale = scaleToWindow(renderer.view);
 
 var setupdone = false;
 
-var pointer
+var pointer;
 
 // Texture Cache
 loadBackgroundTextures();
