@@ -23,9 +23,11 @@
     <link rel="stylesheet" href="vendor/simple-line-icons/css/simple-line-icons.css">
     <link rel="stylesheet" href="vendor/device-mockups/device-mockups.min.css">
     <link rel="stylesheet" href="bower_components/aos/dist/aos.css"/>
+    <link rel="stylesheet" href="bower_components/plyr/dist/plyr.css">
 
     <!-- Theme CSS -->
     <link href="assets/css/main.css" rel="stylesheet">
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -61,7 +63,7 @@
                     <a class="page-scroll" href="#download">Play</a>
                 </li>
                 <li>
-                    <a class="page-scroll" href="#features">Affiliates</a>
+                    <a class="page-scroll" href="#affiliates">Affiliates</a>
                 </li>
                 <li>
                     <a class="page-scroll" href="#contact">Contact</a>
@@ -122,7 +124,8 @@
     </div>
 </section>
 
-<section id="features" class="features">
+
+<section id="affiliates" class="affiliates">
     <div class="container">
         <div class="row ">
             <div class="col-lg-12 text-center">
@@ -229,6 +232,25 @@
     <div class="overlay"></div>
 </section>
 
+<section id="ff-video" class="ff-video">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <div class="section-heading">
+                    <h2>We made a video!</h2>
+                    <p class="text-muted">In Metro Vancouver, over half of all household food waste could, at some point, have been eaten – things like uneaten leftovers or ingredients that spoiled before they were used. That’s over 100,000 tonnes of avoidable food waste per year!</p>
+                    <p style="font-size: 12px;">(Source: <a href="http://www.lovefoodhatewaste.ca/about/Documents/InfoBooklet.pdf" style="color: #00b3ee; text-decoration: none;"> Metro Vancouver’s baseline study</a>)</p>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <video poster="assets/img/web/video-poster.jpg" controls>
+                    <source src="assets/video/food-fall-video.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section id="contact" class="contact bg-primary">
     <div class="container">
         <h2>We <i class="fa fa-heart" data-aos="flip-left"></i> new friends!</h2>
@@ -272,10 +294,16 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-<!-- Plugin JavaScript -->
+<!-- jQuery Easing JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+<!-- Animate on Scroll JavaScript -->
 <script src="bower_components/aos/dist/aos.js"></script>
 <script>AOS.init();</script>
+
+<!-- Plyr HTML Video JavaScript -->
+<script src="bower_components/plyr/dist/plyr.js"></script>
+<script>plyr.setup();</script>
 
 <!-- Theme JavaScript -->
 <script src="assets/js/theme.js"></script>
