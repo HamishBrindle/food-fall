@@ -29,6 +29,8 @@
     "grunt": "^1.0.1",
     "jquery": "^3.2.1",
     "howler.js": "howler#^2.0.3",
+    "aos": "^2.1.1",
+    "plyr": "^2.0.12"
     "isMobile": "^0.4.1"
   }
 }

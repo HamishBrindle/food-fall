@@ -48,6 +48,8 @@ var Container = PIXI.Container,
     Sprite = PIXI.Sprite;
 
 // Rendering Options.
+var myView = document.getElementById('myCanvas');
+
 var rendererOptions = {
     antiAliasing: false,
     transparent: false,
@@ -56,7 +58,7 @@ var rendererOptions = {
 };
 
 // Create renderer.
-var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
+var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, myView, rendererOptions);
 
 // Create new Container for stage.
 var stage = new Container();
@@ -162,21 +164,21 @@ function loadBackgroundTextures() {
 
     if (window.devicePixelRatio >= 2 &&
         renderer instanceof PIXI.WebGLRenderer) {
-        loader.add("sky", "assets/img/level/sky@2x.png");
-        loader.add("mtnFar", "assets/img/level/mtn-far@2x.png");
-        loader.add("mtnMid", "assets/img/level/mtn-mid@2x.png");
-        loader.add("ground", "assets/img/level/ground@2x.png");
-        loader.add("clouds", "assets/img/level/clouds@2x.png");
-        loader.add("trees", "assets/img/level/trees@2x.png");
-        loader.add("grass", "assets/img/level/grass@2x.png");
+        loader.add("sky", "assets/img/tiling-sprites/sky@2x.png");
+        loader.add("mtnFar", "assets/img/tiling-sprites/mtn-far@2x.png");
+        loader.add("mtnMid", "assets/img/tiling-sprites/mtn-mid@2x.png");
+        loader.add("ground", "assets/img/tiling-sprites/ground@2x.png");
+        loader.add("clouds", "assets/img/tiling-sprites/clouds@2x.png");
+        loader.add("trees", "assets/img/tiling-sprites/trees@2x.png");
+        loader.add("grass", "assets/img/tiling-sprites/grass@2x.png");
     } else {
-        loader.add("sky", "assets/img/level/sky.png");
-        loader.add("mtnFar", "assets/img/level/mtn-far.png");
-        loader.add("mtnMid", "assets/img/level/mtn-mid.png");
-        loader.add("ground", "assets/img/level/ground.png");
-        loader.add("clouds", "assets/img/level/clouds.png");
-        loader.add("trees", "assets/img/level/trees.png");
-        loader.add("grass", "assets/img/level/grass.png");
+        loader.add("sky", "assets/img/tiling-sprites/sky.png");
+        loader.add("mtnFar", "assets/img/tiling-sprites/mtn-far.png");
+        loader.add("mtnMid", "assets/img/tiling-sprites/mtn-mid.png");
+        loader.add("ground", "assets/img/tiling-sprites/ground.png");
+        loader.add("clouds", "assets/img/tiling-sprites/clouds.png");
+        loader.add("trees", "assets/img/tiling-sprites/trees.png");
+        loader.add("grass", "assets/img/tiling-sprites/grass.png");
     }
 }
 // Texture Cache
@@ -184,13 +186,13 @@ loadBackgroundTextures();
 
 loader
     .add([
-        "assets/img/entities/basket.png",
-        "assets/img/entities/basket_bottom.png",
-        "assets/img/food/apple.png",
-        "assets/img/food/banana.png",
-        "assets/img/food/bread.png",
-        "assets/img/food/broccoli.png",
-        "assets/img/food/orange.png"
+        "assets/img/sprites/basket.png",
+        "assets/img/sprites/basket_bottom.png",
+        "assets/img/sprites/apple.png",
+        "assets/img/sprites/banana.png",
+        "assets/img/sprites/bread.png",
+        "assets/img/sprites/broccoli.png",
+        "assets/img/sprites/orange.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -219,7 +221,7 @@ function setup() {
 
     //Setting up sprites
     catcher = new Sprite(
-        resources['assets/img/entities/basket.png'].texture
+        resources['assets/img/sprites/basket.png'].texture
     );
 
     apple.sprite  = new Sprite(
@@ -257,14 +259,15 @@ function setup() {
     catcher.anchor.y = 0.5;
     catcher.interactive = true;
   
-    // Initialize the the level background
+    // Initialize the the tiling-sprites background
     initBackground();
-
+    // Initialize the the level background
     keyControls();
 
+
     // Add sprites to stage
-    // stage.addChild(catcher);
     stage.addChild(grass);
+    stage.addChild(catcher);
 
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
