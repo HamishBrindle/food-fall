@@ -658,3 +658,7 @@ body {
     text-decoration: none;
     color: #03a9f4;
 }
+
+.ff-video {
+    max-width: 100%;
+}
