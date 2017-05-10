@@ -61,8 +61,7 @@ function makeFood() {
     stage.addChild(newFood);
 }
 
-function removeFood(childToDelete) {
-    --foodCount;
+function removeItem(childToDelete) {
     stage.removeChild(childToDelete);
 }
 
@@ -101,6 +100,7 @@ function foodCatchCollision() {
              if (fallingItem.y > GAME_HEIGHT) {
                 childrenToDelete.push(fallingItem);
                 fallingItem.destroy();
+                --foodCount;
             }
             try {
                 if (isCollide(catcher, fallingItem)) {
@@ -109,12 +109,13 @@ function foodCatchCollision() {
                     sound.play('coin');
                     scoreCount += 10;
                     stage.removeChild(score);
+                    --foodCount;
                 }
             } catch(err) {}
         }
     }
     for (var i = 0; i < childrenToDelete.length; i++) {
-        removeFood(childrenToDelete[i]);
+        removeItem(childrenToDelete[i]);
     }
 }
 function moveObstacle(obstacle) {
