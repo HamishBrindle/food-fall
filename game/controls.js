@@ -118,7 +118,7 @@ function bound() {
         catcher.vy = 0;
         downRelease();
     }
-    if (catcher.vx < 0 && catcher.x < 0) {
+    if (catcher.vx < 0 && catcher.x < 0 + GAME_WIDTH * 0.1) {
         catcher.vx = 0;
         leftRelease();
     }
