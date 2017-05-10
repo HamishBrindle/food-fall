@@ -118,13 +118,10 @@ function foodCatchCollision() {
         removeItem(childrenToDelete[i]);
     }
 }
-function moveObstacle(obstacle) {
-
-}
 
 var obstacleCount = 0;
 function makeObstacle() {
-    const MAX_OBSTACLE = 1;
+    const MAX_OBSTACLE = 2;
     if(obstacleCount >= MAX_OBSTACLE) return;
     var newObstacle = PIXI.Sprite.fromImage('assets/img/sprites/obstacle.png');
     newObstacle.x = newObstacle.width + GAME_WIDTH;
@@ -146,13 +143,10 @@ function obstacleCollision(catcher, obstacle) {
 function isCollideWholeBasket(basket, obstacle) {
     var xoffset = basket.width / 2;
     var yoffset = basket.height / 2;
-
-    return !(
-            ((basket.y + basket.height - yoffset) < (obstacle.y)) ||
+    return !(((basket.y + basket.height - yoffset) < (obstacle.y)) ||
             ((basket.y - yoffset) > (obstacle.y + obstacle.height)) ||
             ((basket.x + basket.width - xoffset) < obstacle.x) ||
-            ((basket.x -xoffset)> (obstacle.x + obstacle.width))
-        );
+            ((basket.x -xoffset)> (obstacle.x + obstacle.width)));
 }
 
 function addScore() {
