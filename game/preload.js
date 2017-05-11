@@ -289,5 +289,13 @@ function play() {
 
 //State definition for leaderboard
 function leaderBoardMenu() {
+    animateBackground();
+    reset();
     console.log('oh boy game over n00b');
+}
+
+
+function reset() {
+    //firebase injections here
+    scoreCount = 0;
 }
