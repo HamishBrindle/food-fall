@@ -250,7 +250,7 @@ function setup() {
 
 }
 //Set the game's current state to `play`:
-var state = play;
+var state = menu;
 
 //Animation loop
 function gameLoop() {
@@ -258,7 +258,6 @@ function gameLoop() {
     state();
     lastTime = new Date().getTime();
     tk.update();
-    renderer.render(stage);
 }
 
 //State definition for "playing" the game
@@ -267,13 +266,15 @@ function play() {
     animateBackground();
     playerMovement();
     addScore();
+    hideMenu();
+    renderer.render(stage);
 }
 
-function mainMenu() {
+function menu() {
     animateBackground();
     foodCatchCollision();
-    makeFood();
     hideScore();
-    // This is what animates play
+    displayMenu();
     renderer.render(stage);
+    // This is what animates play
 }

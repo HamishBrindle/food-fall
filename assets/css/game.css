@@ -3,7 +3,6 @@
     height: 100%;
     padding: 0;
     margin: 0;
-    display: block;
     z-index: 0;
 }
 /* line 9, ../sass/style.scss */
@@ -13,26 +12,22 @@
 }
 /* line 14, ../sass/style.scss */
 #game-window #overlay {
-    background: #FD8698;
+    background: #000;
+    display: none;
     height: 100%;
     width: 100%;
     opacity: 0;
     top: 0;
     left: 0;
-    position: relative;
+    position: absolute;
     padding: 0;
     transition: opacity .5s;
     z-index: 2;
 }
-/* line 25, ../sass/style.scss */
-#game-window #overlay p {
-    color: #fff;
-    line-height: 150px;
-    font-family: 'arial';
-    text-align: center;
-}
+
 /* line 34, ../sass/style.scss */
-#outer-box:hover #overlay {
-    opacity: .9;
+#game-window:hover #overlay {
+    position: absolute;
+    opacity: .5;
     transition: opacity .5s;
 }
