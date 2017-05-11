@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 
@@ -27,6 +27,9 @@
 
     <!-- Theme CSS -->
     <link href="assets/css/main.css" rel="stylesheet">
+
+    <!-- Firebase Script Link -->
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -115,6 +118,26 @@
                 <h2 class="section-heading">Play Food Fall</h2>
                 <p>Click the button below to start saving falling food! Get your high score up on the leader boards and
                     strike fear in the heart of food waste. </p>
+                <div id="login" style="color:black;">
+                    <input id="txtEmail" type="email" placeholder="Enter Email" required>
+
+                    <input id="txtPassword" type="password" placeholder="Enter Password" required>
+
+                    <button id="btnLogin">
+                        Log in
+                    </button>
+                </div>
+                <div id="accountCreation" style="color:black;">
+                    <input id="txtName" type="text" placeholder="Enter UserName">
+
+                    <input id="txtEmail" type="email" placeholder="Enter Email">
+
+                    <input id="txtPassword" type="password" placeholder="Enter Password">
+
+                    <button id="btnSignUp">
+                        Sign up
+                    </button>
+                </div>
                 <div class="badges">
                     <a class="badge-link" href="game.html" data-aos="zoom-in">
                         <img src="assets/img/web/play-badge.svg" alt="Play Food Fall">
@@ -310,6 +333,9 @@
 
 <!-- Theme JavaScript -->
 <script src="assets/js/theme.js"></script>
+
+<script src="game/accountLogin.js" defer></script>
+<script src="game/accountCreate.js" defer></script>
 
 </body>
 
