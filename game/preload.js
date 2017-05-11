@@ -63,7 +63,7 @@ var catcher;
 
 var tk;
 
-var scale = scaleToWindow(renderer.view);
+var scale = scaleToWindow(renderer.view) - 0.5;
 
 var setupdone = false;
 

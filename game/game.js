@@ -102,7 +102,7 @@ function foodCatchCollision() {
 
 var obstacleCount = 0;
 function makeObstacle() {
-    const MAX_OBSTACLE = 2;
+    const MAX_OBSTACLE = 1;
     if(obstacleCount >= MAX_OBSTACLE) return;
     var newObstacle = PIXI.Sprite.fromImage('assets/img/sprites/obstacle.png');
     newObstacle.x = newObstacle.width + GAME_WIDTH;

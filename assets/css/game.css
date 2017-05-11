@@ -1,48 +1,38 @@
-#game-canvas {
+#game-window {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: block;
     z-index: 0;
 }
-
-#game-window {
-    display: inline-block;
-    max-width: 100%;
-    z-index: 2;
+/* line 9, ../sass/style.scss */
+#game-window canvas {
+    position: absolute;
+    z-index: 1;
 }
-
-#game-window #inner-box {
+/* line 14, ../sass/style.scss */
+#game-window #overlay {
+    background: #FD8698;
     height: 100%;
     width: 100%;
     opacity: 0;
     top: 0;
     left: 0;
+    position: relative;
     padding: 0;
     transition: opacity .5s;
+    z-index: 2;
 }
-
-#game-window #inner-box p {
+/* line 25, ../sass/style.scss */
+#game-window #overlay p {
     color: #fff;
     line-height: 150px;
     font-family: 'arial';
     text-align: center;
 }
-
-#game-window:hover #inner-box {
-    opacity: 1;
+/* line 34, ../sass/style.scss */
+#outer-box:hover #overlay {
+    opacity: .9;
     transition: opacity .5s;
-}
-
-#main-menu-logo {
-    display: block;
-    position: relative;
-    top: 50px;
-    width: 200px;
-    margin: 0 auto;
-}
-
-#btn-play {
-    position: relative;
-    width: 500px;
-    height: 50px;
-    font-size: large;
-    text-align: center;
-    border: hidden;
 }
