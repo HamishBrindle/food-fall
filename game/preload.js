@@ -146,7 +146,6 @@ function animateBackground() {
 
     // Draw the stage and prepare for the next frame
     lastTime = currtime;
-
 }
 
 function loadBackgroundTextures() {
@@ -170,7 +169,6 @@ function loadBackgroundTextures() {
         loader.add("grass", "assets/img/tiling-sprites/grass.png");
     }
 }
-
 
 /*
  Prints loading log to console.
@@ -253,7 +251,7 @@ function setup() {
 
 }
 //Set the game's current state to `play`:
-var state = play;
+var state = mainMenu;
 
 //Animation loop
 function gameLoop() {

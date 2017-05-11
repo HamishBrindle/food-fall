@@ -2,18 +2,15 @@
  * Created by hamis on 2017-05-10.
  */
 
-var gamePaused = false;
+var gamePaused = true;
 
-$("#btn-pause").click(function() {
+$("#btn-play").click(function() {
     if (!gamePaused) {
         state = mainMenu;
         gamePaused = true;
     } else {
         state = play;
         gamePaused = false;
+        $("#inner-box").css("display", "none");
     }
-});
-
-$("#btn-leaderboard").click(function() {
-    $('div').html('<ul>')
 });

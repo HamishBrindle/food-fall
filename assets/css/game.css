@@ -1,18 +1,11 @@
 #game-canvas {
-    margin: 0 auto;
     z-index: 0;
 }
 
 #game-window {
-    width: 100%;
-    display: block;
-    position: relative;
-    z-index: 5;
-}
-
-#game-window img {
-    width: 300px;
-    height: auto;
+    display: inline-block;
+    max-width: 100%;
+    z-index: 2;
 }
 
 #game-window #inner-box {
@@ -21,7 +14,6 @@
     opacity: 0;
     top: 0;
     left: 0;
-    position: absolute;
     padding: 0;
     transition: opacity .5s;
 }
@@ -44,4 +36,13 @@
     top: 50px;
     width: 200px;
     margin: 0 auto;
+}
+
+#btn-play {
+    position: relative;
+    width: 500px;
+    height: 50px;
+    font-size: large;
+    text-align: center;
+    border: hidden;
 }
