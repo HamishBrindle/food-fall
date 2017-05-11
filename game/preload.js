@@ -287,3 +287,7 @@ function play() {
     addScore();
 }
 
+//State definition for leaderboard
+function leaderBoardMenu() {
+    console.log('oh boy game over n00b');
+}
