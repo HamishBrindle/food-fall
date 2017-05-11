@@ -29,7 +29,6 @@ function play() {
     animateBackground();
     playerMovement();
     addScore();
-
     // This is what animates play
     renderer.render(stage);
 }

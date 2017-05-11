@@ -13,3 +13,7 @@ $("#btn-pause").click(function() {
         gamePaused = false;
     }
 });
+
+$("#btn-leaderboard").click(function() {
+    $('div').html('<ul>')
+});
