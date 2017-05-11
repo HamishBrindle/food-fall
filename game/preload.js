@@ -189,7 +189,7 @@ function loadBackgroundTextures() {
 Prints loading log to console.
  */
 function loadProgressHandler() {
-    console.log("loading");
+    
 }
 
 var apple = {name:"apple", weight:0.2};
@@ -237,7 +237,7 @@ function setup() {
     tk = new Tink(PIXI, renderer.view, scale);
     tk.makeDraggable(catcher);
 
-    
+
 
     //Touch and Mouse Controls
     pointer = tk.makePointer();
