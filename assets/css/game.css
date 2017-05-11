@@ -45,7 +45,7 @@
 }
 
 #main-menu img {
-position: absolute;
+position: relative;
 display: block;
 width: 50%;
 top: 25%;
