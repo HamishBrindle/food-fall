@@ -3,8 +3,46 @@
 *   Main file for Food Fall!
  */
 
+countDown();
+setTimeout(makeSprites, 5000);
+
 // Speed of Game
-setTimeout(makeSprites, 2000);
+var three = PIXI.Sprite.fromImage('assets/img/sprites/cd-3.png');
+var two = PIXI.Sprite.fromImage('assets/img/sprites/cd-2.png');
+var one = PIXI.Sprite.fromImage('assets/img/sprites/cd-1.png');
+var go = PIXI.Sprite.fromImage('assets/img/sprites/cd-go.png');
+
+var countDownNumbers = [three, two, one, go];
+var countDownIndex = 0;
+
+function countDown() {
+    displayNo;
+    setTimeout(displayNo, 1000);
+    setTimeout(displayNo, 2000);
+    setTimeout(displayNo, 3000);
+    setTimeout(displayNo, 4000);
+    setTimeout(displayNo, 5000);
+}
+
+function displayNo() {
+
+    var curNum = countDownNumbers[countDownIndex];
+    if(countDownIndex == 0) {
+        stage.addChild(curNum);
+    } else if(countDownIndex > 0 && countDownIndex < 4){
+        var prevNum = countDownNumbers[countDownIndex - 1];
+        prevNum.destroy();
+        stage.addChild(curNum);
+    } else {
+        var prevNum = countDownNumbers[countDownIndex - 1];
+        prevNum.destroy();
+    }
+    try {
+        curNum.x = 100;
+        curNum.y = 50;
+    } catch (err) {}
+    ++countDownIndex;
+}
 
 var scoreCount = 0;
 var score = new PIXI.Text('Score: ', {

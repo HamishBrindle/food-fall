@@ -2,6 +2,8 @@
 
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
+var gameboundw = GAME_WIDTH;
+var gameboundh = GAME_HEIGHT;
 
 //Variables
 var maxXspeed = 50;
