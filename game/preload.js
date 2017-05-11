@@ -45,7 +45,7 @@ var rendererOptions = {
 };
 
 // Create renderer.
-var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, myView, rendererOptions);
+var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
 
 // Create new Container for stage.
 var stage = new Container();
