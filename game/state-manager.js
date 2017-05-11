@@ -35,8 +35,8 @@ function displayLeader() {
 
     var userData = new Array();
     userData[0] = new Array("hsimah", "800")
-    userData[0] = new Array("yrrek", "900")
-    userData[0] = new Array("eiluj", "1000")
+    userData[1] = new Array("yrrek", "900")
+    userData[2] = new Array("eiluj", "1000")
 
     var myTable = "<table><tr><td style='width: 100px; color: red;'>User Name</td>";
     myTable += "<td style='width: 100px; color: red; text-align: right;'>Score</td>";
@@ -45,8 +45,8 @@ function displayLeader() {
     myTable += "<td     style='width: 100px; text-align: right;'>---------------</td>";
 
     for (var i = 0; i < userData.length; i++) {
-        myTable += "<tr><td style='width: 100px;'>Number " + i + " is:</td>";
-        myTable += "<td style='width: 100px; text-align: right;'>" + userData[i] + "</td></tr>";
+        myTable += "<tr><td style='width: 100px;'>"+ userData[i][0] +"</td>";
+        myTable += "<td style='width: 100px; text-align: right;'>" + userData[i][1] + "</td></tr>";
     }
     myTable += "</table>";
 
