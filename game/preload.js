@@ -2,28 +2,16 @@
 
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
-var gameboundw = GAME_WIDTH;
-var gameboundh = GAME_HEIGHT;
-/*
-    TO DO: ADD SPRITES TO ONE CONTAINER IN ORDER TO OPTIMIZE REFRESH
-    REDUCE LAG
 
-    https://github.com/kittykatattack/learningPixi/blob/master/README.md
-
-    control + f: var superFastSprites = new ParticleContainer();
-
-    We will also need to put scorebar in it's own container, and add children
-    to make incremental changes.
-*/
 //Variables
 var maxXspeed = 50;
 var maxYspeed = 25;
 var backgroundScrollSpeed = {
-    mtnFar: 5.4,
-    mtnMid: 5.5,
-    clouds: 6,
+    mtnFar: 2,
+    mtnMid: 3,
+    clouds: 2.5,
     trees: 4,
-    grass: 2
+    grass: 6
 };
 
 // Background textures
@@ -35,8 +23,8 @@ var sky,
     trees,
     grass;
 
-var BG_RATE = 50;
-var FG_RATE = 125;
+// Adjust to speed/slow background scrolling.
+var BG_RATE = 200;
 
 var lastTime;
 
@@ -48,17 +36,16 @@ var Container = PIXI.Container,
     Sprite = PIXI.Sprite;
 
 // Rendering Options.
-var myView = document.getElementById('myCanvas');
-
 var rendererOptions = {
     antiAliasing: false,
     transparent: false,
     resolution: window.devicePixelRatio,
-    autoResize: true
+    autoResize: true,
+    view: document.getElementById('game-canvas')
 };
 
 // Create renderer.
-var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, myView, rendererOptions);
+var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
 
 // Create new Container for stage.
 var stage = new Container();
@@ -68,8 +55,6 @@ renderer.view.style.position = "absolute";
 renderer.view.style.top = "0px";
 renderer.view.style.left = "0px"; // Centers window.
 
-// Add renderer to page.
-document.getElementById("game-window").appendChild(renderer.view);
 
 //Globals -------------------------------------------------------------------------------Globals
 var catcher;
@@ -150,11 +135,11 @@ function animateBackground() {
     var currtime = new Date().getTime();
     var delta = (currtime - lastTime) / 1000;
 
-    // Scroll the terrain
+// Scroll the terrain
     mtnFar.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnFar;
     mtnMid.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnMid;
     clouds.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.clouds;
-    trees.tilePosition.x -= FG_RATE * delta + backgroundScrollSpeed.trees;
+    trees.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.trees;
     grass.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.grass;
 
     // Draw the stage and prepare for the next frame
@@ -184,12 +169,11 @@ function loadBackgroundTextures() {
     }
 }
 
-
 /*
 Prints loading log to console.
  */
 function loadProgressHandler() {
-    
+    console.log("loading");
 }
 
 var apple = {name:"apple", weight:0.2};
@@ -237,8 +221,6 @@ function setup() {
     tk = new Tink(PIXI, renderer.view, scale);
     tk.makeDraggable(catcher);
 
-
-
     //Touch and Mouse Controls
     pointer = tk.makePointer();
     //Pointer Definition
@@ -268,7 +250,7 @@ function setup() {
 
 }
 //Set the game's current state to `play`:
-var state = play;
+var state = menu;
 
 //Animation loop
 function gameLoop() {
@@ -276,7 +258,6 @@ function gameLoop() {
     state();
     lastTime = new Date().getTime();
     tk.update();
-    renderer.render(stage);
 }
 
 //State definition for "playing" the game
@@ -285,6 +266,8 @@ function play() {
     animateBackground();
     playerMovement();
     addScore();
+    hideMenu();
+    renderer.render(stage);
 }
 
 //State definition for leaderboard
@@ -294,8 +277,16 @@ function leaderBoardMenu() {
     console.log('oh boy game over n00b');
 }
 
-
 function reset() {
     //firebase injections here
     scoreCount = 0;
+}
+
+function menu() {
+    animateBackground();
+    foodCatchCollision();
+    hideScore();
+    displayMenu();
+    renderer.render(stage);
+    // This is what animates play
 }

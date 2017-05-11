@@ -32,15 +32,11 @@
 </header>
 
 <main>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-1 text-center">
-                <div class="content-pane">
-                    <div id="game-window">
-                        <div class="overlay"></div>
-                    </div>
-                </div>
-            </div>
+    <div class="container-fluid text-center" id="game-window">
+        <canvas id="game-canvas"></canvas>
+        <div id="overlay">
+            <button id="btn-play" class="btn btn-default">Play</button>
+            <img id="main-menu-logo" src="assets/img/web/site-logo-white-long.png"/>
         </div>
     </div>
 </main>
@@ -60,5 +56,8 @@
 <script src="game/utility.js" defer></script>
 <script src="game/sound.js" defer></script>
 <script src="game/game.js" defer></script>
+<script src="game/state-manager.js" defer></script>
+
+
 </body>
 </html>
