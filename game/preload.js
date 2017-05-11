@@ -227,6 +227,7 @@ function setup() {
   
     // Initialize the the tiling-sprites background
     initBackground();
+
     // Initialize the the level background
     keyControls();
 
