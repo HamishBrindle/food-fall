@@ -13,10 +13,6 @@ var score = new PIXI.Text('Score: ', {
   fill: 'white'
 });
 
-function leaderBoardMenu() {
-    console.log('oh boy game over n00b');
-}
-
 function makeSprites() {
     setInterval(makeFood, 100);
     setInterval(makeObstacle, 200);
@@ -121,7 +117,7 @@ function makeObstacle() {
 function obstacleCollision(catcher, obstacle) {
     if (isCollideWholeBasket(catcher, obstacle)) {
         console.log("game over");
-        state = leaderBoardMenu;
+        state = menu;
     }
 }
 

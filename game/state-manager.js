@@ -2,15 +2,23 @@
  * Created by hamis on 2017-05-10.
  */
 
-var gamePaused = true;
+var gamePaused;
 
 $("#btn-play").click(function() {
     if (!gamePaused) {
-        state = mainMenu;
-        gamePaused = true;
+        state = menu;
     } else {
         state = play;
-        gamePaused = false;
-        $("#inner-box").css("display", "none");
     }
 });
+
+// Detects var state change
+function hideMenu() {
+    gamePaused = false;
+    $("#overlay").css("display", "none");
+}
+
+function displayMenu() {
+    gamePaused = true;
+    $("#overlay").css("display", "block");
+}
