@@ -21,7 +21,16 @@ $("#btn-leader").click(function() {
         displayLeader();
         leaderBoardVisibile = true;
     }
+}).on("tap", function() {
+    if (leaderBoardVisibile) {
+        hideLeader();
+        leaderBoardVisibile = false;
+    } else {
+        displayLeader();
+        leaderBoardVisibile = true;
+    }
 });
+
 
 // Detects var state change
 function hideMenu() {
