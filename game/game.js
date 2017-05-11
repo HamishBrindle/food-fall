@@ -4,7 +4,8 @@
  */
 
 // Speed of Game
-setTimeout(makeSprites, 3000);
+setTimeout(makeSprites, 2000);
+
 var scoreCount = 0;
 var score = new PIXI.Text('Score: ', {
   fontSize: 30,
@@ -20,6 +21,7 @@ function makeSprites() {
     setInterval(makeFood, 100);
     setInterval(makeObstacle, 200);
 }
+
 var foodCount = 0;
 function makeFood() {
     const MAX_FOOD = 5;
@@ -108,7 +110,7 @@ function makeObstacle() {
     if(obstacleCount >= MAX_OBSTACLE) return;
     var newObstacle = PIXI.Sprite.fromImage('assets/img/sprites/obstacle.png');
     newObstacle.x = newObstacle.width + GAME_WIDTH;
-    newObstacle.height = 600; //getRandomInt(50, 300);
+    newObstacle.height = getRandomInt(50, 300);
     newObstacle.y = GAME_HEIGHT - newObstacle.height;
     newObstacle.width = 50;
     newObstacle.isObstacle = true;
@@ -119,7 +121,7 @@ function makeObstacle() {
 function obstacleCollision(catcher, obstacle) {
     if (isCollideWholeBasket(catcher, obstacle)) {
         console.log("game over");
-        // state = leaderBoardMenu;
+        state = leaderBoardMenu;
     }
 }
 
@@ -128,8 +130,8 @@ function isCollideWholeBasket(basket, obstacle) {
     var yoffset = basket.height / 2;
     return !(((basket.y + basket.height - yoffset) < (obstacle.y)) ||
             ((basket.y - yoffset) > (obstacle.y + obstacle.height)) ||
-            ((basket.x + basket.width - xoffset) < obstacle.x) ||
-            ((basket.x -xoffset)> (obstacle.x + obstacle.width)));
+            ((basket.x + basket.width - xoffset - 12) < obstacle.x) ||
+            ((basket.x - xoffset + 12)> (obstacle.x + obstacle.width)));
 }
 
 function addScore() {
