@@ -270,6 +270,22 @@ function play() {
     renderer.render(stage);
 }
 
+//State definition for leaderboard
+function leaderBoard() {
+    animateBackground();
+    foodCatchCollision();
+    hideScore();
+    dbInsert();
+    displayLeader();
+    renderer.render(stage);
+}
+
+//Inserts highscore into database
+function dbInsert() {
+    //firebase injections here
+    scoreCount = 0;
+}
+
 function menu() {
     animateBackground();
     foodCatchCollision();

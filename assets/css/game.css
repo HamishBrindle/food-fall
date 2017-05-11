@@ -30,15 +30,13 @@
     z-index: 2;
 }
 
-
+#game-window #overlay #game-over {
+    display: none;
+}
 
 /* line 34, ../sass/style.scss */
 #game-window:hover #overlay {
     position: absolute;
     opacity: .5;
     transition: opacity .5s;
-}
-
-.main-menu {
-    opacity: 1;
 }
