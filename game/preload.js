@@ -123,6 +123,13 @@ function initBackground() {
     grass =
         new PIXI.extras.TilingSprite(PIXI.loader.resources.grass.texture,
             GAME_WIDTH, GAME_HEIGHT);
+    sky.isBackground = true;
+    mtnFar.isBackground = true;
+    mtnMid.isBackground = true;
+    ground.isBackground = true;
+    clouds.isBackground = true;
+    trees.isBackground = true;
+    grass.isBackground = true;
 
     // Prepare for first frame of game loop/animation
     lastTime = new Date().getTime();
@@ -224,15 +231,6 @@ function setup() {
     //Touch and Mouse Controls
     pointer = tk.makePointer();
     //Pointer Definition
-    pointer.press = function () {
-        console.log("The pointer was pressed");
-        console.log("Mouse X: " + pointer.x + " Mouse Y: " + pointer.y);
-        console.log("Catcher X: " + catcher.x + " Mouse Y: " + catcher.y);
-    };
-    pointer.release = function () {
-        console.log("released");
-    };
-    pointer.tap = () => console.log("The pointer was tapped");
 
     setupdone = true;
 
@@ -262,6 +260,8 @@ function gameLoop() {
 
 //State definition for "playing" the game
 function play() {
+    gameInit();
+    gameBuild = false;
     foodCatchCollision();
     animateBackground();
     playerMovement();
@@ -271,10 +271,12 @@ function play() {
 }
 
 function menu() {
+    console.log("in menu");
+    gameBuild = true;
     animateBackground();
     foodCatchCollision();
     hideScore();
     displayMenu();
-    renderer.render(stage);
+    // renderer.render(stage);
     // This is what animates play
 }
