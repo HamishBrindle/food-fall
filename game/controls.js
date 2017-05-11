@@ -4,7 +4,10 @@ var left = keyboard(37),
     right = keyboard(39),
     down = keyboard(40);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5a455eb13a9c613d04236fdc51ec6062dfe36fa3
 function moveToPointer() {
     if (pointer.x < catcher.x) {
         leftPress();
