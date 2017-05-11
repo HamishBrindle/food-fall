@@ -3,12 +3,23 @@
  */
 
 var gamePaused;
+var leaderBoardVisibile;
 
 $("#btn-play").click(function() {
-    if (!gamePaused) {
-        state = menu;
-    } else {
+    if (gamePaused) {
         state = play;
+    } else {
+        state = menu;
+    }
+});
+
+$("#btn-leader").click(function() {
+    if (leaderBoardVisibile) {
+        hideLeader();
+        leaderBoardVisibile = false;
+    } else {
+        displayLeader();
+        leaderBoardVisibile = true;
     }
 });
 
@@ -16,7 +27,7 @@ $("#btn-play").click(function() {
 function hideMenu() {
     gamePaused = false;
     $("#overlay").css("display", "none");
-    $("#game-window #overlay #game-over").css("display", "none");
+    $("#game-window").find("#overlay #game-over").css("display", "none");
 }
 
 function displayMenu() {
@@ -26,7 +37,7 @@ function displayMenu() {
 
 //
 function displayLeader() {
-    $("#game-window #overlay #game-over").css("display", "block");
+    $("#game-window").find("#overlay #game-over").css("display", "block");
     console.log("lb called");
 
     var heading = new Array();
@@ -51,4 +62,8 @@ function displayLeader() {
     myTable += "</table>";
 
     document.getElementById('game-over').innerHTML = myTable;
+}
+
+function hideLeader() {
+    $("#game-window").find("#overlay #game-over").css("display", "none");
 }
