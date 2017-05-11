@@ -35,8 +35,14 @@
     <div class="container-fluid text-center" id="game-window">
         <canvas id="game-canvas"></canvas>
         <div id="overlay">
-            <button id="btn-play" class="btn btn-default">Play</button>
-            <img id="main-menu-logo" src="assets/img/web/site-logo-white-long.png"/>
+            <div id="main-menu">
+                <button id="btn-play" class="btn btn-default">Play</button>
+                <img id="main-menu-logo" src="assets/img/web/site-logo-white-long.png" />
+                <input type="button" id="create" value="Show Leaderboard" onclick="Javascript:displayLeader()">
+            </div>
+            <div id="game-over">
+                <button id="btn-playagain" class="btn btn-default">Play Again</button>
+            </div>
         </div>
     </div>
 </main>

@@ -271,13 +271,17 @@ function play() {
 }
 
 //State definition for leaderboard
-function leaderBoardMenu() {
+function leaderBoard() {
     animateBackground();
-    reset();
-    console.log('oh boy game over n00b');
+    foodCatchCollision();
+    hideScore();
+    dbInsert();
+    displayLeader();
+    renderer.render(stage);
 }
 
-function reset() {
+//Inserts highscore into database
+function dbInsert() {
     //firebase injections here
     scoreCount = 0;
 }
