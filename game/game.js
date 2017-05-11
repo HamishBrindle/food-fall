@@ -5,7 +5,7 @@
 
 countDown();
 setTimeout(makeSprites, 5000);
-
+alert("asfasfasdfasdf   ");
 // Speed of Game
 var three = PIXI.Sprite.fromImage('assets/img/sprites/cd-3.png');
 var two = PIXI.Sprite.fromImage('assets/img/sprites/cd-2.png');
