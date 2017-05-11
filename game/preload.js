@@ -2,13 +2,20 @@
 
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
+/*
+    TO DO: ADD SPRITES TO ONE CONTAINER IN ORDER TO OPTIMIZE REFRESH
+    REDUCE LAG
 
+    https://github.com/kittykatattack/learningPixi/blob/master/README.md
+
+    control + f: var superFastSprites = new ParticleContainer();
+
+    We will also need to put scorebar in it's own container, and add children
+    to make incremental changes.
+*/
 //Variables
 var maxXspeed = 50;
 var maxYspeed = 25;
-
-// Background speed relationships DON'T CHANGE
-// TO INCREASE BG SPEED, ADJUST BG_RATE
 var backgroundScrollSpeed = {
     mtnFar: 2,
     mtnMid: 3,
@@ -16,9 +23,6 @@ var backgroundScrollSpeed = {
     trees: 4,
     grass: 6
 };
-
-// Adjust to speed/slow background scrolling.
-var BG_RATE = 200;
 
 // Background textures
 var sky,
@@ -28,6 +32,9 @@ var sky,
     clouds,
     trees,
     grass;
+
+// Adjust to speed/slow background scrolling.
+var BG_RATE = 200;
 
 var lastTime;
 
@@ -47,13 +54,14 @@ var rendererOptions = {
     view: document.getElementById('game-canvas')
 };
 
-// Create renderer and add to HTML element specified by 'view' option.
-var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
+// Create renderer.
+var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, myView, rendererOptions);
 
 // Create new Container for stage.
 var stage = new Container();
 
 // Renderer position on screen.
+renderer.view.style.position = "absolute";
 renderer.view.style.top = "0px";
 renderer.view.style.left = "0px"; // Centers window.
 
@@ -63,7 +71,7 @@ var catcher;
 
 var tk;
 
-var scale = scaleToWindow(renderer.view) - 0.5;
+var scale = scaleToWindow(renderer.view);
 
 var setupdone = false;
 
@@ -137,7 +145,7 @@ function animateBackground() {
     var currtime = new Date().getTime();
     var delta = (currtime - lastTime) / 1000;
 
-    // Scroll the terrain
+// Scroll the terrain
     mtnFar.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnFar;
     mtnMid.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnMid;
     clouds.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.clouds;
@@ -146,6 +154,7 @@ function animateBackground() {
 
     // Draw the stage and prepare for the next frame
     lastTime = currtime;
+
 }
 
 function loadBackgroundTextures() {
@@ -170,23 +179,24 @@ function loadBackgroundTextures() {
     }
 }
 
+
 /*
- Prints loading log to console.
+Prints loading log to console.
  */
 function loadProgressHandler() {
     console.log("loading");
 }
 
-var apple = {name: "apple", weight: 0.2};
-var banana = {name: "banana", weight: 0.2};
-var bread = {name: "bread", weight: 0.2};
-var orange = {name: "orange", weight: 0.2};
-var broccoli = {name: "broccoli", weight: 0.2};
+var apple = {name:"apple", weight:0.2};
+var banana = {name:"banana", weight:0.2};
+var bread = {name:"bread", weight:0.2};
+var orange = {name:"orange", weight:0.2};
+var broccoli = {name:"broccoli", weight:0.2};
 
 fallingObjects = [apple, banana, bread, orange, broccoli];
 
 /*
- Main game driver.
+Main game driver.
  */
 function setup() {
     //Setting up sprites
@@ -214,13 +224,13 @@ function setup() {
     // Initialize the the level background
     keyControls();
 
+
     // Add sprites to stage
     stage.addChild(grass);
     stage.addChild(catcher);
 
     tk = new Tink(PIXI, renderer.view, scale);
     tk.makeDraggable(catcher);
-
 
     //Touch and Mouse Controls
     pointer = tk.makePointer();
@@ -251,7 +261,7 @@ function setup() {
 
 }
 //Set the game's current state to `play`:
-var state = mainMenu;
+var state = play;
 
 //Animation loop
 function gameLoop() {
@@ -278,4 +288,3 @@ function mainMenu() {
     // This is what animates play
     renderer.render(stage);
 }
-
