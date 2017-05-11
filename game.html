@@ -32,13 +32,15 @@
 </header>
 
 <main>
-    <div class="container-fluid text-center" id="game-window">
+    <div class="container-fluid text-center outer" id="game-window">
         <canvas id="game-canvas"></canvas>
-        <div id="overlay">
-            <div id="main-menu">
-                <button id="btn-play" class="btn btn-default">Play</button>
-                <img id="main-menu-logo" src="assets/img/web/site-logo-white-long.png" />
-                <button class="btn btn-default" id="btn-leader" value="Show Leaderboard">Leader Board</button>
+        <div class="middle" id="overlay">
+            <div class="inner" id="main-menu">
+                <ul class="btn-group-lg" id="menu-list">
+                    <li><img id="main-menu-logo" src="assets/img/web/site-logo-white-long.png" /></li>
+                    <li><button id="btn-play" class="btn btn-default">Play</button></li>
+                    <li><button class="btn btn-default" id="btn-leader" value="Show Leaderboard">Leader Board</button></li>
+                </ul>
             </div>
             <div id="game-over">
                 <button id="btn-playagain" class="btn btn-default">Play Again</button>

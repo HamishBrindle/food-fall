@@ -31,6 +31,11 @@ $("#btn-leader").click(function() {
     }
 });
 
+$(window).resize(fitGameWindowDiv()).ready(fitGameWindowDiv());
+
+function fitGameWindowDiv() {
+    $("#game-window").css("height", $("#game-canvas").height);
+}
 
 // Detects var state change
 function hideMenu() {

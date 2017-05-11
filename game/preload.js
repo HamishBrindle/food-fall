@@ -254,10 +254,10 @@ var state = menu;
 
 //Animation loop
 function gameLoop() {
-    requestAnimationFrame(gameLoop);
     state();
     lastTime = new Date().getTime();
     tk.update();
+    requestAnimationFrame(gameLoop);
 }
 
 //State definition for "playing" the game

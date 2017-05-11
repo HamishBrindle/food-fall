@@ -1,3 +1,12 @@
+ul, li {
+    text-decoration: none;
+    list-style: none;
+}
+
+button {
+    margin: 10px 0 10px 0;
+}
+
 #game-window {
     width: 100%;
     height: 100%;
@@ -5,6 +14,7 @@
     margin: 0;
     z-index: 0;
 }
+
 /* line 9, ../sass/style.scss */
 #game-window canvas {
     position: absolute;
@@ -45,27 +55,28 @@
 }
 
 #main-menu img {
-position: relative;
-display: block;
-width: 50%;
-top: 25%;
-left: 25%;
+    position: relative;
+    display: inline-block;
+    width: 80%;
+    margin-bottom: 10px;
+
 }
 
 #main-menu #btn-play {
-    position: absolute;
-    display: block;
+    font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
+    position: relative;
+    display: inline-block;
+    padding: 10px 0 10px 0;
     width: 25%;
-    top: 50%;
-    left: 37.5%;
+
 }
 
 #main-menu #btn-leader {
-    position: absolute;
-    display: block;
+    font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
+    position: relative;
+    display: inline-block;
+    padding: 10px 0 10px 0;
     width: 25%;
-    top: 55%;
-    left: 37.5%;
 }
 
 #game-over {
@@ -75,4 +86,28 @@ left: 25%;
     z-index: 0;
 }
 
+.outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
 
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+#menu-list {
+    position: absolute;
+    padding: 0;
+    width: 100%;
+    top: 35%;
+    left: 0;
+}
