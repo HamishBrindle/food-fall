@@ -246,10 +246,10 @@ function setup() {
         console.log("The pointer was pressed");
         console.log("Mouse X: " + pointer.x + " Mouse Y: " + pointer.y);
         console.log("Catcher X: " + catcher.x + " Mouse Y: " + catcher.y);
-    }
+    };
     pointer.release = function () {
         console.log("released");
-    }
+    };
     pointer.tap = () => console.log("The pointer was tapped");
 
     setupdone = true;
