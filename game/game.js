@@ -5,7 +5,6 @@
 
 countDown();
 setTimeout(makeSprites, 5000);
-alert("asfasfasdfasdf   ");
 // Speed of Game
 var three = PIXI.Sprite.fromImage('assets/img/sprites/cd-3.png');
 var two = PIXI.Sprite.fromImage('assets/img/sprites/cd-2.png');
@@ -14,14 +13,19 @@ var go = PIXI.Sprite.fromImage('assets/img/sprites/cd-go.png');
 
 var countDownNumbers = [three, two, one, go];
 var countDownIndex = 0;
-
+var timer;
 function countDown() {
     displayNo;
     setTimeout(displayNo, 1000);
     setTimeout(displayNo, 2000);
     setTimeout(displayNo, 3000);
     setTimeout(displayNo, 4000);
-    setTimeout(displayNo, 5000);
+    timer = setTimeout(displayNo, 5000);
+    clearCountDown;
+}
+
+function clearCountDown() {
+    clearTimeout(timer);
 }
 
 function displayNo() {
