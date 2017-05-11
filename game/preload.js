@@ -4,17 +4,7 @@ var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
 var gameboundw = GAME_WIDTH;
 var gameboundh = GAME_HEIGHT;
-/*
-    TO DO: ADD SPRITES TO ONE CONTAINER IN ORDER TO OPTIMIZE REFRESH
-    REDUCE LAG
 
-    https://github.com/kittykatattack/learningPixi/blob/master/README.md
-
-    control + f: var superFastSprites = new ParticleContainer();
-
-    We will also need to put scorebar in it's own container, and add children
-    to make incremental changes.
-*/
 //Variables
 var maxXspeed = 50;
 var maxYspeed = 25;
@@ -186,22 +176,22 @@ function loadBackgroundTextures() {
 
 
 /*
-Prints loading log to console.
+ Prints loading log to console.
  */
 function loadProgressHandler() {
     console.log("loading");
 }
 
-var apple = {name:"apple", weight:0.2};
-var banana = {name:"banana", weight:0.2};
-var bread = {name:"bread", weight:0.2};
-var orange = {name:"orange", weight:0.2};
-var broccoli = {name:"broccoli", weight:0.2};
+var apple = {name: "apple", weight: 0.2};
+var banana = {name: "banana", weight: 0.2};
+var bread = {name: "bread", weight: 0.2};
+var orange = {name: "orange", weight: 0.2};
+var broccoli = {name: "broccoli", weight: 0.2};
 
 fallingObjects = [apple, banana, bread, orange, broccoli];
 
 /*
-Main game driver.
+ Main game driver.
  */
 function setup() {
     //Setting up sprites
@@ -229,7 +219,6 @@ function setup() {
     // Initialize the the level background
     keyControls();
 
-
     // Add sprites to stage
     stage.addChild(grass);
     stage.addChild(catcher);
@@ -237,7 +226,6 @@ function setup() {
     tk = new Tink(PIXI, renderer.view, scale);
     tk.makeDraggable(catcher);
 
-    
 
     //Touch and Mouse Controls
     pointer = tk.makePointer();
@@ -285,5 +273,14 @@ function play() {
     animateBackground();
     playerMovement();
     addScore();
+}
+
+function mainMenu() {
+    animateBackground();
+    foodCatchCollision();
+    makeFood();
+    hideScore();
+    // This is what animates play
+    renderer.render(stage);
 }
 
