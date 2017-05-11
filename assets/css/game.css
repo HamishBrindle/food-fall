@@ -16,7 +16,6 @@
 }
 /* line 14, ../sass/style.scss */
 #game-window #inner-box {
-    background: #FD8698;
     height: 100%;
     width: 100%;
     opacity: 0;
@@ -35,6 +34,15 @@
 }
 /* line 34, ../sass/style.scss */
 #game-window:hover #inner-box {
-    opacity: .9;
+    opacity: 1;
     transition: opacity .5s;
+}
+
+#main-menu-logo {
+    display: block;
+    position: relative;
+    top: 50px;
+    width: 200px;
+    margin: 0 auto;
+
 }

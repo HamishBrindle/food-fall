@@ -2,6 +2,14 @@
  * Created by hamis on 2017-05-10.
  */
 
+var gamePaused = false;
+
 $("#btn-pause").click(function() {
-    console.log("YOU CLICKED ME");
+    if (!gamePaused) {
+        state = mainMenu;
+        gamePaused = true;
+    } else {
+        state = play;
+        gamePaused = false;
+    }
 });

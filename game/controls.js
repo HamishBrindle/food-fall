@@ -149,5 +149,6 @@ function playerMovement() {
     //Implementing movement
     catcher.x += catcher.vx;
     catcher.y += catcher.vy;
+
     bound();
 }

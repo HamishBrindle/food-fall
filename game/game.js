@@ -18,10 +18,9 @@ var state = play;
 
 //Animation loop
 function gameLoop() {
-    requestAnimationFrame(gameLoop);
     state();
     lastTime = new Date().getTime();
-    renderer.render(stage);
+    requestAnimationFrame(gameLoop);
 }
 
 //State definition for "playing" the game
@@ -30,6 +29,18 @@ function play() {
     animateBackground();
     playerMovement();
     addScore();
+
+    // This is what animates play
+    renderer.render(stage);
+}
+
+function mainMenu() {
+    animateBackground();
+    foodCatchCollision();
+    makeFood();
+    hideScore();
+    // This is what animates play
+    renderer.render(stage);
 }
 
 var foodCount = 0;
@@ -105,10 +116,21 @@ function foodCatchCollision() {
 
 }
 
+var scoreVisible;
+
 function addScore() {
-      score.x = GAME_WIDTH - 100;
-      score.y = GAME_HEIGHT - 50;
-      score.anchor.x = 0.5;
-      score.text = 'Score: ' + scoreCount;
-      stage.addChild(score);
+    if (!scoreVisible)
+    score.x = GAME_WIDTH - 100;
+    score.y = GAME_HEIGHT - 50;
+    score.anchor.x = 0.5;
+    score.text = 'Score: ' + scoreCount;
+    stage.addChild(score);
+    scoreVisible = true;
+}
+
+function hideScore() {
+    if (scoreVisible) {
+        stage.removeChild(score);
+        scoreVisible = false;
+    }
 }

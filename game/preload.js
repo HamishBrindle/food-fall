@@ -14,7 +14,7 @@ var backgroundScrollSpeed = {
     mtnMid: 2.5,
     clouds: 3,
     trees: 4,
-    grass: 7
+    grass: 6
 };
 
 // Background textures
@@ -56,6 +56,7 @@ var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
 var stage = new Container();
 
 // Game canvas style options (CSS)
+renderer.view.style.position = "relative";
 renderer.view.style.top = "0px";
 renderer.view.style.left = "0px"; // Centers window.
 
@@ -77,7 +78,7 @@ function resize() {
     // If device is mobile,
     // decrease the window ratio but preserve resizing.
     if (isMobile.any) {
-
+        renderer.view.style.position = "absolute";
     } else {
         // Renderer position on screen.
         ratio /= 1.1;
