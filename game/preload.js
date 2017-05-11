@@ -47,7 +47,7 @@ var rendererOptions = {
     view: document.getElementById('game-canvas')
 };
 
-// Create renderer.
+// Create renderer and add to HTML element specified by 'view' option.
 var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
 
 // Create new Container for stage.
@@ -56,8 +56,6 @@ var stage = new Container();
 // Renderer position on screen.
 renderer.view.style.top = "0px";
 renderer.view.style.left = "0px"; // Centers window.
-
-// Add renderer to page.
 
 
 //Globals -------------------------------------------------------------------------------Globals
