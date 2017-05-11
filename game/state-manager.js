@@ -1,9 +1,6 @@
 /**
  * Created by hamis on 2017-05-10.
  */
-/**
- * Created by hamis on 2017-05-10.
- */
 
 var gamePaused = false;
 
