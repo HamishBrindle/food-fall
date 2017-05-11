@@ -2,17 +2,7 @@
 
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
-/*
-    TO DO: ADD SPRITES TO ONE CONTAINER IN ORDER TO OPTIMIZE REFRESH
-    REDUCE LAG
 
-    https://github.com/kittykatattack/learningPixi/blob/master/README.md
-
-    control + f: var superFastSprites = new ParticleContainer();
-
-    We will also need to put scorebar in it's own container, and add children
-    to make incremental changes.
-*/
 //Variables
 var maxXspeed = 50;
 var maxYspeed = 25;
@@ -178,7 +168,6 @@ function loadBackgroundTextures() {
         loader.add("grass", "assets/img/tiling-sprites/grass.png");
     }
 }
-
 
 /*
 Prints loading log to console.
