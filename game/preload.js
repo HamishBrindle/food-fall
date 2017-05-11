@@ -2,19 +2,23 @@
 
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
-var gameboundw = GAME_WIDTH;
-var gameboundh = GAME_HEIGHT;
 
 //Variables
 var maxXspeed = 50;
 var maxYspeed = 25;
+
+// Background speed relationships DON'T CHANGE
+// TO INCREASE BG SPEED, ADJUST BG_RATE
 var backgroundScrollSpeed = {
-    mtnFar: 5.4,
-    mtnMid: 5.5,
-    clouds: 6,
+    mtnFar: 2,
+    mtnMid: 3,
+    clouds: 2.5,
     trees: 4,
-    grass: 2
+    grass: 6
 };
+
+// Adjust to speed/slow background scrolling.
+var BG_RATE = 200;
 
 // Background textures
 var sky,
@@ -24,9 +28,6 @@ var sky,
     clouds,
     trees,
     grass;
-
-var BG_RATE = 50;
-var FG_RATE = 125;
 
 var lastTime;
 
@@ -38,28 +39,26 @@ var Container = PIXI.Container,
     Sprite = PIXI.Sprite;
 
 // Rendering Options.
-var myView = document.getElementById('myCanvas');
-
 var rendererOptions = {
     antiAliasing: false,
     transparent: false,
     resolution: window.devicePixelRatio,
-    autoResize: true
+    autoResize: true,
+    view: document.getElementById('game-canvas')
 };
 
 // Create renderer.
-var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, myView, rendererOptions);
+var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
 
 // Create new Container for stage.
 var stage = new Container();
 
 // Renderer position on screen.
-renderer.view.style.position = "absolute";
 renderer.view.style.top = "0px";
 renderer.view.style.left = "0px"; // Centers window.
 
 // Add renderer to page.
-document.getElementById("game-window").appendChild(renderer.view);
+
 
 //Globals -------------------------------------------------------------------------------Globals
 var catcher;
@@ -144,7 +143,7 @@ function animateBackground() {
     mtnFar.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnFar;
     mtnMid.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnMid;
     clouds.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.clouds;
-    trees.tilePosition.x -= FG_RATE * delta + backgroundScrollSpeed.trees;
+    trees.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.trees;
     grass.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.grass;
 
     // Draw the stage and prepare for the next frame
