@@ -43,7 +43,28 @@
 </head>
 
 <body id="page-top">
+<!-- <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '452294205121403',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v2.8'
+    });
+    FB.AppEvents.logPageView();
+	FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+});	
+  };
 
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>-->
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -119,25 +140,39 @@
                 <p>Click the button below to start saving falling food! Get your high score up on the leader boards and
                     strike fear in the heart of food waste. </p>
                 <div id="login" style="color:black;">
-                    <input id="txtEmail" type="email" placeholder="Enter Email" required>
+                    <input id="txtEmailLogin" type="email" placeholder="Enter Email" required>
 
-                    <input id="txtPassword" type="password" placeholder="Enter Password" required>
+                    <input id="txtPasswordLogin" type="password" placeholder="Enter Password" required>
 
                     <button id="btnLogin">
                         Log in
                     </button>
                 </div>
                 <div id="accountCreation" style="color:black;">
-                    <input id="txtName" type="text" placeholder="Enter UserName">
+                    <input id="txtNameSignup" type="text" placeholder="Enter UserName">
 
-                    <input id="txtEmail" type="email" placeholder="Enter Email">
+                    <input id="txtEmailSignup" type="email" placeholder="Enter Email">
 
-                    <input id="txtPassword" type="password" placeholder="Enter Password">
+                    <input id="txtPasswordSignup" type="password" placeholder="Enter Password">
 
                     <button id="btnSignUp">
                         Sign up
                     </button>
                 </div>
+				<div>
+					<button id="googleSignIn">
+						Google Sign-in
+					</button>
+					<button id="googleSignOut">
+						Google Sign-out
+					</button>
+					<!-- <button id="facebookSignIn">
+						Facebook Sign-in
+					</button>
+					<button id="facebookSignOut">
+						Facebook Sign-out
+					</button> -->
+				</div>
                 <div class="badges">
                     <a class="badge-link" href="game.html" data-aos="zoom-in">
                         <img src="assets/img/web/play-badge.svg" alt="Play Food Fall">
@@ -334,8 +369,9 @@
 <!-- Theme JavaScript -->
 <script src="assets/js/theme.js"></script>
 
-<script src="game/accountLogin.js" defer></script>
-<script src="game/accountCreate.js" defer></script>
+<!-- Login/Firebase -->
+<script src="game/accountControl.js"></script>
+
 
 </body>
 
