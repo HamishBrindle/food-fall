@@ -57,7 +57,7 @@ button {
 #main-menu img {
     position: relative;
     display: inline-block;
-    width: 80%;
+    width: 50%;
     margin-bottom: 10px;
 
 }
@@ -111,3 +111,16 @@ button {
     top: 35%;
     left: 0;
 }
+
+#leader-board-table {
+    width: 300px;
+    min-width: 280px;
+    max-width: 500px;
+    margin: auto;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.15);
+}
+
+
+
