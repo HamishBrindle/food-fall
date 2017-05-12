@@ -23,15 +23,15 @@
     const btnSignUp = document.getElementById('btnSignUp');
 	const googleSignIn = document.getElementById('googleSignIn');
 	const googleSignOut = document.getElementById('googleSignOut');
-	const facebookSignIn = document.getElementById('facebookSignIn');
-	const facebookSignOut = document.getElementById('facebookSignOut');
+	/*const facebookSignIn = document.getElementById('facebookSignIn');
+	const facebookSignOut = document.getElementById('facebookSignOut');*/
 	
 	//Authentication for Google sign-in
 	var googleProvider = new firebase.auth.GoogleAuthProvider();
 	//Authentication for Facebook sign-in
 	var facebookProvider = new firebase.auth.FacebookAuthProvider();
 	
-	facebookSignIn.addEventListener('click', e => {
+	/*facebookSignIn.addEventListener('click', e => {
 		firebase.auth().signInWithRedirect(facebookProvider).then(function(result) {
 			var token = result.credential.accessToken;
 			var user = result.user;
@@ -54,7 +54,7 @@
 			}, function(error) {
 				console.log('Sign-out failed');
 			});
-	});
+	});*/
 	
 	googleSignIn.addEventListener('click', e => {
 		firebase.auth()
@@ -70,7 +70,7 @@
 				
 				console.log(errorCode);
 				console.log(errorMessage);
-			})
+			});
 	});
 	
 	googleSignOut.addEventListener('click', e => {
