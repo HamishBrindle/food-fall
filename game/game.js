@@ -119,7 +119,7 @@ var foodCount = 0;
     Makes new food sprites if MAX_FOOD has not been reached.
 */
 function makeFood() {
-    const MAX_FOOD = 5;
+    const MAX_FOOD = 1;
     if(foodCount >= MAX_FOOD) return;
     var newFoodIndex = weightedRand(fallingObjects);
     var newFood = PIXI.Sprite.fromImage('assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png');
