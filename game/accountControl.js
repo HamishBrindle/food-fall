@@ -21,7 +21,67 @@
     const txtEmailSignup = document.getElementById('txtEmailSignup');
     const txtPasswordSignup = document.getElementById('txtPasswordSignup');
     const btnSignUp = document.getElementById('btnSignUp');
-
+	const googleSignIn = document.getElementById('googleSignIn');
+	const googleSignOut = document.getElementById('googleSignOut');
+	const facebookSignIn = document.getElementById('facebookSignIn');
+	const facebookSignOut = document.getElementById('facebookSignOut');
+	
+	//Authentication for Google sign-in
+	var googleProvider = new firebase.auth.GoogleAuthProvider();
+	//Authentication for Facebook sign-in
+	var facebookProvider = new firebase.auth.FacebookAuthProvider();
+	
+	facebookSignIn.addEventListener('click', e => {
+		firebase.auth().signInWithRedirect(facebookProvider).then(function(result) {
+			var token = result.credential.accessToken;
+			var user = result.user;
+			
+			console.log(token);
+			console.log(user);
+		}).catch(function(error) {
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			
+			console.log(errorCode);
+			console.log(errorMessage);
+		});
+	});
+	
+	facebookSignOut.addEventListener('click', e => {
+		firebase.auth().signOut()
+			.then(function() {
+				console.log('Sign-out successful!');
+			}, function(error) {
+				console.log('Sign-out failed');
+			});
+	});
+	
+	googleSignIn.addEventListener('click', e => {
+		firebase.auth()
+			.signInWithRedirect(googleProvider).then(function(result){
+				var token = result.credential.accessToken;
+				var user = result.user;
+				
+				console.log(token);
+				console.log(user);
+			}).catch(function(error) {
+				var errorCode = error.code;
+				var errorMessage = error.message;
+				
+				console.log(errorCode);
+				console.log(errorMessage);
+			})
+	});
+	
+	googleSignOut.addEventListener('click', e => {
+		firebase.auth().signOut()
+			.then(function() {
+				console.log('Sign-out successful!');
+			}, function(error) {
+				console.log('Sign-out failed');
+			});
+	});
+	
 	//add login event
 	btnLogin.addEventListener('click', e => {
         const email = txtEmailLogin.value;
