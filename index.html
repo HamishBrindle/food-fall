@@ -139,41 +139,47 @@
                 <h2 class="section-heading">Play Food Fall</h2>
                 <p>Click the button below to start saving falling food! Get your high score up on the leader boards and
                     strike fear in the heart of food waste. </p>
-                <div id="login" style="color:black;">
-                    <input id="txtEmailLogin" type="email" placeholder="Enter Email" required>
 
-                    <input id="txtPasswordLogin" type="password" placeholder="Enter Password" required>
+                <div id="login" class="container">
+                    <form class="form-signin">
+                        <label for="txtEmailLogin" class="sr-only">Email address</label>
+                        <input type="email" id="txtEmailLogin" class="form-control" placeholder="Email address" required autofocus>
+                        <label for="txtPasswordLogin" class="sr-only">Password</label>
+                        <input type="password" id="txtPasswordLogin" class="form-control" placeholder="Password" required>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="remember-me"> Remember me
+                            </label>
+                        </div>
+                        <button id="btnLogin" class="btn btn-lg btn-primary btn-block" type="submit" href="game.html">Sign in</button>
+                    </form>
+                </div> <!-- /container -->
 
-                    <button id="btnLogin">
-                        Log in
+                <!-- SIGN UP -->
+                <!--<div id="accountCreation" style="color:black;">-->
+                    <!--<input id="txtNameSignup" type="text" placeholder="Enter UserName">-->
+                    <!--<input id="txtEmailSignup" type="email" placeholder="Enter Email">-->
+                    <!--<input id="txtPasswordSignup" type="password" placeholder="Enter Password">-->
+                    <!--<button id="btnSignUp">Sign up</button>-->
+                <!--</div>-->
+
+                <!-- GOOGLE SIGN IN -->
+                <!--<div>
+                    <button class="btn-auth btn-google" id="googleSignIn">
+                        Google Sign-in
                     </button>
-                </div>
-                <div id="accountCreation" style="color:black;">
-                    <input id="txtNameSignup" type="text" placeholder="Enter UserName">
-
-                    <input id="txtEmailSignup" type="email" placeholder="Enter Email">
-
-                    <input id="txtPasswordSignup" type="password" placeholder="Enter Password">
-
-                    <button id="btnSignUp">
-                        Sign up
-                    </button>
-                </div>
-				<div>
-					<button id="googleSignIn">
-						Google Sign-in
-					</button>
-					<button id="googleSignOut">
-						Google Sign-out
-					</button>
+                    <button id="googleSignOut">-->
+						<!--Google Sign-out-->
+					<!--</button>-->
 					<!-- <button id="facebookSignIn">
 						Facebook Sign-in
 					</button>
 					<button id="facebookSignOut">
 						Facebook Sign-out
-					</button> -->
-				</div>
+					</button>
+				</div>-->
                 <div class="badges">
+                    <h3>Or play as Guest</h3>
                     <a class="badge-link" href="game.html" data-aos="zoom-in">
                         <img src="assets/img/web/play-badge.svg" alt="Play Food Fall">
                     </a>
