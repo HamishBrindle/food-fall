@@ -231,12 +231,10 @@ var state = menu;
 
 //Animation loop
 function gameLoop() {
-    stats.begin();
     state();
     lastTime = new Date().getTime();
     tk.update();
     requestAnimationFrame(gameLoop);
-    stats.end();
 }
 
 //State definition for "playing" the game
@@ -245,7 +243,7 @@ function play() {
     gameBuild = false;
     menuDisplay = true;
     foodCatchCollision();
-    //animateBackground();
+    animateBackground();
     playerMovement();
     addScore();
     hideMenu();
