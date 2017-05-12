@@ -88,6 +88,8 @@ function displayNo() {
 }
 
 var scoreCount = 0;
+
+// initializes the original score text object to display.
 var score = new PIXI.Text('Score: ', {
   fontSize: 30,
   fontFamily: 'Arial',
@@ -128,7 +130,13 @@ function removeItem(childToDelete) {
     stage.removeChild(childToDelete);
 }
 
-// Determine if basket and food are colliding
+/**
+ * Determines whether the food "goes in" the basket
+ * (on the top of the basket only).
+ * @param basket
+ * @param food
+ * @returns {boolean} whether the food hits the basket opening.
+ */
 function isCollide(basket, food) {
     var xoffset = basket.width / 2;
     var yoffset = basket.height / 2;
@@ -197,13 +205,26 @@ function makeObstacle() {
     stage.addChild(newObstacle);
 }
 
+/**
+ * Switches the game state to the menu state and ends the game
+ * if the catcher hits an obstacle.
+ *
+ * @param catcher the catcher variable.
+ * @param obstacle the obstacle variable.
+ */
 function obstacleCollision(catcher, obstacle) {
     if (isCollideWholeBasket(catcher, obstacle)) {
         state = menu;
         endGame();
     }
 }
-
+/**
+ * Determines whether any part of the catcher touches an obstacle.
+ *
+ * @param basket the catcher variable
+ * @param obstacle the obstacle variable
+ * @returns {boolean} whether the score is visible.
+ */
 function isCollideWholeBasket(basket, obstacle) {
     var xoffset = basket.width / 2;
     var yoffset = basket.height / 2;
@@ -215,6 +236,9 @@ function isCollideWholeBasket(basket, obstacle) {
 
 var scoreVisible;
 
+/**
+ * Updates and displays the current score.
+ */
 function addScore() {
     if (!scoreVisible)
         score.x = GAME_WIDTH - 100;
