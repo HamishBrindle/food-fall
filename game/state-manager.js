@@ -3,22 +3,76 @@
  */
 
 var gamePaused;
+var leaderBoardVisibile;
 
 $("#btn-play").click(function() {
-    if (!gamePaused) {
-        state = menu;
-    } else {
+    if (gamePaused) {
         state = play;
+    } else {
+        state = menu;
     }
 });
+
+$("#btn-leader").click(function() {
+    if (leaderBoardVisibile) {
+        hideLeader();
+        leaderBoardVisibile = false;
+    } else {
+        displayLeader();
+        leaderBoardVisibile = true;
+    }
+}).on("tap", function() {
+    if (leaderBoardVisibile) {
+        hideLeader();
+        leaderBoardVisibile = false;
+    } else {
+        displayLeader();
+        leaderBoardVisibile = true;
+    }
+});
+
 
 // Detects var state change
 function hideMenu() {
     gamePaused = false;
     $("#overlay").css("display", "none");
+    $("#game-window").find("#overlay #game-over").css("display", "none");
 }
 
 function displayMenu() {
     gamePaused = true;
     $("#overlay").css("display", "block");
+}
+
+//
+function displayLeader() {
+    $("#game-window").find("#overlay #game-over").css("display", "block");
+    console.log("lb called");
+
+    var heading = new Array();
+    heading[0] = "User Name"
+    heading[1] = "Score"
+
+    var userData = new Array();
+    userData[0] = new Array("hsimah", "800")
+    userData[1] = new Array("yrrek", "900")
+    userData[2] = new Array("eiluj", "1000")
+
+    var myTable = "<table><tr><td style='width: 100px; color: red;'>User Name</td>";
+    myTable += "<td style='width: 100px; color: red; text-align: right;'>Score</td>";
+
+    myTable += "<tr><td style='width: 100px;                   '>---------------</td>";
+    myTable += "<td     style='width: 100px; text-align: right;'>---------------</td>";
+
+    for (var i = 0; i < userData.length; i++) {
+        myTable += "<tr><td style='width: 100px;'>"+ userData[i][0] +"</td>";
+        myTable += "<td style='width: 100px; text-align: right;'>" + userData[i][1] + "</td></tr>";
+    }
+    myTable += "</table>";
+
+    document.getElementById('game-over').innerHTML = myTable;
+}
+
+function hideLeader() {
+    $("#game-window").find("#overlay #game-over").css("display", "none");
 }

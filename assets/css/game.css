@@ -10,13 +10,17 @@
     position: absolute;
     z-index: 1;
 }
+
+.menu {
+    margin: 0 auto;
+}
+
 /* line 14, ../sass/style.scss */
 #game-window #overlay {
-    background: #000;
     display: none;
     height: 100%;
     width: 100%;
-    opacity: 0;
+    opacity: 1;
     top: 0;
     left: 0;
     position: absolute;
@@ -25,9 +29,52 @@
     z-index: 2;
 }
 
-/* line 34, ../sass/style.scss */
-#game-window:hover #overlay {
+#game-window #overlay #game-over {
+    display: none;
+    height: 100%;
+    width: 100%;
     position: absolute;
-    opacity: .5;
-    transition: opacity .5s;
+    opacity: 1;
+}
+
+#main-menu {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+}
+
+#main-menu img {
+position: relative;
+display: block;
+width: 50%;
+top: 25%;
+left: 25%;
+}
+
+#main-menu #btn-play {
+    position: absolute;
+    display: block;
+    width: 25%;
+    top: 50%;
+    left: 37.5%;
+}
+
+#main-menu #btn-leader {
+    position: absolute;
+    display: block;
+    width: 25%;
+    top: 55%;
+    left: 37.5%;
+}
+
+#game-over {
+    width: 20%;
+    height: 20%;
+    margin: auto;
+    z-index: 0;
+}
+
+#main-menu #login {
+    color: red;
 }
