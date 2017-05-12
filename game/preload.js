@@ -28,6 +28,10 @@ var BG_RATE = 100;
 
 var lastTime;
 
+var stats = new Stats();
+stats.showPanel(0);
+document.body.appendChild(stats.dom);
+
 //Aliases.
 var Container = PIXI.Container,
     autoDetectRenderer = PIXI.autoDetectRenderer,
@@ -160,7 +164,6 @@ function animateBackground() {
     if (mtnFar.tilePosition.x > mtnFar.width - window.width) {
         mtnFar.destroy();
     }
-
 }
 
 function loadBackgroundTextures() {
@@ -228,10 +231,12 @@ var state = menu;
 
 //Animation loop
 function gameLoop() {
+    stats.begin();
     state();
     lastTime = new Date().getTime();
     tk.update();
     requestAnimationFrame(gameLoop);
+    stats.end();
 }
 
 //State definition for "playing" the game
