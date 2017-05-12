@@ -59,9 +59,12 @@ function displayLeader() {
     heading[1] = "Score";
 
     var userData = [
-        ["hsimah", "800"],
-        ["yrrek", "900"],
-        ["eiluj", "1000"]
+        ["Leonardo Dicaprio", "1,000,000"],
+        ["Hamish", "3960"],
+        ["Juliana", "2900"],
+        ["Kerry", "2860"],
+        ["Wei", "2540"],
+        ["Rob", "2210"]
     ];
 
 
