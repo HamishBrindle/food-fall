@@ -1,3 +1,7 @@
+ul, li {
+    padding: 10px;
+}
+
 #game-window {
     width: 100%;
     height: 100%;
@@ -5,6 +9,7 @@
     margin: 0;
     z-index: 0;
 }
+
 /* line 9, ../sass/style.scss */
 #game-window canvas {
     position: absolute;
@@ -45,27 +50,23 @@
 }
 
 #main-menu img {
-position: relative;
-display: block;
-width: 50%;
-top: 25%;
-left: 25%;
+    position: relative;
+    display: block;
+    width: 50%;
+    margin: auto;
 }
 
-#main-menu #btn-play {
-    position: absolute;
-    display: block;
+#main-menu button {
+    display: inline-block;
     width: 25%;
-    top: 50%;
-    left: 37.5%;
+    -webkit-transform: translate(-50%, 0);
+    margin: auto;
+    position: absolute;
+    font-size: 10px;
 }
 
-#main-menu #btn-leader {
-    position: absolute;
-    display: block;
-    width: 25%;
-    top: 55%;
-    left: 37.5%;
+#main-menu #login {
+    color: red;
 }
 
 #game-over {
@@ -75,6 +76,41 @@ left: 25%;
     z-index: 0;
 }
 
-#main-menu #login {
-    color: red;
+.outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
 }
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+#menu-list {
+    position: absolute;
+    padding: 0;
+    width: 100%;
+    top: 35%;
+    left: 0;
+}
+
+#leader-board-table {
+    width: 300px;
+    min-width: 280px;
+    max-width: 500px;
+    margin: auto;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.15);
+}
+
+
+
