@@ -1,11 +1,11 @@
 /**
- * Created by hamis on 2017-05-10.
+ * Created by hamish on 2017-05-10.
  */
 
 var gamePaused;
-var leaderBoardVisibile;
+var leaderBoardVisible;
 
-$("#btn-play").click(function() {
+$("#btn-play").on('click touchstart', function() {
     if (gamePaused) {
         state = play;
     } else {
@@ -13,21 +13,13 @@ $("#btn-play").click(function() {
     }
 });
 
-$("#btn-leader").click(function() {
-    if (leaderBoardVisibile) {
+$("#btn-leader").on('click touchstart', function() {
+    if (leaderBoardVisible) {
         hideLeader();
-        leaderBoardVisibile = false;
+        leaderBoardVisible = false;
     } else {
         displayLeader();
-        leaderBoardVisibile = true;
-    }
-}).on("tap", function() {
-    if (leaderBoardVisibile) {
-        hideLeader();
-        leaderBoardVisibile = false;
-    } else {
-        displayLeader();
-        leaderBoardVisibile = true;
+        leaderBoardVisible = true;
     }
 });
 
