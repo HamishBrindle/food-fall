@@ -123,6 +123,13 @@ function initBackground() {
     grass =
         new PIXI.extras.TilingSprite(PIXI.loader.resources.grass.texture,
             GAME_WIDTH, GAME_HEIGHT);
+    sky.isBackground = true;
+    mtnFar.isBackground = true;
+    mtnMid.isBackground = true;
+    ground.isBackground = true;
+    clouds.isBackground = true;
+    trees.isBackground = true;
+    grass.isBackground = true;
 
     // Prepare for first frame of game loop/animation
     lastTime = new Date().getTime();
@@ -188,25 +195,7 @@ fallingObjects = [apple, banana, bread, orange, broccoli];
 Main game driver.
  */
 function setup() {
-    //Setting up sprites
-    catcher = new Sprite(
-        resources['assets/img/sprites/basket.png'].texture
-    );
-
-    //Catcher movement
-    catcher.y = GAME_HEIGHT / 2;
-    catcher.x = GAME_WIDTH / 2;
-    catcher.vx = 0;
-    catcher.vy = 0;
-    catcher.accelerationX = 0;
-    catcher.accelerationY = 0;
-    catcher.frictionX = 0.5;
-    catcher.frictionY = 0.5;
-    catcher.speed = 0.2;
-    catcher.drag = 0.98;
-    catcher.anchor.x = 0.5;
-    catcher.anchor.y = 0.5;
-    catcher.interactive = true;
+    //Setting up sprite
 
     // Initialize the the tiling-sprites background
     initBackground();
@@ -216,23 +205,12 @@ function setup() {
 
     // Add sprites to stage
     stage.addChild(grass);
-    stage.addChild(catcher);
 
     tk = new Tink(PIXI, renderer.view, scale);
-    tk.makeDraggable(catcher);
 
     //Touch and Mouse Controls
     pointer = tk.makePointer();
     //Pointer Definition
-    pointer.press = function () {
-        console.log("The pointer was pressed");
-        console.log("Mouse X: " + pointer.x + " Mouse Y: " + pointer.y);
-        console.log("Catcher X: " + catcher.x + " Mouse Y: " + catcher.y);
-    };
-    pointer.release = function () {
-        console.log("released");
-    };
-    pointer.tap = () => console.log("The pointer was tapped");
 
     setupdone = true;
 
@@ -262,6 +240,9 @@ function gameLoop() {
 
 //State definition for "playing" the game
 function play() {
+    gameInit();
+    gameBuild = false;
+    menuDisplay = true;
     foodCatchCollision();
     animateBackground();
     playerMovement();
@@ -287,6 +268,9 @@ function dbInsert() {
 }
 
 function menu() {
+    menuInit();
+    gameBuild = true;
+    menuDisplay = false;
     animateBackground();
     foodCatchCollision();
     hideScore();

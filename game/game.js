@@ -2,34 +2,73 @@
 *   game.js
 *   Main file for Food Fall!
  */
-
-countDown();
-setTimeout(makeSprites, 5000);
+var timer = [];
 // Speed of Game
-var three = PIXI.Sprite.fromImage('assets/img/sprites/cd-3.png');
-var two = PIXI.Sprite.fromImage('assets/img/sprites/cd-2.png');
-var one = PIXI.Sprite.fromImage('assets/img/sprites/cd-1.png');
-var go = PIXI.Sprite.fromImage('assets/img/sprites/cd-go.png');
 
-var countDownNumbers = [three, two, one, go];
-var countDownIndex = 0;
-var timer;
 function countDown() {
     displayNo;
-    setTimeout(displayNo, 1000);
-    setTimeout(displayNo, 2000);
-    setTimeout(displayNo, 3000);
-    setTimeout(displayNo, 4000);
-    timer = setTimeout(displayNo, 5000);
+    timer.push(setTimeout(displayNo, 1000));
+    timer.push(setTimeout(displayNo, 2000));
+    timer.push(setTimeout(displayNo, 3000));
+    timer.push(setTimeout(displayNo, 4000));
+    timer.push(setTimeout(displayNo, 5000));
     clearCountDown;
 }
 
+function gameInit() {
+    if(gameBuild) {
+        countDownIndex = 0;
+        var three = PIXI.Sprite.fromImage('assets/img/sprites/cd-3.png');
+        var two = PIXI.Sprite.fromImage('assets/img/sprites/cd-2.png');
+        var one = PIXI.Sprite.fromImage('assets/img/sprites/cd-1.png');
+        var go = PIXI.Sprite.fromImage('assets/img/sprites/cd-go.png');
+        countDownNumbers = [three, two, one, go];
+        countDown();
+        timer.push(setTimeout(makeSprites, 5000));
+        catcher = new Sprite(
+            resources['assets/img/sprites/basket.png'].texture
+        );
+        //Catcher movement
+        catcher.alpha = 1;
+        catcher.y = GAME_HEIGHT / 2;
+        catcher.x = GAME_WIDTH / 2;
+        catcher.vx = 0;
+        catcher.vy = 0;
+        catcher.accelerationX = 0;
+        catcher.accelerationY = 0;
+        catcher.frictionX = 0.5;
+        catcher.frictionY = 0.5;
+        catcher.speed = 0.2;
+        catcher.drag = 0.98;
+        catcher.anchor.x = 0.5;
+        catcher.anchor.y = 0.5;
+        catcher.interactive = true;
+        stage.addChild(catcher);
+        tk.makeDraggable(catcher);
+    }
+}
+
+function menuInit() {
+    if(typeof menuDisplay != 'undefined' && menuDisplay) {
+        var childrenToDelete = [];
+        for (var i in stage.children) {
+            if(stage.children[i].isFood || stage.children[i].isObstacle) {
+                childrenToDelete.push(stage.children[i]);
+            }
+        }
+        for (var i = 0; i < childrenToDelete.length; i++) {
+            removeItem(childrenToDelete[i]);
+        }
+    }
+}
+
 function clearCountDown() {
-    clearTimeout(timer);
+    for(var i = 0; i < timer.length; i++) {
+        clearTimeout(timer[i]);
+    }
 }
 
 function displayNo() {
-
     var curNum = countDownNumbers[countDownIndex];
     if(countDownIndex == 0) {
         stage.addChild(curNum);
@@ -55,9 +94,10 @@ var score = new PIXI.Text('Score: ', {
   fill: 'white'
 });
 
+
 function makeSprites() {
-    setInterval(makeFood, 100);
-    setInterval(makeObstacle, 200);
+    foodInterval = setInterval(makeFood, 100);
+    obstacleInterval = setInterval(makeObstacle, 200);
 }
 
 var foodCount = 0;
@@ -100,35 +140,36 @@ function isCollide(basket, food) {
 }
 
 function foodCatchCollision() {
+
     var currtime = new Date().getTime();
     var deltaTime = parseFloat((currtime - lastTime)/1000);
     var childrenToDelete = [];
     for (var i in stage.children) {
-        var fallingItem = stage.children[i];
-        if(fallingItem.isObstacle) {
-            fallingItem.x -= 8;
-            obstacleCollision(catcher, fallingItem);
-            if(fallingItem.x < (-fallingItem.width)) {
-                childrenToDelete.push(fallingItem);
-                fallingItem.destroy();
+        var item = stage.children[i];
+        if(item.isObstacle) {
+            item.x -= 8;
+            obstacleCollision(catcher, item);
+            if(item.x < (-item.width)) {
+                childrenToDelete.push(item);
+                item.destroy();
                 --obstacleCount;
             }
         }
-        if (fallingItem.isFood) {
-            var deltaY = fallingItem.velocity * deltaTime;
-            var deltaVy = fallingItem.accelerationY * deltaTime;
-            fallingItem.y += deltaY;
-            fallingItem.velocity += deltaVy;
-            fallingItem.rotation += fallingItem.rotateFactor;
-             if (fallingItem.y > GAME_HEIGHT) {
-                childrenToDelete.push(fallingItem);
-                fallingItem.destroy();
+        if (item.isFood) {
+            var deltaY = item.velocity * deltaTime;
+            var deltaVy = item.accelerationY * deltaTime;
+            item.y += deltaY;
+            item.velocity += deltaVy;
+            item.rotation += item.rotateFactor;
+             if (item.y > GAME_HEIGHT) {
+                childrenToDelete.push(item);
+                item.destroy();
                 --foodCount;
             }
             try {
-                if (isCollide(catcher, fallingItem)) {
-                    childrenToDelete.push(fallingItem);
-                    fallingItem.destroy();
+                if (isCollide(catcher, item)) {
+                    childrenToDelete.push(item);
+                    item.destroy();
                     sound.play('coin');
                     scoreCount += 10;
                     stage.removeChild(score);
@@ -158,8 +199,8 @@ function makeObstacle() {
 
 function obstacleCollision(catcher, obstacle) {
     if (isCollideWholeBasket(catcher, obstacle)) {
-        console.log("game over");
         state = menu;
+        endGame();
     }
 }
 
@@ -189,4 +230,13 @@ function hideScore() {
         stage.removeChild(score);
         scoreVisible = false;
     }
+}
+
+function endGame() {
+    clearInterval(foodInterval);
+    clearInterval(obstacleInterval);
+    scoreCount = 0;
+    foodCount = 0;
+    obstacleCount = 0;
+    catcher.alpha = 0;
 }
