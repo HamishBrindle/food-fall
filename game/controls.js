@@ -3,21 +3,6 @@ var left = keyboard(37),
     up = keyboard(38),
     right = keyboard(39),
     down = keyboard(40);
-    
-function moveToPointer() {
-    if (pointer.x < catcher.x) {
-        leftPress();
-    }
-    if (pointer.y < catcher.y) {
-        upPress();
-    }
-    if (pointer.x > catcher.x) {
-        rightPress();
-    }
-    if (pointer.y > catcher.y) {
-        downPress();
-    }
-}
 
 //Keyboard Controls Definition
 function keyControls() {
@@ -101,6 +86,7 @@ function downRelease() {
         catcher.frictionY = catcher.drag;
     }
 }
+
 //Binds catcher to part of the screen
 function bound() {
     if (catcher.vy < 0 && catcher.y < GAME_HEIGHT / 6) {
@@ -120,6 +106,7 @@ function bound() {
         rightRelease();
     }
 }
+
 //Keyboard object definition
 function keyboard(keyCode) {
     var key = {};
@@ -155,8 +142,9 @@ function keyboard(keyCode) {
     );
     return key;
 }
-function playerMovement() {
 
+// Catcher movement engine
+function playerMovement() {
     //Implementing acceleration
     catcher.vx += catcher.accelerationX;
     catcher.vy += catcher.accelerationY;
@@ -166,5 +154,6 @@ function playerMovement() {
     //Implementing movement
     catcher.x += catcher.vx;
     catcher.y += catcher.vy;
+    //Implementing bounds
     bound();
 }
