@@ -245,7 +245,7 @@ function play() {
     gameBuild = false;
     menuDisplay = true;
     foodCatchCollision();
-    animateBackground();
+    //animateBackground();
     playerMovement();
     addScore();
     hideMenu();
@@ -271,7 +271,7 @@ function menu() {
     menuInit();
     gameBuild = true;
     menuDisplay = false;
-    animateBackground();
+    //animateBackground();
     foodCatchCollision();
     hideScore();
     displayMenu();
