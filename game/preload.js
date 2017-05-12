@@ -57,14 +57,19 @@ renderer.view.style.left = "0px"; // Centers window.
 
 
 //Globals -------------------------------------------------------------------------------Globals
+
+// Player controlled basket
 var catcher;
 
+//  Tink.js object
 var tk;
 
+//  Scalefactor amount
 var scale = scaleToWindow(renderer.view);
 
 var setupdone = false;
 
+// Pointer Object for Mouse and Touch
 var pointer;
 
 // Texture Cache
@@ -195,7 +200,6 @@ fallingObjects = [apple, banana, bread, orange, broccoli];
 Main game driver.
  */
 function setup() {
-    //Setting up sprite
 
     // Initialize the the tiling-sprites background
     initBackground();
@@ -264,7 +268,6 @@ function leaderBoard() {
 //Inserts highscore into database
 function dbInsert() {
     //firebase injections here
-    scoreCount = 0;
 }
 
 function menu() {
