@@ -14,7 +14,9 @@ function countDown() {
     timer.push(setTimeout(displayNo, 5000));
     clearCountDown;
 }
-
+/*
+    Initializes Game and countdown
+*/
 function gameInit() {
     if(gameBuild) {
         countDownIndex = 0;
@@ -48,6 +50,9 @@ function gameInit() {
     }
 }
 
+/*
+    Initializes menu
+*/
 function menuInit() {
     if(typeof menuDisplay != 'undefined' && menuDisplay) {
         var childrenToDelete = [];
@@ -62,12 +67,18 @@ function menuInit() {
     }
 }
 
+/*
+    Clears all of the countdown timers.
+*/
 function clearCountDown() {
     for(var i = 0; i < timer.length; i++) {
         clearTimeout(timer[i]);
     }
 }
 
+/*
+    For displaying and removing the numbers for the countdown.
+*/
 function displayNo() {
     var curNum = countDownNumbers[countDownIndex];
     if(countDownIndex == 0) {
@@ -88,21 +99,25 @@ function displayNo() {
 }
 
 var scoreCount = 0;
-
-// initializes the original score text object to display.
 var score = new PIXI.Text('Score: ', {
   fontSize: 30,
   fontFamily: 'Arial',
   fill: 'white'
 });
 
-
+/*
+    Initializes all of the Intervals for making the food and the obstacles.
+*/
 function makeSprites() {
     foodInterval = setInterval(makeFood, 100);
     obstacleInterval = setInterval(makeObstacle, 200);
 }
 
 var foodCount = 0;
+
+/*
+    Makes new food sprites if MAX_FOOD has not been reached.
+*/
 function makeFood() {
     const MAX_FOOD = 5;
     if(foodCount >= MAX_FOOD) return;
@@ -126,17 +141,14 @@ function makeFood() {
     stage.addChild(newFood);
 }
 
+/*
+    Removes item from stage.
+*/
 function removeItem(childToDelete) {
     stage.removeChild(childToDelete);
 }
 
-/**
- * Determines whether the food "goes in" the basket
- * (on the top of the basket only).
- * @param basket
- * @param food
- * @returns {boolean} whether the food hits the basket opening.
- */
+// Determine if basket and food are colliding
 function isCollide(basket, food) {
     var xoffset = basket.width / 2;
     var yoffset = basket.height / 2;
@@ -147,6 +159,12 @@ function isCollide(basket, food) {
     return inBasket;
 }
 
+/*
+    Main game function.  Goes through each child of the stage, and detects if the
+    child is a food or an obstacle, then tests if anything has collided with the
+    basket.  If it has collided with the basket, then either increment points,
+    or enter game over/leaderboard state.
+*/
 function foodCatchCollision() {
 
     var currtime = new Date().getTime();
@@ -192,6 +210,10 @@ function foodCatchCollision() {
 }
 
 var obstacleCount = 0;
+
+/*
+    Makes obstacle if the MAX_OBSTACLE has not been reached.
+*/
 function makeObstacle() {
     const MAX_OBSTACLE = 1;
     if(obstacleCount >= MAX_OBSTACLE) return;
@@ -205,26 +227,21 @@ function makeObstacle() {
     stage.addChild(newObstacle);
 }
 
-/**
- * Switches the game state to the menu state and ends the game
- * if the catcher hits an obstacle.
- *
- * @param catcher the catcher variable.
- * @param obstacle the obstacle variable.
- */
+/*
+    Tests if the basket has collided with any obstacles.  If it has collided, enter the
+    menu state
+*/
 function obstacleCollision(catcher, obstacle) {
     if (isCollideWholeBasket(catcher, obstacle)) {
         state = menu;
         endGame();
     }
 }
-/**
- * Determines whether any part of the catcher touches an obstacle.
- *
- * @param basket the catcher variable
- * @param obstacle the obstacle variable
- * @returns {boolean} whether the score is visible.
- */
+
+/*
+    Tests if obstacle has collided with the basket.
+*/
+
 function isCollideWholeBasket(basket, obstacle) {
     var xoffset = basket.width / 2;
     var yoffset = basket.height / 2;
@@ -236,9 +253,9 @@ function isCollideWholeBasket(basket, obstacle) {
 
 var scoreVisible;
 
-/**
- * Updates and displays the current score.
- */
+/*
+    Adds score to the screen
+*/
 function addScore() {
     if (!scoreVisible)
         score.x = GAME_WIDTH - 100;
@@ -249,6 +266,9 @@ function addScore() {
     scoreVisible = true;
 }
 
+/*
+    Hides the score from the screen
+*/
 function hideScore() {
     if (scoreVisible) {
         stage.removeChild(score);
@@ -256,6 +276,9 @@ function hideScore() {
     }
 }
 
+/*
+    Clears all of the intervals, and sets appropriate variables to zero.
+*/
 function endGame() {
     clearInterval(foodInterval);
     clearInterval(obstacleInterval);
