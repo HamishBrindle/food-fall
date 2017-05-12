@@ -7,11 +7,11 @@ var GAME_HEIGHT = 500;
 var maxXspeed = 50;
 var maxYspeed = 25;
 var backgroundScrollSpeed = {
-    mtnFar: 2,
-    mtnMid: 3,
-    clouds: 2.5,
-    trees: 4,
-    grass: 6
+    mtnFar: 0,
+    mtnMid: 0.25,
+    clouds: -0.5,
+    trees: 0.5,
+    grass: 4
 };
 
 // Background textures
@@ -24,7 +24,7 @@ var sky,
     grass;
 
 // Adjust to speed/slow background scrolling.
-var BG_RATE = 200;
+var BG_RATE = 100;
 
 var lastTime;
 
@@ -100,6 +100,11 @@ function initBackground() {
             GAME_WIDTH, GAME_HEIGHT);
     stage.addChild(sky);
 
+    clouds =
+        new PIXI.extras.TilingSprite(PIXI.loader.resources.clouds.texture,
+            GAME_WIDTH, GAME_HEIGHT);
+    stage.addChild(clouds);
+
     mtnFar =
         new PIXI.extras.TilingSprite(PIXI.loader.resources.mtnFar.texture,
             GAME_WIDTH, GAME_HEIGHT);
@@ -115,11 +120,6 @@ function initBackground() {
             GAME_WIDTH, GAME_HEIGHT);
     stage.addChild(ground);
 
-    clouds =
-        new PIXI.extras.TilingSprite(PIXI.loader.resources.clouds.texture,
-            GAME_WIDTH, GAME_HEIGHT);
-    stage.addChild(clouds);
-
     trees =
         new PIXI.extras.TilingSprite(PIXI.loader.resources.trees.texture,
             GAME_WIDTH, GAME_HEIGHT);
@@ -129,10 +129,10 @@ function initBackground() {
         new PIXI.extras.TilingSprite(PIXI.loader.resources.grass.texture,
             GAME_WIDTH, GAME_HEIGHT);
     sky.isBackground = true;
+    clouds.isBackground = true;
     mtnFar.isBackground = true;
     mtnMid.isBackground = true;
     ground.isBackground = true;
-    clouds.isBackground = true;
     trees.isBackground = true;
     grass.isBackground = true;
 
@@ -149,55 +149,47 @@ function animateBackground() {
 
 // Scroll the terrain
     mtnFar.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnFar;
-    mtnMid.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnMid;
     clouds.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.clouds;
+    mtnMid.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnMid;
     trees.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.trees;
     grass.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.grass;
 
     // Draw the stage and prepare for the next frame
     lastTime = currtime;
 
+    if (mtnFar.tilePosition.x > mtnFar.width - window.width) {
+        mtnFar.destroy();
+    }
+
 }
 
 function loadBackgroundTextures() {
-
-    if (window.devicePixelRatio >= 2 &&
-        renderer instanceof PIXI.WebGLRenderer) {
-        loader.add("sky", "assets/img/tiling-sprites/sky@2x.png");
-        loader.add("mtnFar", "assets/img/tiling-sprites/mtn-far@2x.png");
-        loader.add("mtnMid", "assets/img/tiling-sprites/mtn-mid@2x.png");
-        loader.add("ground", "assets/img/tiling-sprites/ground@2x.png");
-        loader.add("clouds", "assets/img/tiling-sprites/clouds@2x.png");
-        loader.add("trees", "assets/img/tiling-sprites/trees@2x.png");
-        loader.add("grass", "assets/img/tiling-sprites/grass@2x.png");
-    } else {
-        loader.add("sky", "assets/img/tiling-sprites/sky.png");
-        loader.add("mtnFar", "assets/img/tiling-sprites/mtn-far.png");
-        loader.add("mtnMid", "assets/img/tiling-sprites/mtn-mid.png");
-        loader.add("ground", "assets/img/tiling-sprites/ground.png");
-        loader.add("clouds", "assets/img/tiling-sprites/clouds.png");
-        loader.add("trees", "assets/img/tiling-sprites/trees.png");
-        loader.add("grass", "assets/img/tiling-sprites/grass.png");
-    }
+    loader.add("sky", "assets/img/tiling-sprites/sky.png");
+    loader.add("mtnFar", "assets/img/tiling-sprites/mtn-far.png");
+    loader.add("mtnMid", "assets/img/tiling-sprites/mtn-mid.png");
+    loader.add("ground", "assets/img/tiling-sprites/ground.png");
+    loader.add("clouds", "assets/img/tiling-sprites/clouds.png");
+    loader.add("trees", "assets/img/tiling-sprites/trees.png");
+    loader.add("grass", "assets/img/tiling-sprites/grass.png");
 }
 
 /*
-Prints loading log to console.
+ Prints loading log to console.
  */
 function loadProgressHandler() {
     console.log("loading");
 }
 
-var apple = {name:"apple", weight:0.2};
-var banana = {name:"banana", weight:0.2};
-var bread = {name:"bread", weight:0.2};
-var orange = {name:"orange", weight:0.2};
-var broccoli = {name:"broccoli", weight:0.2};
+var apple = {name: "apple", weight: 0.2};
+var banana = {name: "banana", weight: 0.2};
+var bread = {name: "bread", weight: 0.2};
+var orange = {name: "orange", weight: 0.2};
+var broccoli = {name: "broccoli", weight: 0.2};
 
 fallingObjects = [apple, banana, bread, orange, broccoli];
 
 /*
-Main game driver.
+ Main game driver.
  */
 function setup() {
 
