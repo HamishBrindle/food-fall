@@ -31,6 +31,11 @@ $("#btn-leader").click(function() {
     }
 });
 
+$(window).resize(fitGameWindowDiv()).ready(fitGameWindowDiv());
+
+function fitGameWindowDiv() {
+    $("#game-window").css("height", $("#game-canvas").height);
+}
 
 // Detects var state change
 function hideMenu() {
@@ -49,26 +54,26 @@ function displayLeader() {
     $("#game-window").find("#overlay #game-over").css("display", "block");
     console.log("lb called");
 
-    var heading = new Array();
-    heading[0] = "User Name"
-    heading[1] = "Score"
+    var heading = [];
+    heading[0] = "User Name";
+    heading[1] = "Score";
 
-    var userData = new Array();
-    userData[0] = new Array("hsimah", "800")
-    userData[1] = new Array("yrrek", "900")
-    userData[2] = new Array("eiluj", "1000")
+    var userData = [
+        ["hsimah", "800"],
+        ["yrrek", "900"],
+        ["eiluj", "1000"]
+    ];
 
-    var myTable = "<table><tr><td style='width: 100px; color: red;'>User Name</td>";
-    myTable += "<td style='width: 100px; color: red; text-align: right;'>Score</td>";
 
-    myTable += "<tr><td style='width: 100px;                   '>---------------</td>";
-    myTable += "<td     style='width: 100px; text-align: right;'>---------------</td>";
+    var myTable = "<table class='table' id='leader-board-table'><thead><tr>";
+    myTable += "<th>User Name</th><th>Score</th></tr>";
+    myTable += "</thead><tbody>";
 
     for (var i = 0; i < userData.length; i++) {
-        myTable += "<tr><td style='width: 100px;'>"+ userData[i][0] +"</td>";
-        myTable += "<td style='width: 100px; text-align: right;'>" + userData[i][1] + "</td></tr>";
+        myTable += "<tr><td>"+ userData[i][0] +"</td>";
+        myTable += "<td>" + userData[i][1] + "</td></tr>";
     }
-    myTable += "</table>";
+    myTable += "</tbody></table>";
 
     document.getElementById('game-over').innerHTML = myTable;
 }

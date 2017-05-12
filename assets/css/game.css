@@ -68,6 +68,10 @@ left: 25%;
     left: 37.5%;
 }
 
+#main-menu #login {
+    color: red;
+}
+
 #game-over {
     width: 20%;
     height: 20%;
@@ -75,6 +79,39 @@ left: 25%;
     z-index: 0;
 }
 
-#main-menu #login {
-    color: red;
+.outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
 }
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+#menu-list {
+    position: absolute;
+    padding: 0;
+    width: 100%;
+    top: 35%;
+    left: 0;
+}
+
+#leader-board-table {
+    width: 300px;
+    min-width: 280px;
+    max-width: 500px;
+    margin: auto;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.15);
+}
+
