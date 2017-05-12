@@ -174,22 +174,22 @@ function loadBackgroundTextures() {
 }
 
 /*
-Prints loading log to console.
+ Prints loading log to console.
  */
 function loadProgressHandler() {
     console.log("loading");
 }
 
-var apple = {name:"apple", weight:0.2};
-var banana = {name:"banana", weight:0.2};
-var bread = {name:"bread", weight:0.2};
-var orange = {name:"orange", weight:0.2};
-var broccoli = {name:"broccoli", weight:0.2};
+var apple = {name: "apple", weight: 0.2};
+var banana = {name: "banana", weight: 0.2};
+var bread = {name: "bread", weight: 0.2};
+var orange = {name: "orange", weight: 0.2};
+var broccoli = {name: "broccoli", weight: 0.2};
 
 fallingObjects = [apple, banana, bread, orange, broccoli];
 
 /*
-Main game driver.
+ Main game driver.
  */
 function setup() {
 
