@@ -195,25 +195,7 @@ fallingObjects = [apple, banana, bread, orange, broccoli];
 Main game driver.
  */
 function setup() {
-    //Setting up sprites
-    catcher = new Sprite(
-        resources['assets/img/sprites/basket.png'].texture
-    );
-
-    //Catcher movement
-    catcher.y = GAME_HEIGHT / 2;
-    catcher.x = GAME_WIDTH / 2;
-    catcher.vx = 0;
-    catcher.vy = 0;
-    catcher.accelerationX = 0;
-    catcher.accelerationY = 0;
-    catcher.frictionX = 0.5;
-    catcher.frictionY = 0.5;
-    catcher.speed = 0.2;
-    catcher.drag = 0.98;
-    catcher.anchor.x = 0.5;
-    catcher.anchor.y = 0.5;
-    catcher.interactive = true;
+    //Setting up sprite
 
     // Initialize the the tiling-sprites background
     initBackground();
@@ -223,10 +205,8 @@ function setup() {
 
     // Add sprites to stage
     stage.addChild(grass);
-    stage.addChild(catcher);
 
     tk = new Tink(PIXI, renderer.view, scale);
-    tk.makeDraggable(catcher);
 
     //Touch and Mouse Controls
     pointer = tk.makePointer();
@@ -262,6 +242,7 @@ function gameLoop() {
 function play() {
     gameInit();
     gameBuild = false;
+    menuDisplay = true;
     foodCatchCollision();
     animateBackground();
     playerMovement();
@@ -271,12 +252,13 @@ function play() {
 }
 
 function menu() {
-    console.log("in menu");
+    menuInit();
     gameBuild = true;
+    menuDisplay = false;
     animateBackground();
     foodCatchCollision();
     hideScore();
     displayMenu();
-    // renderer.render(stage);
+    renderer.render(stage);
     // This is what animates play
 }

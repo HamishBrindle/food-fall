@@ -17,7 +17,6 @@ function countDown() {
 
 function gameInit() {
     if(gameBuild) {
-        console.log("in game init");
         countDownIndex = 0;
         var three = PIXI.Sprite.fromImage('assets/img/sprites/cd-3.png');
         var two = PIXI.Sprite.fromImage('assets/img/sprites/cd-2.png');
@@ -26,6 +25,40 @@ function gameInit() {
         countDownNumbers = [three, two, one, go];
         countDown();
         timer.push(setTimeout(makeSprites, 5000));
+        catcher = new Sprite(
+            resources['assets/img/sprites/basket.png'].texture
+        );
+        //Catcher movement
+        catcher.alpha = 1;
+        catcher.y = GAME_HEIGHT / 2;
+        catcher.x = GAME_WIDTH / 2;
+        catcher.vx = 0;
+        catcher.vy = 0;
+        catcher.accelerationX = 0;
+        catcher.accelerationY = 0;
+        catcher.frictionX = 0.5;
+        catcher.frictionY = 0.5;
+        catcher.speed = 0.2;
+        catcher.drag = 0.98;
+        catcher.anchor.x = 0.5;
+        catcher.anchor.y = 0.5;
+        catcher.interactive = true;
+        stage.addChild(catcher);
+        tk.makeDraggable(catcher);
+    }
+}
+
+function menuInit() {
+    if(typeof menuDisplay != 'undefined' && menuDisplay) {
+        var childrenToDelete = [];
+        for (var i in stage.children) {
+            if(stage.children[i].isFood || stage.children[i].isObstacle) {
+                childrenToDelete.push(stage.children[i]);
+            }
+        }
+        for (var i = 0; i < childrenToDelete.length; i++) {
+            removeItem(childrenToDelete[i]);
+        }
     }
 }
 
@@ -36,7 +69,6 @@ function clearCountDown() {
 }
 
 function displayNo() {
-    console.log("countDownIndex", countDownIndex);
     var curNum = countDownNumbers[countDownIndex];
     if(countDownIndex == 0) {
         stage.addChild(curNum);
@@ -64,8 +96,8 @@ var score = new PIXI.Text('Score: ', {
 
 
 function makeSprites() {
-    setInterval(makeFood, 100);
-    setInterval(makeObstacle, 200);
+    foodInterval = setInterval(makeFood, 100);
+    obstacleInterval = setInterval(makeObstacle, 200);
 }
 
 var foodCount = 0;
@@ -168,7 +200,7 @@ function makeObstacle() {
 function obstacleCollision(catcher, obstacle) {
     if (isCollideWholeBasket(catcher, obstacle)) {
         state = menu;
-        // destroyAll();
+        endGame();
     }
 }
 
@@ -200,11 +232,11 @@ function hideScore() {
     }
 }
 
-function destroyAll() {
-    console.log("indestrpy");
-
-    for (var i in stage.children) {
-        if(stage.children.isBackground) continue;
-        removeItem(stage.children[i]);
-    }
+function endGame() {
+    clearInterval(foodInterval);
+    clearInterval(obstacleInterval);
+    scoreCount = 0;
+    foodCount = 0;
+    obstacleCount = 0;
+    catcher.alpha = 0;
 }
