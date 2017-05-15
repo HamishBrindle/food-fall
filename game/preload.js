@@ -191,6 +191,19 @@ var broccoli = {name: "broccoli", weight: 0.2};
 
 fallingObjects = [apple, banana, bread, orange, broccoli];
 
+function menuInit() {
+    if(typeof menuDisplay != 'undefined' && menuDisplay) {
+        var childrenToDelete = [];
+        for (var i in stage.children) {
+            if(stage.children[i].isFood || stage.children[i].isObstacle) {
+                childrenToDelete.push(stage.children[i]);
+            }
+        }
+        for (var i = 0; i < childrenToDelete.length; i++) {
+            removeItem(childrenToDelete[i]);
+        }
+    }
+}
 /*
  Main game driver.
  */

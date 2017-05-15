@@ -53,19 +53,7 @@ function gameInit() {
 /*
     Initializes menu
 */
-function menuInit() {
-    if(typeof menuDisplay != 'undefined' && menuDisplay) {
-        var childrenToDelete = [];
-        for (var i in stage.children) {
-            if(stage.children[i].isFood || stage.children[i].isObstacle) {
-                childrenToDelete.push(stage.children[i]);
-            }
-        }
-        for (var i = 0; i < childrenToDelete.length; i++) {
-            removeItem(childrenToDelete[i]);
-        }
-    }
-}
+
 
 /*
     Clears all of the countdown timers.
@@ -188,6 +176,9 @@ function foodCatchCollision() {
             item.velocity += deltaVy;
             item.rotation += item.rotateFactor;
              if (item.y > GAME_HEIGHT) {
+                 if (scoreCount > 0) {
+                     scoreCount--;
+                 }
                 childrenToDelete.push(item);
                 item.destroy();
                 --foodCount;
