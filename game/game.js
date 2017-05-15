@@ -176,9 +176,8 @@ function foodCatchCollision() {
             item.velocity += deltaVy;
             item.rotation += item.rotateFactor;
              if (item.y > GAME_HEIGHT) {
-                 if (scoreCount > 0) {
-                     scoreCount--;
-                 }
+                 if (scoreCount > 0)
+                     scoreCount -= 5;
                 childrenToDelete.push(item);
                 item.destroy();
                 --foodCount;
