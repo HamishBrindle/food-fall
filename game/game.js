@@ -89,9 +89,10 @@ function displayNo() {
         stage.addChild(curNum);
     } else {
         var prevNum = countDownNumbers[countDownIndex - 1];
-        prevNum.destroy();
+
     }
     try {
+        prevNum.destroy();
         curNum.x = 100;
         curNum.y = 50;
     } catch (err) {}
