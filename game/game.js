@@ -107,6 +107,7 @@ function foodCatchCollision() {
 
 var obstacleCount = 0;
 function makeObstacle() {
+    return;
     const MAX_OBSTACLE = 1;
     if(obstacleCount >= MAX_OBSTACLE) return;
 
