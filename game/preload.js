@@ -246,7 +246,7 @@ function play() {
     animateBackground();
     playerMovement();
     addScore();
-    hideMenu();
+    //hideMenu();
     renderer.render(stage);
 }
 
@@ -256,7 +256,7 @@ function leaderBoard() {
     foodCatchCollision();
     hideScore();
     dbInsert();
-    displayLeader();
+    //displayLeader();
     renderer.render(stage);
 }
 
@@ -269,10 +269,10 @@ function menu() {
     menuInit();
     gameBuild = true;
     menuDisplay = false;
-    //animateBackground();
+    animateBackground();
     foodCatchCollision();
     hideScore();
-    displayMenu();
+    //displayMenu();
     renderer.render(stage);
     // This is what animates play
 }

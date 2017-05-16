@@ -2,13 +2,12 @@
  * Created by hamish on 2017-05-10.
  */
 
+/*
+
 var gamePaused;
 var leaderBoardVisible;
 
-/**
- * Changes the game state upon touching or clicking
- * the play button.
- */
+
 $("#btn-play").on('click touchstart', function() {
     if (gamePaused) {
         state = play;
@@ -17,10 +16,7 @@ $("#btn-play").on('click touchstart', function() {
     }
 });
 
-/**
- * Makes the leader board visible or invisible when button is
- * clicked or touched.
- */
+
 $("#btn-leader").on('click touchstart', function() {
     if (leaderBoardVisible) {
         hideLeader();
@@ -84,3 +80,5 @@ function displayLeader() {
 function hideLeader() {
     $("#game-window").find("#overlay #game-over").css("display", "none");
 }
+
+*/
