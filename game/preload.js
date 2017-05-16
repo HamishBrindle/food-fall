@@ -76,8 +76,6 @@ var setupdone = false;
 // Pointer Object for Mouse and Touch
 var pointer;
 
-var gameBuild;
-
 // Texture Cache
 loadBackgroundTextures();
 
@@ -229,7 +227,7 @@ function setup() {
 
 }
 //Set the game's current state to `play`:
-var state = play;
+var state = menu;
 
 //Animation loop
 function gameLoop() {
@@ -241,14 +239,24 @@ function gameLoop() {
 
 //State definition for "playing" the game
 function play() {
-    //gameBuild = true;
-    //gameInit();
-    //menuDisplay = true;
+    gameInit();
+    gameBuild = false;
+    menuDisplay = true;
     foodCatchCollision();
     animateBackground();
-    //playerMovement();
+    playerMovement();
     addScore();
-    //hideMenu();
+    hideMenu();
+    renderer.render(stage);
+}
+
+//State definition for leaderboard
+function leaderBoard() {
+    animateBackground();
+    foodCatchCollision();
+    hideScore();
+    dbInsert();
+    displayLeader();
     renderer.render(stage);
 }
 
