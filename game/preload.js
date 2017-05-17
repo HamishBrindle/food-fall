@@ -350,12 +350,7 @@ function menu() {
 
 function initCatcher() {
     if (catcherBuild) {
-        //Setting up sprites
-        catcher = new Sprite(
-            resources['assets/img/sprites/basket.png'].texture
-        );
-
-        //Catcher movement
+        catcher = new Sprite(resources['assets/img/sprites/basket.png'].texture);
         catcher.y = GAME_HEIGHT / 2;
         catcher.x = GAME_WIDTH / 2;
         catcher.vx = 0;
