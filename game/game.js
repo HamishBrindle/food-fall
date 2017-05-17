@@ -15,8 +15,6 @@ var score = new PIXI.Text('Score: ', {
   fill: 'white'
 });
 
-
-
 function leaderBoardMenu() {
     console.log('oh boy game over n00b');
 }
@@ -26,7 +24,14 @@ function makeFood() {
     const MAX_FOOD = 5;
     if(foodCount >= MAX_FOOD) return;
     var newFoodIndex = weightedRand(fallingObjects);
-    var newFood = PIXI.Sprite.fromImage('assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png');
+
+
+
+    fallingObjects[newFoodIndex].name
+
+    var newFood = new Sprite(
+        resources['assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png'].texture
+    );
     newFood.x = getRandomInt(newFood.width, GAME_WIDTH - newFood.width);
     newFood.y = -newFood.height;
     newFood.anchor.x = 0.5;
