@@ -4,9 +4,6 @@
  */
 
 // Speed of Game
-setInterval(makeFood, 10);
-setInterval(makeObstacle, 10);
-
 sizeOfEntry = 3;
 var scoreCount = 0;
 var score = new PIXI.Text('Score: ', {
@@ -17,11 +14,42 @@ var score = new PIXI.Text('Score: ', {
 
 function gameInit() {
     if(gameStart) {
+        countDownIndex = 0;
+        afterCountDown = false;
+        var three = new Sprite(resources['assets/img/sprites/cd-3.png'].texture);
+        var two = new Sprite(resources['assets/img/sprites/cd-2.png'].texture);
+        var one = new Sprite(resources['assets/img/sprites/cd-1.png'].texture);
+        var go = new Sprite(resources['assets/img/sprites/cd-go.png'].texture);
+        countDownNumbers = [three, two, one, go];
         gameStartTime = new Date().getTime();
-        console.log("in ININGINGINGGIN");
+
     }
     gameStart = false;
 
+}
+
+/*
+    For displaying and removing the numbers for the countdown.
+*/
+function displayNo() {
+    var curNum = countDownNumbers[countDownIndex];
+    if(countDownIndex == 0) {
+        stage.addChild(curNum);
+    } else if(countDownIndex > 0 && countDownIndex < 4){
+        var prevNum = countDownNumbers[countDownIndex - 1];
+        prevNum.destroy();
+
+        stage.addChild(curNum);
+    } else {
+        var prevNum = countDownNumbers[countDownIndex - 1];
+        prevNum.destroy();
+
+    }
+    try {
+        curNum.x = 100;
+        curNum.y = 50;
+    } catch (err) {}
+    ++countDownIndex;
 }
 
 function leaderBoardMenu() {
@@ -71,62 +99,67 @@ function isCollide(basket, food) {
 function foodCatchCollision() {
     var currtime = new Date().getTime();
     var deltaTime = parseFloat((currtime - lastTime)/1000);
-    console.log("deltaTime", deltaTime);
-
-    console.log("currTime" ,currtime);
-    console.log("gameStartTime" ,gameStartTime);
-
-    var currentElapsedGameTime = parseInt((gameStartTime - currtime)/1000);
+    var currentElapsedGameTime = parseInt((currtime - gameStartTime)/1000);
 
     console.log(currentElapsedGameTime);
 
-    var childrenToDelete = [];
-    for (var i in stage.children) {
-        var fallingItem = stage.children[i];
-        if (fallingItem.isObstacle) {
-            var curObstacle = fallingItem;
-            curObstacle.x -= 8;
-            obstacleCollision(catcher, curObstacle);
-            if(curObstacle.x < (-curObstacle.width)) {
-                childrenToDelete.push(curObstacle);
-                curObstacle.destroy();
-                --obstacleCount;
-                console.log(obstacleCount);
-            }
+    if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
+        displayNo();
+        if (currentElapsedGameTime == 4) {
+            afterCountDown = true;
         }
-        if (fallingItem.isFood) {
-            var deltaY = fallingItem.velocity * deltaTime;
-            var deltaVy = fallingItem.accelerationY * deltaTime;
-            fallingItem.y += deltaY;
-            fallingItem.velocity += deltaVy;
-            fallingItem.rotation += fallingItem.rotateFactor;
-             if (fallingItem.y > GAME_HEIGHT) {
-                 if (scoreCount > 0) {
-                     scoreCount -= 5;
-                 }
-                 if (scoreCount < 0) {
-                     scoreCount = 0;
-                 }
-                childrenToDelete.push(fallingItem);
-                fallingItem.destroy();
-                --foodCount;
+    }
+    if(afterCountDown) {
+        makeFood();
+        var childrenToDelete = [];
+        for (var i in stage.children) {
+            var fallingItem = stage.children[i];
+            if (fallingItem.isObstacle) {
+                var curObstacle = fallingItem;
+                curObstacle.x -= 8;
+                obstacleCollision(catcher, curObstacle);
+                if(curObstacle.x < (-curObstacle.width)) {
+                    childrenToDelete.push(curObstacle);
+                    curObstacle.destroy();
+                    --obstacleCount;
+                    console.log(obstacleCount);
+                }
             }
-            try {
-                if (isCollide(catcher, fallingItem)) {
-                    modScore(fallingItem);
+            if (fallingItem.isFood) {
+                var deltaY = fallingItem.velocity * deltaTime;
+                var deltaVy = fallingItem.accelerationY * deltaTime;
+                fallingItem.y += deltaY;
+                fallingItem.velocity += deltaVy;
+                fallingItem.rotation += fallingItem.rotateFactor;
+                 if (fallingItem.y > GAME_HEIGHT) {
+                     if (scoreCount > 0) {
+                         scoreCount -= 5;
+                     }
+                     if (scoreCount < 0) {
+                         scoreCount = 0;
+                     }
                     childrenToDelete.push(fallingItem);
                     fallingItem.destroy();
-                    sound.play('coin');
-                    scoreCount += 10;
-                    stage.removeChild(score);
                     --foodCount;
                 }
-            } catch(err) {}
+                try {
+                    if (isCollide(catcher, fallingItem)) {
+                        modScore(fallingItem);
+                        childrenToDelete.push(fallingItem);
+                        fallingItem.destroy();
+                        sound.play('coin');
+                        scoreCount += 10;
+                        stage.removeChild(score);
+                        --foodCount;
+                    }
+                } catch(err) {}
+            }
+        }
+        for (var i = 0; i < childrenToDelete.length; i++) {
+            removeItem(childrenToDelete[i]);
         }
     }
-    for (var i = 0; i < childrenToDelete.length; i++) {
-        removeItem(childrenToDelete[i]);
-    }
+
 }
 
 var obstacleCount = 0;

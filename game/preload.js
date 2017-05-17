@@ -96,7 +96,10 @@ loader
         "assets/img/sprites/banana.png",
         "assets/img/sprites/bread.png",
         "assets/img/sprites/broccoli.png",
-        "assets/img/sprites/orange.png"
+        "assets/img/sprites/cd-1.png",
+        "assets/img/sprites/cd-2.png",
+        "assets/img/sprites/cd-3.png",
+        "assets/img/sprites/cd-go.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
