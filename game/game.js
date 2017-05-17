@@ -26,7 +26,6 @@ function gameInit() {
         initCatcher();
     }
     gameBuild = false;
-
 }
 
 /*
@@ -35,12 +34,12 @@ function gameInit() {
 function displayNo() {
     var curNum = countDownNumbers[countDownIndex];
     if(countDownIndex == 0) {
-        stage.addChild(curNum);
+        game.stage.addChild(curNum);
     } else if(countDownIndex > 0 && countDownIndex < 4){
         var prevNum = countDownNumbers[countDownIndex - 1];
         prevNum.destroy();
 
-        stage.addChild(curNum);
+        game.stage.addChild(curNum);
     } else {
         var prevNum = countDownNumbers[countDownIndex - 1];
         prevNum.destroy();
@@ -77,11 +76,11 @@ function makeFood() {
         newFood.rotateFactor = -Math.random() * 0.1;
     ++foodCount;
 
-    stage.addChild(newFood);
+    game.stage.addChild(newFood);
 }
 
 function removeItem(childToDelete) {
-    stage.removeChild(childToDelete);
+    game.stage.removeChild(childToDelete);
 }
 
 // Determine if basket and food are colliding
@@ -110,8 +109,8 @@ function foodCatchCollision() {
         makeFood();
         makeObstacle();
         var childrenToDelete = [];
-        for (var i in stage.children) {
-            var fallingItem = stage.children[i];
+        for (var i in game.stage.children) {
+            var fallingItem = game.stage.children[i];
             if (fallingItem.isObstacle) {
                 var curObstacle = fallingItem;
                 curObstacle.x -= 3;
@@ -146,7 +145,7 @@ function foodCatchCollision() {
                         fallingItem.destroy();
                         sound.play('coin');
                         scoreCount += 10;
-                        stage.removeChild(score);
+                        game.stage.removeChild(score);
                         --foodCount;
                     }
                 } catch(err) {}
@@ -169,7 +168,7 @@ function makeObstacle() {
     newTopObstacle.y = 0;
     newTopObstacle.width = 50;
     newTopObstacle.isObstacle = true;
-    stage.addChild(newTopObstacle);
+    game.stage.addChild(newTopObstacle);
 
 
     var newBotObstacle = new Sprite(resources['assets/img/sprites/obstacle.png'].texture);
@@ -178,10 +177,11 @@ function makeObstacle() {
     newBotObstacle.height = GAME_HEIGHT - newBotObstacle.y;
     newBotObstacle.width = newTopObstacle.width;
     newBotObstacle.isObstacle = true;
-    stage.addChild(newBotObstacle);
+    game.stage.addChild(newBotObstacle);
     obstacleCount += 2;
 
 }
+
 /*
  need xspeed
  */
@@ -210,8 +210,9 @@ function addScore() {
     score.y = GAME_HEIGHT - 50;
     score.anchor.x = 0.5;
     score.text = 'Score: ' + scoreCount;
-    stage.addChild(score);
+    game.stage.addChild(score);
 }
+
 /**
  * Returns the name of the given food.
  * @param food the food to decipher.
