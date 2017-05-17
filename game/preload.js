@@ -49,7 +49,6 @@ var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, myView, rendererOptio
 
 // Create new Container for stage.
 var stage = new Container();
-var menuContainer = new Container();
 
 // Renderer position on screen.
 renderer.view.style.position = "absolute";
@@ -80,7 +79,6 @@ var logo;
 
 var catcherBuild;
 
-
 var soundOptions = {
     soundEnabled: false,
     soundButtonOnDisplayed: true,
@@ -89,6 +87,8 @@ var soundOptions = {
 
 var soundButtonOn;
 var soundButtonOff;
+
+var randFact;
 
 loader
     .add([
@@ -159,6 +159,7 @@ function initBackground() {
 
 }
 
+
 function animateBackground() {
 
     // Determine seconds elapsed since last frame
@@ -174,10 +175,11 @@ function animateBackground() {
 
     // Draw the stage and prepare for the next frame
     lastTime = currtime;
+
 }
 
 /*
- Prints loading log to console.
+Prints loading log to console.
  */
 function loadProgressHandler() {
     console.log("loading");
@@ -194,8 +196,9 @@ egg = {name: "egg", weight: 1 / numberOfFood};
 
 fallingObjects = [apple, banana, bread, orange, broccoli, egg];
 
+
 /*
- Main game driver.
+Main game driver.
  */
 function setup() {
 
@@ -213,10 +216,8 @@ function setup() {
     //Touch and Mouse Controls
     pointer = tk.makePointer();
     //Pointer Definition
-    pointer.press = function () {
-    };
-    pointer.release = function () {
-    };
+    pointer.press = function () {};
+    pointer.release = function () {};
 
     setupdone = true;
 
@@ -233,7 +234,7 @@ function setup() {
     gameLoop();
 
 }
-//Set the game's current state to `play`:
+//Set the game's current state to `menu`:
 var state = menu;
 
 menuBuild = true;
@@ -288,6 +289,9 @@ function gameMenuDisplay() {
         stage.addChild(playButton);
         stage.addChild(logo);
 
+        // Add a fact to the stage
+        initFacts();
+
         // Set game state indicators (e.i. has menu been built / has catcher been built)
         menuBuild = false;
         catcherBuild = true;
@@ -340,6 +344,7 @@ function playGameFromMenu() {
     state = play;
     stage.removeChild(playButton);
     stage.removeChild(logo);
+    stage.removeChild(randFact)
 }
 
 
@@ -350,7 +355,9 @@ function menu() {
 
 function initCatcher() {
     if (catcherBuild) {
+        //Setting up sprites
         catcher = new Sprite(resources['assets/img/sprites/basket.png'].texture);
+        //Catcher movement
         catcher.y = GAME_HEIGHT / 2;
         catcher.x = GAME_WIDTH / 2;
         catcher.vx = 0;
@@ -373,4 +380,25 @@ function initCatcher() {
 
         catcherBuild = false;
     }
+}
+
+/**
+ * Adds a random zero food waste tip to the screen.
+ */
+function initFacts() {
+    var txtStyle = new PIXI.TextStyle({
+        fontFamily: 'Arial',
+        fontSize: 30,
+        fill: 'white',
+        stroke: 'black',
+        strokeThickness: 3,
+        wordWrap: true,
+        wordWrapWidth: 250,
+    });
+    var factIndex = getRandomInt(0, 13);
+    randFact = new PIXI.Text(foodFacts[factIndex], txtStyle);
+    randFact.x = GAME_WIDTH - 130;
+    randFact.y = GAME_HEIGHT - 450;
+    randFact.anchor.x = 0.5;
+    stage.addChild(randFact);
 }
