@@ -49,6 +49,7 @@ var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, myView, rendererOptio
 
 // Create new Container for stage.
 var stage = new Container();
+var menuContainer = new Container();
 
 // Renderer position on screen.
 renderer.view.style.position = "absolute";
@@ -79,6 +80,16 @@ var logo;
 
 var catcherBuild;
 
+
+var soundOptions = {
+    soundEnabled: false,
+    soundButtonOnDisplayed: true,
+    soundButtonOffDisplayed: false,
+};
+
+var soundButtonOn;
+var soundButtonOff;
+
 loader
     .add([
         "assets/img/sprites/basket.png",
@@ -94,7 +105,7 @@ loader
         "assets/img/sprites/cd-go.png",
         "assets/img/sprites/orange.png",
         "assets/img/sprites/play.png",
-        "assets/img/web/site-logo-white-long.png",
+        "assets/img/web/site-logo-white-long-shadow.png",
         "assets/img/sprites/obstacle.png",
         "assets/img/tiling-sprites/sky.png",
         "assets/img/tiling-sprites/mtn-far.png",
@@ -102,7 +113,9 @@ loader
         "assets/img/tiling-sprites/ground.png",
         "assets/img/tiling-sprites/clouds.png",
         "assets/img/tiling-sprites/trees.png",
-        "assets/img/tiling-sprites/grass.png"
+        "assets/img/tiling-sprites/grass.png",
+        "assets/img/sprites/sound-on.png",
+        "assets/img/sprites/sound-off.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -146,7 +159,6 @@ function initBackground() {
 
 }
 
-
 function animateBackground() {
 
     // Determine seconds elapsed since last frame
@@ -162,7 +174,6 @@ function animateBackground() {
 
     // Draw the stage and prepare for the next frame
     lastTime = currtime;
-
 }
 
 /*
@@ -183,7 +194,6 @@ egg = {name: "egg", weight: 1 / numberOfFood};
 
 fallingObjects = [apple, banana, bread, orange, broccoli, egg];
 
-
 /*
 Main game driver.
  */
@@ -196,6 +206,9 @@ function setup() {
     stage.addChild(grass);
 
     tk = new Tink(PIXI, renderer.view, scale);
+
+    // Display sound on/off button
+    soundButtonDisplay();
 
     //Touch and Mouse Controls
     pointer = tk.makePointer();
@@ -230,7 +243,10 @@ function gameLoop() {
     state();
     lastTime = new Date().getTime();
     tk.update();
+    stage.addChild(menuContainer);
+    soundButtonDisplay();
     renderer.render(stage);
+
 }
 
 //State definition for "playing" the game
@@ -246,10 +262,10 @@ function gameMenuDisplay() {
 
         // Add logo to menu
         logo = new Sprite(
-            resources['assets/img/web/site-logo-white-long.png'].texture
+            resources['assets/img/web/site-logo-white-long-shadow.png'].texture
         );
         logo.x = (GAME_WIDTH / 2) - (logo.width / 2);
-        logo.y = (GAME_HEIGHT) - (logo.height * 1.5);
+        logo.y = GAME_HEIGHT - (logo.height * 2.15);
 
         // Add play-button to menu
         playButton = new Sprite(
@@ -259,11 +275,12 @@ function gameMenuDisplay() {
         playButton.width /= 2;
         playButton.height /= 2;
         playButton.x = (GAME_WIDTH / 2) - (playButton.width / 2);
-        playButton.y = (GAME_HEIGHT / 2) - (playButton.height / 2);
+        playButton.y = GAME_HEIGHT - (playButton.height * 1.35);
 
         // Add listener for play button
         playButton.on('pointerdown', (event) => {
             playGameFromMenu();
+            menuSound.play('menu')
         });
 
         // Add button and logo
@@ -276,6 +293,48 @@ function gameMenuDisplay() {
     }
 }
 
+function soundButtonDisplay() {
+    if (soundOptions.soundButtonOnDisplayed && !soundOptions.soundButtonOffDisplayed) {
+        if (!soundOptions.soundEnabled) {
+            soundButtonOn = new Sprite(resources['assets/img/sprites/sound-on.png'].texture);
+            soundButtonOn.interactive = true;
+            soundButtonOn.width /= 3;
+            soundButtonOn.height /= 3;
+            soundButtonOn.x = GAME_WIDTH - soundButtonOn.width;
+            soundOptions.soundEnabled = true;
+            soundOptions.soundButtonOnDisplayed = false;
+            soundOptions.soundButtonOffDisplayed = false;
+            soundButtonOn.on('pointerdown', (event) => {
+                muteSound();
+                soundOptions.soundEnabled = false;
+                soundOptions.soundButtonOnDisplayed = false;
+                soundOptions.soundButtonOffDisplayed = true;
+                stage.removeChild(soundButtonOn);
+            });
+            stage.addChild(soundButtonOn);
+        }
+    } else if (!soundOptions.soundButtonOnDisplayed && soundOptions.soundButtonOffDisplayed) {
+        if (!soundOptions.soundEnabled) {
+            soundButtonOff = new Sprite(resources['assets/img/sprites/sound-off.png'].texture);
+            soundButtonOff.interactive = true;
+            soundButtonOff.width /= 3;
+            soundButtonOff.height /= 3;
+            soundButtonOff.x = GAME_WIDTH - soundButtonOff.width;
+            soundOptions.soundEnabled = true;
+            soundOptions.soundButtonOnDisplayed = false;
+            soundOptions.soundButtonOffDisplayed = false;
+            soundButtonOff.on('pointerdown', (event) => {
+                unmuteSound();
+                soundOptions.soundEnabled = false;
+                soundOptions.soundButtonOnDisplayed = true;
+                soundOptions.soundButtonOffDisplayed = false;
+                stage.removeChild(soundButtonOff);
+            });
+            stage.addChild(soundButtonOff);
+        }
+    }
+}
+
 function playGameFromMenu() {
     state = play;
     stage.removeChild(playButton);
@@ -284,6 +343,7 @@ function playGameFromMenu() {
 
 
 function menu() {
+    animateBackground();
     gameMenuDisplay();
 }
 

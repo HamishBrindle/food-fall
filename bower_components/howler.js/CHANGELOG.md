@@ -48,7 +48,7 @@ Read more about the update [in this blog post](http://goldfirestudios.com/blog/1
 - The `pos` method has been renamed to `seek`.
 
 ```javascript
-// Change the seek position of a sound (in seconds).
+coin
 sound.seek(10);
 ```
 
