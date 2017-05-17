@@ -8,17 +8,20 @@ var scoreCount = 0;
 
 var childrenToDelete = [];
 
+
 var score = new PIXI.Text('Score: ', {
     fontSize: 30,
     fontFamily: 'Arial',
     fill: 'white'
 });
 
+
 function gameInit() {
     if(gameBuild) {
         obstacleCount = 0;
         countDownIndex = 0;
         foodCount = 0;
+        scoreCount = 0;
         afterCountDown = false;
         var three = new Sprite(resources['assets/img/sprites/cd-3.png'].texture);
         var two = new Sprite(resources['assets/img/sprites/cd-2.png'].texture);
@@ -28,6 +31,7 @@ function gameInit() {
         gameBuildTime = new Date().getTime();
         initCatcher();
         catcher.alpha = 1;
+        score.alpha = 1;
     }
     gameBuild = false;
 
@@ -222,6 +226,7 @@ function addScore() {
 function endGame() {
     menuBuild = true;
     gameBuild = true;
+    score.alpha = 0;
     destroyOldObjects();
 }
 /**
@@ -229,7 +234,8 @@ function endGame() {
   */
 function destroyOldObjects () {
     for (var i in stage.children) {
-        if(stage.children[i].isFood || stage.children[i].isObstacle) {
+        var item = stage.children[i];
+        if(item.isFood || item.isObstacle || item.name == 'score') {
             childrenToDelete.push(stage.children[i]);
         }
     }
