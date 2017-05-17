@@ -177,7 +177,7 @@ function animateBackground() {
 }
 
 /*
-Prints loading log to console.
+ Prints loading log to console.
  */
 function loadProgressHandler() {
     console.log("loading");
@@ -195,7 +195,7 @@ egg = {name: "egg", weight: 1 / numberOfFood};
 fallingObjects = [apple, banana, bread, orange, broccoli, egg];
 
 /*
-Main game driver.
+ Main game driver.
  */
 function setup() {
 
@@ -213,8 +213,10 @@ function setup() {
     //Touch and Mouse Controls
     pointer = tk.makePointer();
     //Pointer Definition
-    pointer.press = function () {};
-    pointer.release = function () {};
+    pointer.press = function () {
+    };
+    pointer.release = function () {
+    };
 
     setupdone = true;
 
