@@ -91,6 +91,8 @@ var logo;
 
 var catcherBuild;
 
+var randFact;
+
 // Texture Cache
 loadBackgroundTextures();
 
@@ -250,7 +252,7 @@ function setup() {
     gameLoop();
 
 }
-//Set the game's current state to `play`:
+//Set the game's current state to `menu`:
 var state = menu;
 
 menuBuild = true;
@@ -301,7 +303,8 @@ function gameMenuDisplay() {
         // Add button and logo
         stage.addChild(playButton);
         stage.addChild(logo);
-
+        // Add a fact to the stage
+        initFacts();
         // Set game state indicators (e.i. has menu been built / has catcher been built)
         menuBuild = false;
         catcherBuild = true;
@@ -312,6 +315,7 @@ function playGameFromMenu() {
     state = play;
     stage.removeChild(playButton);
     stage.removeChild(logo);
+    stage.removeChild(randFact)
 }
 
 
@@ -349,4 +353,26 @@ function initCatcher() {
 
         catcherBuild = false;
     }
+}
+
+/**
+ * Adds a random zero food waste tip to the screen.
+ */
+function initFacts() {
+    var txtStyle = new PIXI.TextStyle({
+        fontFamily: 'Arial',
+        fontSize: 30,
+        fill: 'white',
+        stroke: 'black',
+        strokeThickness: 3,
+        wordWrap: true,
+        wordWrapWidth: 250,
+    });
+    var factIndex = getRandomInt(0, 13);
+    
+    randFact = new PIXI.Text(foodFacts[factIndex], txtStyle);
+    randFact.x = GAME_WIDTH - 130;
+    randFact.y = GAME_HEIGHT - 450;
+    randFact.anchor.x = 0.5;
+    stage.addChild(randFact);
 }
