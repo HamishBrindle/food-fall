@@ -84,7 +84,7 @@ if the left mouse button is clicked, or the user taps the screen.
 Here's an example of how you can define these methods on the `pointer`:
 ```js
 pointer.press = () => console.log("The pointer was pressed");
-pointer.release = () => console.log("The pointer was released");
+pointer.release = () => Fconsole.log("The pointer was released");
 pointer.tap = () => console.log("The pointer was tapped");
 ```
 Also use the `tap` method to capture mouse clicks.
