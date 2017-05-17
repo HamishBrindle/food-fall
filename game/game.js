@@ -15,8 +15,6 @@ var score = new PIXI.Text('Score: ', {
     fill: 'white'
 });
 
-
-
 function leaderBoardMenu() {
     console.log('oh boy game over n00b');
 }

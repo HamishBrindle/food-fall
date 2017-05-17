@@ -86,6 +86,8 @@ var playButton;
 
 var menuBuild;
 
+var logo;
+
 var catcherBuild;
 
 // Texture Cache
@@ -100,7 +102,8 @@ loader
         "assets/img/sprites/bread.png",
         "assets/img/sprites/broccoli.png",
         "assets/img/sprites/orange.png",
-        "assets/img/sprites/play.png"
+        "assets/img/sprites/play.png",
+        "assets/img/web/site-logo-white-long.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -268,18 +271,35 @@ function play() {
 
 function gameMenuDisplay() {
     if (menuBuild) {
-        console.log("ALERT");
+
+        // Add logo to menu
+        logo = new Sprite(
+            resources['assets/img/web/site-logo-white-long.png'].texture
+        );
+        logo.x = (GAME_WIDTH / 2) - (logo.width / 2);
+        logo.y = (GAME_HEIGHT) - (logo.height * 1.5);
+
+        // Add play-button to menu
         playButton = new Sprite(
             resources['assets/img/sprites/play.png'].texture
         );
         playButton.interactive = true;
-        playButton.x = GAME_WIDTH / 2;
-        playButton.y = GAME_HEIGHT / 2;
+        playButton.width /= 2;
+        playButton.height /= 2;
+        playButton.x = (GAME_WIDTH / 2) - (playButton.width / 2);
+        playButton.y = (GAME_HEIGHT / 2) - (playButton.height / 2);
+
+        // Add listener for play button
         playButton.on('tap', (event) => {
             playGameFromMenu();
             console.log("ALERT");
         });
+
+        // Add button and logo
         stage.addChild(playButton);
+        stage.addChild(logo);
+
+        // Set game state indicators (e.i. has menu been built / has catcher been built)
         menuBuild = false;
         catcherBuild = true;
     }
@@ -288,7 +308,9 @@ function gameMenuDisplay() {
 function playGameFromMenu() {
     state = play;
     stage.removeChild(playButton);
+    stage.removeChild(logo);
 }
+
 
 function menu() {
     gameMenuDisplay();
