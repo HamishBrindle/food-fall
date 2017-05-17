@@ -243,20 +243,19 @@ function gameLoop() {
     state();
     lastTime = new Date().getTime();
     tk.update();
-    stage.addChild(menuContainer);
-    soundButtonDisplay();
     renderer.render(stage);
-
 }
 
 //State definition for "playing" the game
 function play() {
     gameInit();
     foodCatchCollision();
+    soundButtonDisplay();
     animateBackground();
     playerMovement();
     addScore();
 }
+
 function gameMenuDisplay() {
     if (menuBuild) {
 
