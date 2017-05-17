@@ -15,7 +15,14 @@ var score = new PIXI.Text('Score: ', {
   fill: 'white'
 });
 
+function gameInit() {
+    if(gameStart) {
+        gameStartTime = new Date().getTime();
+        console.log("in ININGINGINGGIN");
+    }
+    gameStart = false;
 
+}
 
 function leaderBoardMenu() {
     console.log('oh boy game over n00b');
@@ -63,6 +70,15 @@ function isCollide(basket, food) {
 function foodCatchCollision() {
     var currtime = new Date().getTime();
     var deltaTime = parseFloat((currtime - lastTime)/1000);
+    console.log("deltaTime", deltaTime);
+
+    console.log("currTime" ,currtime);
+    console.log("gameStartTime" ,gameStartTime);
+
+    var currentElapsedGameTime = parseInt((gameStartTime - currtime)/1000);
+
+    console.log(currentElapsedGameTime);
+
     var childrenToDelete = [];
     for (var i in stage.children) {
         var fallingItem = stage.children[i];

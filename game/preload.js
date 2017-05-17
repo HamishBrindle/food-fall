@@ -82,6 +82,9 @@ var setupdone = false;
 
 var pointer;
 
+gameStart = true;
+
+
 // Texture Cache
 loadBackgroundTextures();
 
@@ -237,7 +240,7 @@ function setup() {
     tk = new Tink(PIXI, renderer.view, scale);
     tk.makeDraggable(catcher);
 
-    
+
 
     //Touch and Mouse Controls
     pointer = tk.makePointer();
@@ -281,9 +284,9 @@ function gameLoop() {
 
 //State definition for "playing" the game
 function play() {
+    gameInit();
     foodCatchCollision();
     animateBackground();
     playerMovement();
     addScore();
 }
-
