@@ -145,7 +145,7 @@ function foodCatchCollision() {
                             childrenToDelete.push(fallingItem);
                             --foodCount;
                             fallingItem.destroy();
-                            sound.play('coin');
+                            coin.play('coin');
                             scoreCount += 10;
                             stage.removeChild(score);
                         }
