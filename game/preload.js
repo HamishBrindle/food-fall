@@ -102,6 +102,7 @@ loader
         "assets/img/sprites/banana.png",
         "assets/img/sprites/bread.png",
         "assets/img/sprites/broccoli.png",
+        "assets/img/sprites/egg.png",
         "assets/img/sprites/cd-1.png",
         "assets/img/sprites/cd-2.png",
         "assets/img/sprites/cd-3.png",
@@ -207,13 +208,16 @@ function loadProgressHandler() {
     console.log("loading");
 }
 
-var apple = {name:"apple", weight:0.2};
-var banana = {name:"banana", weight:0.2};
-var bread = {name:"bread", weight:0.2};
-var orange = {name:"orange", weight:0.2};
-var broccoli = {name:"broccoli", weight:0.2};
+var numberOfFood = 6;
 
-fallingObjects = [apple, banana, bread, orange, broccoli];
+apple = {name:"apple", weight: 1/numberOfFood};
+banana = {name:"banana", weight:1/numberOfFood};
+bread = {name:"bread", weight:1/numberOfFood};
+orange = {name:"orange", weight:1/numberOfFood};
+broccoli = {name:"broccoli", weight:1/numberOfFood};
+egg = {name:"egg", weight:1/numberOfFood};
+
+fallingObjects = [apple, banana, bread, orange, broccoli, egg];
 
 /*
 Main game driver.
@@ -296,7 +300,6 @@ function gameMenuDisplay() {
         // Add listener for play button
         playButton.on('tap', (event) => {
             playGameFromMenu();
-            console.log("ALERT");
         });
 
         // Add button and logo

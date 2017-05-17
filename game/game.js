@@ -52,16 +52,14 @@ function displayNo() {
     ++countDownIndex;
 }
 
-function leaderBoardMenu() {
-    console.log('oh boy game over n00b');
-}
-
 var foodCount = 0;
 function makeFood() {
     const MAX_FOOD = 5;
     if(foodCount >= MAX_FOOD) return;
     var newFoodIndex = weightedRand(fallingObjects);
-    var newFood = PIXI.Sprite.fromImage('assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png');
+    var newFood = new Sprite(
+        resources['assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png'].texture
+    );
     newFood.name = fallingObjects[newFoodIndex];
     newFood.x = getRandomInt(newFood.width, GAME_WIDTH - newFood.width);
     newFood.y = -newFood.height;
@@ -101,8 +99,6 @@ function foodCatchCollision() {
     var deltaTime = parseFloat((currtime - lastTime)/1000);
     var currentElapsedGameTime = parseInt((currtime - gameBuildTime)/1000);
 
-    console.log(currentElapsedGameTime);
-
     if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
         displayNo();
         if (currentElapsedGameTime == 4) {
@@ -122,7 +118,6 @@ function foodCatchCollision() {
                     childrenToDelete.push(curObstacle);
                     curObstacle.destroy();
                     --obstacleCount;
-                    console.log(obstacleCount);
                 }
             }
             if (fallingItem.isFood) {
