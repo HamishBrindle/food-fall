@@ -4,8 +4,10 @@
  */
 
 // Speed of Game
-sizeOfEntry = 3;
 var scoreCount = 0;
+
+var childrenToDelete = [];
+
 var score = new PIXI.Text('Score: ', {
     fontSize: 30,
     fontFamily: 'Arial',
@@ -23,8 +25,10 @@ function gameInit() {
         var go = new Sprite(resources['assets/img/sprites/cd-go.png'].texture);
         countDownNumbers = [three, two, one, go];
         gameBuildTime = new Date().getTime();
+        console.log("gameInit");
         initCatcher();
     }
+    catcher.alpha = 1;
     gameBuild = false;
 
 }
@@ -102,28 +106,26 @@ function foodCatchCollision() {
     var deltaTime = parseFloat((currtime - lastTime)/1000);
     var currentElapsedGameTime = parseInt((currtime - gameBuildTime)/1000);
 
-    if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
-        displayNo();
-        if (currentElapsedGameTime == 4) {
-            afterCountDown = true;
-        }
-    }
-    if(afterCountDown) {
+    // if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
+    //     displayNo();
+    //     if (currentElapsedGameTime == 4) {
+    //         afterCountDown = true;
+    //     }
+    // }
+    if(true) {
         makeFood();
         makeObstacle();
-        var childrenToDelete = [];
         for (var i in stage.children) {
             var fallingItem = stage.children[i];
             if (fallingItem.isObstacle) {
                 var curObstacle = fallingItem;
-                // console.log("curObstacle", curObstacle.x);
-                curObstacle.x -= backgroundScrollSpeed.grass;
-                obstacleCollision(catcher, curObstacle);
                 if(curObstacle.x < (-curObstacle.width)) {
                     childrenToDelete.push(curObstacle);
                     curObstacle.destroy();
                     --obstacleCount;
                 }
+                curObstacle.x -= backgroundScrollSpeed.grass;
+                obstacleCollision(catcher, curObstacle);
             }
             if (fallingItem.isFood) {
                 var deltaY = fallingItem.velocity * deltaTime;
@@ -194,8 +196,9 @@ function bounce() {
 
 function obstacleCollision(catcher, obstacle) {
     if (isCollideWholeBasket(catcher, obstacle)) {
-        console.log("game over");
-        // state = leaderBoardMenu;
+        endGame();
+        state = menu;
+        catcher.alpha = 0;
     }
 }
 
@@ -214,6 +217,27 @@ function addScore() {
     score.anchor.x = 0.5;
     score.text = 'Score: ' + scoreCount;
     stage.addChild(score);
+}
+
+
+function endGame() {
+    menuBuild = true;
+    gameBuild = true;
+    destroyOldObjects();
+}
+/**
+  * Adds all food and obstacles to list and destroys them.
+  */
+function destroyOldObjects () {
+    for (var i in stage.children) {
+        if(stage.children[i].isFood || stage.children[i].isObstacle) {
+            childrenToDelete.push(stage.children[i]);
+        }
+    }
+    for (var i = 0; i < childrenToDelete.length; i++) {
+        removeItem(childrenToDelete[i]);
+        childrenToDelete[i].destroy()
+    }
 }
 /**
  * Returns the name of the given food.
