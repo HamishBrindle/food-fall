@@ -25,10 +25,6 @@ function makeFood() {
     if(foodCount >= MAX_FOOD) return;
     var newFoodIndex = weightedRand(fallingObjects);
 
-
-
-    fallingObjects[newFoodIndex].name
-
     var newFood = new Sprite(
         resources['assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png'].texture
     );
