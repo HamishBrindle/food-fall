@@ -7,7 +7,9 @@
 var scoreCount = 0;
 
 var childrenToDelete = [];
+const foodFadeDuration = 1;
 
+const displayNoFadeDuration = 100;
 
 var score = new PIXI.Text('Score: ', {
     fontSize: 30,
@@ -41,23 +43,12 @@ function gameInit() {
     For displaying and removing the numbers for the countdown.
 */
 function displayNo() {
+    if(countDownIndex >= 4) return;
     var curNum = countDownNumbers[countDownIndex];
-    if(countDownIndex == 0) {
-        stage.addChild(curNum);
-    } else if(countDownIndex > 0 && countDownIndex < 4){
-        var prevNum = countDownNumbers[countDownIndex - 1];
-        prevNum.destroy();
-
-        stage.addChild(curNum);
-    } else {
-        var prevNum = countDownNumbers[countDownIndex - 1];
-        prevNum.destroy();
-
-    }
-    try {
-        curNum.x = 100;
-        curNum.y = 50;
-    } catch (err) {}
+    stage.addChild(curNum);
+    curNum.x = 100;
+    curNum.y = 50;
+    fadeOut(curNum, displayNoFadeDuration);
     ++countDownIndex;
 }
 
@@ -65,10 +56,10 @@ function leaderBoardMenu() {
     console.log('oh boy game over n00b');
 }
 
-var foodCount = 0;
 function makeFood() {
-    const MAX_FOOD = 5;
+    const MAX_FOOD = 10;
     if(foodCount >= MAX_FOOD) return;
+    ++foodCount;
     var newFoodIndex = weightedRand(fallingObjects);
     var newFood = PIXI.Sprite.fromImage('assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png');
     newFood.name = fallingObjects[newFoodIndex];
@@ -85,7 +76,6 @@ function makeFood() {
     }
     else
         newFood.rotateFactor = -Math.random() * 0.1;
-    ++foodCount;
 
     stage.addChild(newFood);
 }
@@ -110,13 +100,13 @@ function foodCatchCollision() {
     var deltaTime = parseFloat((currtime - lastTime)/1000);
     var currentElapsedGameTime = parseInt((currtime - gameBuildTime)/1000);
 
-    // if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
-    //     displayNo();
-    //     if (currentElapsedGameTime == 4) {
-    //         afterCountDown = true;
-    //     }
-    // }
-    if(true) {
+    if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
+        displayNo();
+        if (currentElapsedGameTime == 4) {
+            afterCountDown = true;
+        }
+    }
+    if(afterCountDown) {
         makeFood();
         makeObstacle();
         for (var i in stage.children) {
@@ -148,17 +138,17 @@ function foodCatchCollision() {
                     childrenToDelete.push(fallingItem);
                     fallingItem.destroy();
                     --foodCount;
-                }
-                try {
-                    if (isCollide(catcher, fallingItem)) {
-                        modScore(fallingItem);
-                        childrenToDelete.push(fallingItem);
-                        fallingItem.destroy();
-                        sound.play('coin');
-                        scoreCount += 10;
-                        stage.removeChild(score);
-                        --foodCount;
-                    }
+                } else
+                    try {
+                        if (isCollide(catcher, fallingItem)) {
+                            modScore(fallingItem);
+                            childrenToDelete.push(fallingItem);
+                            --foodCount;
+                            fallingItem.destroy();
+                            sound.play('coin');
+                            scoreCount += 10;
+                            stage.removeChild(score);
+                        }
                 } catch(err) {}
             }
         }
@@ -175,7 +165,6 @@ function makeObstacle() {
 
     var newTopObstacle = new Sprite(resources['assets/img/sprites/obstacle.png'].texture);
     newTopObstacle.x = GAME_WIDTH;
-    console.log(newTopObstacle.x);
     newTopObstacle.height = getRandomInt(30, (2 * (GAME_HEIGHT / 3))); //
     newTopObstacle.y = 0;
     newTopObstacle.width = 50;
