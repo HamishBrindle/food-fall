@@ -82,6 +82,8 @@ var setupdone = false;
 
 var pointer;
 
+gameBuild = true;
+
 var playButton;
 
 var menuBuild;
@@ -99,6 +101,10 @@ loader
         "assets/img/sprites/banana.png",
         "assets/img/sprites/bread.png",
         "assets/img/sprites/broccoli.png",
+        "assets/img/sprites/cd-1.png",
+        "assets/img/sprites/cd-2.png",
+        "assets/img/sprites/cd-3.png",
+        "assets/img/sprites/cd-go.png",
         "assets/img/sprites/orange.png",
         "assets/img/sprites/play.png"
     ])
@@ -220,7 +226,6 @@ function setup() {
 
     tk = new Tink(PIXI, renderer.view, scale);
 
-
     //Touch and Mouse Controls
     pointer = tk.makePointer();
     //Pointer Definition
@@ -259,13 +264,13 @@ function gameLoop() {
 
 //State definition for "playing" the game
 function play() {
+    gameInit();
     foodCatchCollision();
     animateBackground();
     initCatcher();
     playerMovement();
     addScore();
 }
-
 function gameMenuDisplay() {
     if (menuBuild) {
         console.log("ALERT");
