@@ -1,6 +1,6 @@
 /*
-*   game.js
-*   Main file for Food Fall!
+ *   game.js
+ *   Main file for Food Fall!
  */
 
 // Speed of Game
@@ -10,9 +10,9 @@ setInterval(makeObstacle, 10);
 sizeOfEntry = 3;
 var scoreCount = 0;
 var score = new PIXI.Text('Score: ', {
-  fontSize: 30,
-  fontFamily: 'Arial',
-  fill: 'white'
+    fontSize: 30,
+    fontFamily: 'Arial',
+    fill: 'white'
 });
 
 
@@ -26,9 +26,9 @@ function makeFood() {
     const MAX_FOOD = 5;
     if(foodCount >= MAX_FOOD) return;
     var newFoodIndex = weightedRand(fallingObjects);
-    var newFood = new Sprite(
-        resources['assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png'].texture
-    );    newFood.x = getRandomInt(newFood.width, GAME_WIDTH - newFood.width);
+    var newFood = PIXI.Sprite.fromImage('assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png');
+    newFood.name = fallingObjects[newFoodIndex];
+    newFood.x = getRandomInt(newFood.width, GAME_WIDTH - newFood.width);
     newFood.y = -newFood.height;
     newFood.anchor.x = 0.5;
     newFood.anchor.y = 0.5;
@@ -57,7 +57,7 @@ function isCollide(basket, food) {
     var upperLeft = {x:basket.x - xoffset, y:basket.y - yoffset};
     var lowerRight = {x:(basket.x + basket.width - xoffset), y:(basket.y + 10 - yoffset)};
     var inBasket = (food.x > upperLeft.x) && (food.y > upperLeft.y)
-                    && (food.x < lowerRight.x) && (food.y < lowerRight.y);
+        && (food.x < lowerRight.x) && (food.y < lowerRight.y);
     return inBasket;
 }
 
@@ -67,7 +67,7 @@ function foodCatchCollision() {
     var childrenToDelete = [];
     for (var i in stage.children) {
         var fallingItem = stage.children[i];
-        if(fallingItem.isObstacle) {
+        if (fallingItem.isObstacle) {
             var curObstacle = fallingItem;
             curObstacle.x -= 8;
             obstacleCollision(catcher, curObstacle);
@@ -84,13 +84,20 @@ function foodCatchCollision() {
             fallingItem.y += deltaY;
             fallingItem.velocity += deltaVy;
             fallingItem.rotation += fallingItem.rotateFactor;
-             if (fallingItem.y > GAME_HEIGHT) {
+            if (fallingItem.y > GAME_HEIGHT) {
+                if (scoreCount > 0) {
+                    scoreCount -= 5;
+                }
+                if (scoreCount < 0) {
+                    scoreCount = 0;
+                }
                 childrenToDelete.push(fallingItem);
                 fallingItem.destroy();
                 --foodCount;
             }
             try {
                 if (isCollide(catcher, fallingItem)) {
+                    modScore(fallingItem);
                     childrenToDelete.push(fallingItem);
                     fallingItem.destroy();
                     sound.play('coin');
@@ -142,8 +149,8 @@ function makeObstacle() {
 
 }
 /*
-    need xspeed
-*/
+ need xspeed
+ */
 function bounce() {
 
 }
@@ -159,15 +166,36 @@ function isCollideWholeBasket(basket, obstacle) {
     var xoffset = basket.width / 2;
     var yoffset = basket.height / 2;
     return !(((basket.y + basket.height - yoffset) < (obstacle.y)) ||
-            ((basket.y - yoffset) > (obstacle.y + obstacle.height)) ||
-            ((basket.x + basket.width - xoffset) < obstacle.x) ||
-            ((basket.x -xoffset)> (obstacle.x + obstacle.width)));
+    ((basket.y - yoffset) > (obstacle.y + obstacle.height)) ||
+    ((basket.x + basket.width - xoffset) < obstacle.x) ||
+    ((basket.x -xoffset)> (obstacle.x + obstacle.width)));
 }
 
 function addScore() {
-      score.x = GAME_WIDTH - 100;
-      score.y = GAME_HEIGHT - 50;
-      score.anchor.x = 0.5;
-      score.text = 'Score: ' + scoreCount;
-      stage.addChild(score);
+    score.x = GAME_WIDTH - 100;
+    score.y = GAME_HEIGHT - 50;
+    score.anchor.x = 0.5;
+    score.text = 'Score: ' + scoreCount;
+    stage.addChild(score);
+}
+/**
+ * Returns the name of the given food.
+ * @param food the food to decipher.
+ */
+function getFoodType(food) {
+    return food.name;
+}
+
+/**
+ * Modifies the score based on the type of food given.
+ * @param food
+ */
+function modScore(food) {
+    var type = getFoodType(food);
+    if (type.name === "apple") {
+        scoreCount += 3;
+    }
+    if (type.name === "bread") {
+        scoreCount += 2;
+    }
 }
