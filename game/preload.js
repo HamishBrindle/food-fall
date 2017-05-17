@@ -369,7 +369,6 @@ function initFacts() {
         wordWrapWidth: 250,
     });
     var factIndex = getRandomInt(0, 13);
-    
     randFact = new PIXI.Text(foodFacts[factIndex], txtStyle);
     randFact.x = GAME_WIDTH - 130;
     randFact.y = GAME_HEIGHT - 450;
