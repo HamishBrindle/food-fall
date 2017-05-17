@@ -82,8 +82,16 @@ var setupdone = false;
 
 var pointer;
 
+<<<<<<< HEAD
 gameStart = true;
 
+=======
+var playButton;
+
+var menuBuild;
+
+var catcherBuild;
+>>>>>>> abb1aede5d7eae42c4ae8e1f2624441d55eb76f3
 
 // Texture Cache
 loadBackgroundTextures();
@@ -96,10 +104,15 @@ loader
         "assets/img/sprites/banana.png",
         "assets/img/sprites/bread.png",
         "assets/img/sprites/broccoli.png",
+<<<<<<< HEAD
         "assets/img/sprites/cd-1.png",
         "assets/img/sprites/cd-2.png",
         "assets/img/sprites/cd-3.png",
         "assets/img/sprites/cd-go.png"
+=======
+        "assets/img/sprites/orange.png",
+        "assets/img/sprites/play.png"
+>>>>>>> abb1aede5d7eae42c4ae8e1f2624441d55eb76f3
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -210,53 +223,25 @@ fallingObjects = [apple, banana, bread, orange, broccoli];
 Main game driver.
  */
 function setup() {
-    //Setting up sprites
-    catcher = new Sprite(
-        resources['assets/img/sprites/basket.png'].texture
-    );
-
-    //Catcher movement
-    catcher.y = GAME_HEIGHT / 2;
-    catcher.x = GAME_WIDTH / 2;
-    catcher.vx = 0;
-    catcher.vy = 0;
-    catcher.accelerationX = 0;
-    catcher.accelerationY = 0;
-    catcher.frictionX = 0.5;
-    catcher.frictionY = 0.5;
-    catcher.speed = 0.2;
-    catcher.drag = 0.98;
-    catcher.anchor.x = 0.5;
-    catcher.anchor.y = 0.5;
-    catcher.interactive = true;
 
     // Initialize the the tiling-sprites background
     initBackground();
-    // Initialize the the level background
-    keyControls();
-
 
     // Add sprites to stage
     stage.addChild(grass);
-    stage.addChild(catcher);
 
     tk = new Tink(PIXI, renderer.view, scale);
-    tk.makeDraggable(catcher);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> abb1aede5d7eae42c4ae8e1f2624441d55eb76f3
 
     //Touch and Mouse Controls
     pointer = tk.makePointer();
     //Pointer Definition
-    pointer.press = function () {
-        console.log("The pointer was pressed");
-        console.log("Mouse X: " + pointer.x + " Mouse Y: " + pointer.y);
-        console.log("Catcher X: " + catcher.x + " Mouse Y: " + catcher.y);
-    }
-    pointer.release = function () {
-        console.log("released");
-    }
-    pointer.tap = () => console.log("The pointer was tapped");
+    pointer.press = function () {};
+    pointer.release = function () {};
 
     setupdone = true;
 
@@ -274,7 +259,10 @@ function setup() {
 
 }
 //Set the game's current state to `play`:
-var state = play;
+var state = menu;
+
+menuBuild = true;
+catcherBuild = false;
 
 //Animation loop
 function gameLoop() {
@@ -290,6 +278,70 @@ function play() {
     gameInit();
     foodCatchCollision();
     animateBackground();
+    initCatcher();
     playerMovement();
     addScore();
 }
+<<<<<<< HEAD
+=======
+
+function gameMenuDisplay() {
+    if (menuBuild) {
+        console.log("ALERT");
+        playButton = new Sprite(
+            resources['assets/img/sprites/play.png'].texture
+        );
+        playButton.interactive = true;
+        playButton.x = GAME_WIDTH / 2;
+        playButton.y = GAME_HEIGHT / 2;
+        playButton.on('tap', (event) => {
+            playGameFromMenu();
+            console.log("ALERT");
+        });
+        stage.addChild(playButton);
+        menuBuild = false;
+        catcherBuild = true;
+    }
+}
+
+function playGameFromMenu() {
+    state = play;
+    stage.removeChild(playButton);
+}
+
+function menu() {
+    gameMenuDisplay();
+}
+
+function initCatcher() {
+    if (catcherBuild) {
+        //Setting up sprites
+        catcher = new Sprite(
+            resources['assets/img/sprites/basket.png'].texture
+        );
+
+        //Catcher movement
+        catcher.y = GAME_HEIGHT / 2;
+        catcher.x = GAME_WIDTH / 2;
+        catcher.vx = 0;
+        catcher.vy = 0;
+        catcher.accelerationX = 0;
+        catcher.accelerationY = 0;
+        catcher.frictionX = 0.5;
+        catcher.frictionY = 0.5;
+        catcher.speed = 0.2;
+        catcher.drag = 0.98;
+        catcher.anchor.x = 0.5;
+        catcher.anchor.y = 0.5;
+        catcher.interactive = true;
+
+        keyControls();
+
+        tk.makeDraggable(catcher);
+
+        stage.addChild(catcher);
+
+        catcherBuild = false;
+    }
+}
+>>>>>>> abb1aede5d7eae42c4ae8e1f2624441d55eb76f3
