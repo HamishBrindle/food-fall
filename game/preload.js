@@ -316,7 +316,6 @@ function playGameFromMenu() {
 
 
 function menu() {
-    console.log("in menu");
     gameMenuDisplay();
 }
 

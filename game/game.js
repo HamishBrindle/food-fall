@@ -18,6 +18,7 @@ function gameInit() {
     if(gameBuild) {
         obstacleCount = 0;
         countDownIndex = 0;
+        foodCount = 0;
         afterCountDown = false;
         var three = new Sprite(resources['assets/img/sprites/cd-3.png'].texture);
         var two = new Sprite(resources['assets/img/sprites/cd-2.png'].texture);
@@ -25,10 +26,9 @@ function gameInit() {
         var go = new Sprite(resources['assets/img/sprites/cd-go.png'].texture);
         countDownNumbers = [three, two, one, go];
         gameBuildTime = new Date().getTime();
-        console.log("gameInit");
         initCatcher();
+        catcher.alpha = 1;
     }
-    catcher.alpha = 1;
     gameBuild = false;
 
 }
@@ -218,7 +218,6 @@ function addScore() {
     score.text = 'Score: ' + scoreCount;
     stage.addChild(score);
 }
-
 
 function endGame() {
     menuBuild = true;
