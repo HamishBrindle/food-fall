@@ -259,7 +259,7 @@ function gameMenuDisplay() {
         playButton.y = (GAME_HEIGHT / 2) - (playButton.height / 2);
 
         // Add listener for play button
-        playButton.on('tap', (event) => {
+        playButton.on('pointerdown', (event) => {
             playGameFromMenu();
         });
 
