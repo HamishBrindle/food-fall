@@ -57,7 +57,7 @@ function leaderBoardMenu() {
 }
 
 function makeFood() {
-    const MAX_FOOD = 10;
+    const MAX_FOOD = 5;
     if(foodCount >= MAX_FOOD) return;
     ++foodCount;
     var newFoodIndex = weightedRand(fallingObjects);
