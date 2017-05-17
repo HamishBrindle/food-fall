@@ -19,11 +19,11 @@ var gameboundh = GAME_HEIGHT;
 var maxXspeed = 50;
 var maxYspeed = 25;
 var backgroundScrollSpeed = {
-    mtnFar: 5.4,
-    mtnMid: 5.5,
-    clouds: 6,
-    trees: 4,
-    grass: 2
+    mtnFar: 0,
+    mtnMid: 0.25,
+    clouds: 0.25,
+    trees: 0.50,
+    grass: 1.5
 };
 
 // Background textures
@@ -36,7 +36,6 @@ var sky,
     grass;
 
 var BG_RATE = 50;
-var FG_RATE = 125;
 
 var lastTime;
 
@@ -88,6 +87,8 @@ var playButton;
 
 var menuBuild;
 
+var logo;
+
 var catcherBuild;
 
 // Texture Cache
@@ -106,7 +107,8 @@ loader
         "assets/img/sprites/cd-3.png",
         "assets/img/sprites/cd-go.png",
         "assets/img/sprites/orange.png",
-        "assets/img/sprites/play.png"
+        "assets/img/sprites/play.png",
+        "assets/img/web/site-logo-white-long.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -167,7 +169,7 @@ function animateBackground() {
     mtnFar.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnFar;
     mtnMid.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnMid;
     clouds.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.clouds;
-    trees.tilePosition.x -= FG_RATE * delta + backgroundScrollSpeed.trees;
+    trees.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.trees;
     grass.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.grass;
 
     // Draw the stage and prepare for the next frame
@@ -273,18 +275,35 @@ function play() {
 }
 function gameMenuDisplay() {
     if (menuBuild) {
-        console.log("ALERT");
+
+        // Add logo to menu
+        logo = new Sprite(
+            resources['assets/img/web/site-logo-white-long.png'].texture
+        );
+        logo.x = (GAME_WIDTH / 2) - (logo.width / 2);
+        logo.y = (GAME_HEIGHT) - (logo.height * 1.5);
+
+        // Add play-button to menu
         playButton = new Sprite(
             resources['assets/img/sprites/play.png'].texture
         );
         playButton.interactive = true;
-        playButton.x = GAME_WIDTH / 2;
-        playButton.y = GAME_HEIGHT / 2;
+        playButton.width /= 2;
+        playButton.height /= 2;
+        playButton.x = (GAME_WIDTH / 2) - (playButton.width / 2);
+        playButton.y = (GAME_HEIGHT / 2) - (playButton.height / 2);
+
+        // Add listener for play button
         playButton.on('tap', (event) => {
             playGameFromMenu();
             console.log("ALERT");
         });
+
+        // Add button and logo
         stage.addChild(playButton);
+        stage.addChild(logo);
+
+        // Set game state indicators (e.i. has menu been built / has catcher been built)
         menuBuild = false;
         catcherBuild = true;
     }
@@ -293,7 +312,9 @@ function gameMenuDisplay() {
 function playGameFromMenu() {
     state = play;
     stage.removeChild(playButton);
+    stage.removeChild(logo);
 }
+
 
 function menu() {
     gameMenuDisplay();
