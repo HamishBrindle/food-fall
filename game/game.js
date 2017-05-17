@@ -27,6 +27,7 @@ function makeFood() {
     if(foodCount >= MAX_FOOD) return;
     var newFoodIndex = weightedRand(fallingObjects);
     var newFood = PIXI.Sprite.fromImage('assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png');
+    newFood.name = fallingObjects[newFoodIndex];
     newFood.x = getRandomInt(newFood.width, GAME_WIDTH - newFood.width);
     newFood.y = -newFood.height;
     newFood.anchor.x = 0.5;
@@ -66,7 +67,7 @@ function foodCatchCollision() {
     var childrenToDelete = [];
     for (var i in stage.children) {
         var fallingItem = stage.children[i];
-        if(fallingItem.isObstacle) {
+        if (fallingItem.isObstacle) {
             var curObstacle = fallingItem;
             curObstacle.x -= 8;
             obstacleCollision(catcher, curObstacle);
@@ -84,12 +85,19 @@ function foodCatchCollision() {
             fallingItem.velocity += deltaVy;
             fallingItem.rotation += fallingItem.rotateFactor;
              if (fallingItem.y > GAME_HEIGHT) {
+                 if (scoreCount > 0) {
+                     scoreCount -= 5;
+                 }
+                 if (scoreCount < 0) {
+                     scoreCount = 0;
+                 }
                 childrenToDelete.push(fallingItem);
                 fallingItem.destroy();
                 --foodCount;
             }
             try {
                 if (isCollide(catcher, fallingItem)) {
+                    modScore(fallingItem);
                     childrenToDelete.push(fallingItem);
                     fallingItem.destroy();
                     sound.play('coin');
@@ -169,4 +177,25 @@ function addScore() {
       score.anchor.x = 0.5;
       score.text = 'Score: ' + scoreCount;
       stage.addChild(score);
+}
+/**
+ * Returns the name of the given food.
+ * @param food the food to decipher.
+ */
+function getFoodType(food) {
+    return food.name;
+}
+
+/**
+ * Modifies the score based on the type of food given.
+ * @param food
+ */
+function modScore(food) {
+    var type = getFoodType(food);
+    if (type.name === "apple") {
+        scoreCount += 3;
+    }
+    if (type.name === "bread") {
+        scoreCount += 2;
+    }
 }
