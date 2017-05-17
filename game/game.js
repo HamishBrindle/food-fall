@@ -127,9 +127,10 @@ function foodCatchCollision() {
                     childrenToDelete.push(curObstacle);
                     curObstacle.destroy();
                     --obstacleCount;
+                }else {
+                    curObstacle.x -= backgroundScrollSpeed.grass;
+                    obstacleCollision(catcher, curObstacle);
                 }
-                curObstacle.x -= backgroundScrollSpeed.grass;
-                obstacleCollision(catcher, curObstacle);
             }
             if (fallingItem.isFood) {
                 var deltaY = fallingItem.velocity * deltaTime;
