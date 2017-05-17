@@ -19,11 +19,11 @@ var gameboundh = GAME_HEIGHT;
 var maxXspeed = 50;
 var maxYspeed = 25;
 var backgroundScrollSpeed = {
-    mtnFar: 5.4,
-    mtnMid: 5.5,
-    clouds: 6,
-    trees: 4,
-    grass: 2
+    mtnFar: 0,
+    mtnMid: 0.25,
+    clouds: 0.25,
+    trees: 0.50,
+    grass: 1.5
 };
 
 // Background textures
@@ -36,7 +36,6 @@ var sky,
     grass;
 
 var BG_RATE = 50;
-var FG_RATE = 125;
 
 var lastTime;
 
@@ -82,6 +81,8 @@ var setupdone = false;
 
 var pointer;
 
+gameBuild = true;
+
 var playButton;
 
 var menuBuild;
@@ -101,6 +102,10 @@ loader
         "assets/img/sprites/banana.png",
         "assets/img/sprites/bread.png",
         "assets/img/sprites/broccoli.png",
+        "assets/img/sprites/cd-1.png",
+        "assets/img/sprites/cd-2.png",
+        "assets/img/sprites/cd-3.png",
+        "assets/img/sprites/cd-go.png",
         "assets/img/sprites/orange.png",
         "assets/img/sprites/play.png",
         "assets/img/web/site-logo-white-long.png"
@@ -164,7 +169,7 @@ function animateBackground() {
     mtnFar.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnFar;
     mtnMid.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnMid;
     clouds.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.clouds;
-    trees.tilePosition.x -= FG_RATE * delta + backgroundScrollSpeed.trees;
+    trees.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.trees;
     grass.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.grass;
 
     // Draw the stage and prepare for the next frame
@@ -223,7 +228,6 @@ function setup() {
 
     tk = new Tink(PIXI, renderer.view, scale);
 
-
     //Touch and Mouse Controls
     pointer = tk.makePointer();
     //Pointer Definition
@@ -262,13 +266,13 @@ function gameLoop() {
 
 //State definition for "playing" the game
 function play() {
+    gameInit();
     foodCatchCollision();
     animateBackground();
     initCatcher();
     playerMovement();
     addScore();
 }
-
 function gameMenuDisplay() {
     if (menuBuild) {
 
