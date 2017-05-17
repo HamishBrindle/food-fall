@@ -2,19 +2,7 @@
 
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
-var gameboundw = GAME_WIDTH;
-var gameboundh = GAME_HEIGHT;
-/*
-    TO DO: ADD SPRITES TO ONE CONTAINER IN ORDER TO OPTIMIZE REFRESH
-    REDUCE LAG
 
-    https://github.com/kittykatattack/learningPixi/blob/master/README.md
-
-    control + f: var superFastSprites = new ParticleContainer();
-
-    We will also need to put scorebar in it's own container, and add children
-    to make incremental changes.
-*/
 //Variables
 var maxXspeed = 50;
 var maxYspeed = 25;
@@ -93,9 +81,6 @@ var catcherBuild;
 
 var randFact;
 
-// Texture Cache
-loadBackgroundTextures();
-
 loader
     .add([
         "assets/img/sprites/basket.png",
@@ -104,6 +89,7 @@ loader
         "assets/img/sprites/banana.png",
         "assets/img/sprites/bread.png",
         "assets/img/sprites/broccoli.png",
+        "assets/img/sprites/egg.png",
         "assets/img/sprites/cd-1.png",
         "assets/img/sprites/cd-2.png",
         "assets/img/sprites/cd-3.png",
@@ -111,7 +97,14 @@ loader
         "assets/img/sprites/orange.png",
         "assets/img/sprites/play.png",
         "assets/img/web/site-logo-white-long.png",
-        "assets/img/sprites/obstacle.png"
+        "assets/img/sprites/obstacle.png",
+        "assets/img/tiling-sprites/sky.png",
+        "assets/img/tiling-sprites/mtn-far.png",
+        "assets/img/tiling-sprites/mtn-mid.png",
+        "assets/img/tiling-sprites/ground.png",
+        "assets/img/tiling-sprites/clouds.png",
+        "assets/img/tiling-sprites/trees.png",
+        "assets/img/tiling-sprites/grass.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -124,43 +117,37 @@ function initBackground() {
      sky | mtnFar | mtnMid | ground | clouds | trees | grass
      */
     sky =
-        new PIXI.extras.TilingSprite(PIXI.loader.resources.sky.texture,
-            GAME_WIDTH, GAME_HEIGHT);
+        new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/sky.png'].texture, GAME_WIDTH, GAME_HEIGHT);
     stage.addChild(sky);
 
     mtnFar =
-        new PIXI.extras.TilingSprite(PIXI.loader.resources.mtnFar.texture,
-            GAME_WIDTH, GAME_HEIGHT);
+        new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/mtn-far.png'].texture, GAME_WIDTH, GAME_HEIGHT);
     stage.addChild(mtnFar);
 
     mtnMid =
-        new PIXI.extras.TilingSprite(PIXI.loader.resources.mtnMid.texture,
-            GAME_WIDTH, GAME_HEIGHT);
+        new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/mtn-mid.png'].texture, GAME_WIDTH, GAME_HEIGHT);
     stage.addChild(mtnMid);
 
     ground =
-        new PIXI.extras.TilingSprite(PIXI.loader.resources.ground.texture,
-            GAME_WIDTH, GAME_HEIGHT);
+        new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/ground.png'].texture, GAME_WIDTH, GAME_HEIGHT);
     stage.addChild(ground);
 
     clouds =
-        new PIXI.extras.TilingSprite(PIXI.loader.resources.clouds.texture,
-            GAME_WIDTH, GAME_HEIGHT);
+        new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/clouds.png'].texture, GAME_WIDTH, GAME_HEIGHT);
     stage.addChild(clouds);
 
     trees =
-        new PIXI.extras.TilingSprite(PIXI.loader.resources.trees.texture,
-            GAME_WIDTH, GAME_HEIGHT);
+        new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/trees.png'].texture, GAME_WIDTH, GAME_HEIGHT);
     stage.addChild(trees);
 
     grass =
-        new PIXI.extras.TilingSprite(PIXI.loader.resources.grass.texture,
-            GAME_WIDTH, GAME_HEIGHT);
+        new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/grass.png'].texture, GAME_WIDTH, GAME_HEIGHT);
 
     // Prepare for first frame of game loop/animation
     lastTime = new Date().getTime();
 
 }
+
 
 function animateBackground() {
 
@@ -180,29 +167,6 @@ function animateBackground() {
 
 }
 
-function loadBackgroundTextures() {
-
-    if (window.devicePixelRatio >= 2 &&
-        renderer instanceof PIXI.WebGLRenderer) {
-        loader.add("sky", "assets/img/tiling-sprites/sky@2x.png");
-        loader.add("mtnFar", "assets/img/tiling-sprites/mtn-far@2x.png");
-        loader.add("mtnMid", "assets/img/tiling-sprites/mtn-mid@2x.png");
-        loader.add("ground", "assets/img/tiling-sprites/ground@2x.png");
-        loader.add("clouds", "assets/img/tiling-sprites/clouds@2x.png");
-        loader.add("trees", "assets/img/tiling-sprites/trees@2x.png");
-        loader.add("grass", "assets/img/tiling-sprites/grass@2x.png");
-    } else {
-        loader.add("sky", "assets/img/tiling-sprites/sky.png");
-        loader.add("mtnFar", "assets/img/tiling-sprites/mtn-far.png");
-        loader.add("mtnMid", "assets/img/tiling-sprites/mtn-mid.png");
-        loader.add("ground", "assets/img/tiling-sprites/ground.png");
-        loader.add("clouds", "assets/img/tiling-sprites/clouds.png");
-        loader.add("trees", "assets/img/tiling-sprites/trees.png");
-        loader.add("grass", "assets/img/tiling-sprites/grass.png");
-    }
-}
-
-
 /*
 Prints loading log to console.
  */
@@ -210,13 +174,17 @@ function loadProgressHandler() {
     console.log("loading");
 }
 
-var apple = {name:"apple", weight:0.2};
-var banana = {name:"banana", weight:0.2};
-var bread = {name:"bread", weight:0.2};
-var orange = {name:"orange", weight:0.2};
-var broccoli = {name:"broccoli", weight:0.2};
+var numberOfFood = 6;
 
-fallingObjects = [apple, banana, bread, orange, broccoli];
+apple = {name: "apple", weight: 1 / numberOfFood};
+banana = {name: "banana", weight: 1 / numberOfFood};
+bread = {name: "bread", weight: 1 / numberOfFood};
+orange = {name: "orange", weight: 1 / numberOfFood};
+broccoli = {name: "broccoli", weight: 1 / numberOfFood};
+egg = {name: "egg", weight: 1 / numberOfFood};
+
+fallingObjects = [apple, banana, bread, orange, broccoli, egg];
+
 
 /*
 Main game driver.
