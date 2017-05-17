@@ -108,7 +108,8 @@ loader
         "assets/img/sprites/cd-go.png",
         "assets/img/sprites/orange.png",
         "assets/img/sprites/play.png",
-        "assets/img/web/site-logo-white-long.png"
+        "assets/img/web/site-logo-white-long.png",
+        "assets/img/sprites/obstacle.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -295,7 +296,6 @@ function gameMenuDisplay() {
         // Add listener for play button
         playButton.on('tap', (event) => {
             playGameFromMenu();
-            console.log("ALERT");
         });
 
         // Add button and logo

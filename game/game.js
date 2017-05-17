@@ -14,6 +14,7 @@ var score = new PIXI.Text('Score: ', {
 
 function gameInit() {
     if(gameBuild) {
+        obstacleCount = 0;
         countDownIndex = 0;
         afterCountDown = false;
         var three = new Sprite(resources['assets/img/sprites/cd-3.png'].texture);
@@ -101,8 +102,6 @@ function foodCatchCollision() {
     var deltaTime = parseFloat((currtime - lastTime)/1000);
     var currentElapsedGameTime = parseInt((currtime - gameBuildTime)/1000);
 
-    console.log(currentElapsedGameTime);
-
     if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
         displayNo();
         if (currentElapsedGameTime == 4) {
@@ -111,18 +110,18 @@ function foodCatchCollision() {
     }
     if(afterCountDown) {
         makeFood();
+        makeObstacle();
         var childrenToDelete = [];
         for (var i in stage.children) {
             var fallingItem = stage.children[i];
             if (fallingItem.isObstacle) {
                 var curObstacle = fallingItem;
-                curObstacle.x -= 8;
+                curObstacle.x -= 3;
                 obstacleCollision(catcher, curObstacle);
                 if(curObstacle.x < (-curObstacle.width)) {
                     childrenToDelete.push(curObstacle);
                     curObstacle.destroy();
                     --obstacleCount;
-                    console.log(obstacleCount);
                 }
             }
             if (fallingItem.isFood) {
@@ -162,39 +161,27 @@ function foodCatchCollision() {
 
 }
 
-var obstacleCount = 0;
 function makeObstacle() {
-    return;
     const MAX_OBSTACLE = 1;
     if(obstacleCount >= MAX_OBSTACLE) return;
 
-    var newTopObstacle = PIXI.Sprite.fromImage('assets/img/sprites/obstacle.png');
+    var newTopObstacle = new Sprite(resources['assets/img/sprites/obstacle.png'].texture);
     newTopObstacle.x = newTopObstacle.width + GAME_WIDTH;
-    newTopObstacle.height = getRandomInt(50, 300);
+    newTopObstacle.height = getRandomInt(30, (2 * (GAME_HEIGHT / 3))); //
     newTopObstacle.y = 0;
     newTopObstacle.width = 50;
     newTopObstacle.isObstacle = true;
     stage.addChild(newTopObstacle);
 
 
-    var newBotObstacle = PIXI.Sprite.fromImage('assets/img/sprites/obstacle.png');
+    var newBotObstacle = new Sprite(resources['assets/img/sprites/obstacle.png'].texture);
     newBotObstacle.x =  newTopObstacle.x;
-    newBotObstacle.height = getRandomInt(50, 300);
-    newBotObstacle.width = newTopObstacle.height;
-    newBotObstacle.y = GAME_HEIGHT - newBotObstacle.height;
+    newBotObstacle.y = newTopObstacle.height + (2 * catcher.height);//newBotObstacle.height ;
+    newBotObstacle.height = GAME_HEIGHT - newBotObstacle.y;
+    newBotObstacle.width = newTopObstacle.width;
     newBotObstacle.isObstacle = true;
     stage.addChild(newBotObstacle);
-    // const MAX_OBSTACLE = 2;
-    //     if(obstacleCount >= MAX_OBSTACLE) return;
-    //     var newObstacle = PIXI.Sprite.fromImage('assets/img/sprites/obstacle.png');
-    //     newObstacle.x = newObstacle.width + GAME_WIDTH;
-    //     newObstacle.height = getRandomInt(50, 300);
-    //     newObstacle.y = GAME_HEIGHT - newObstacle.height;
-    //     newObstacle.width = 50;
-    //     newObstacle.isObstacle = true;
-    //     ++obstacleCount;
-    //     stage.addChild(newObstacle);
-    ++obstacleCount;
+    obstacleCount += 2;
 
 }
 /*

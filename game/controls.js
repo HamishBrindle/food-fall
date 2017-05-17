@@ -10,18 +10,14 @@ var left = keyboard(37),
 function moveToPointer() {
     if (pointer.x < catcher.x) {
         leftPress();
-        console.log("Xmouse: " + pointer.x + "Xcatcher: " + catcher.x);
     }
     if (pointer.y < catcher.y) {
         upPress();
-        console.log("Ymouse: " + pointer.y + "Ycatcher: " + catcher.y);
     }
     if (pointer.x > catcher.x) {
         rightPress();
-        console.log("Xmouse: " + pointer.x + "Xcatcher: " + catcher.x);
     }
     if (pointer.y > catcher.y) {
-        console.log("Ymouse: " + pointer.y + "Ycatcher: " + catcher.y);
         downPress();
     }
 }
