@@ -22,7 +22,7 @@ function gameInit() {
         var go = new Sprite(resources['assets/img/sprites/cd-go.png'].texture);
         countDownNumbers = [three, two, one, go];
         gameBuildTime = new Date().getTime();
-
+        initCatcher();
     }
     gameBuild = false;
 

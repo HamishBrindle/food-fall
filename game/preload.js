@@ -269,7 +269,6 @@ function play() {
     gameInit();
     foodCatchCollision();
     animateBackground();
-    initCatcher();
     playerMovement();
     addScore();
 }
