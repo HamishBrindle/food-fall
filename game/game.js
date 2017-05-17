@@ -13,7 +13,7 @@ var score = new PIXI.Text('Score: ', {
 });
 
 function gameInit() {
-    if(gameStart) {
+    if(gameBuild) {
         countDownIndex = 0;
         afterCountDown = false;
         var three = new Sprite(resources['assets/img/sprites/cd-3.png'].texture);
@@ -21,10 +21,10 @@ function gameInit() {
         var one = new Sprite(resources['assets/img/sprites/cd-1.png'].texture);
         var go = new Sprite(resources['assets/img/sprites/cd-go.png'].texture);
         countDownNumbers = [three, two, one, go];
-        gameStartTime = new Date().getTime();
+        gameBuildTime = new Date().getTime();
 
     }
-    gameStart = false;
+    gameBuild = false;
 
 }
 
@@ -99,7 +99,7 @@ function isCollide(basket, food) {
 function foodCatchCollision() {
     var currtime = new Date().getTime();
     var deltaTime = parseFloat((currtime - lastTime)/1000);
-    var currentElapsedGameTime = parseInt((currtime - gameStartTime)/1000);
+    var currentElapsedGameTime = parseInt((currtime - gameBuildTime)/1000);
 
     console.log(currentElapsedGameTime);
 

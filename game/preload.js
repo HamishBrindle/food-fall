@@ -82,16 +82,13 @@ var setupdone = false;
 
 var pointer;
 
-<<<<<<< HEAD
-gameStart = true;
+gameBuild = true;
 
-=======
 var playButton;
 
 var menuBuild;
 
 var catcherBuild;
->>>>>>> abb1aede5d7eae42c4ae8e1f2624441d55eb76f3
 
 // Texture Cache
 loadBackgroundTextures();
@@ -107,7 +104,7 @@ loader
         "assets/img/sprites/cd-1.png",
         "assets/img/sprites/cd-2.png",
         "assets/img/sprites/cd-3.png",
-        "assets/img/sprites/cd-go.png"
+        "assets/img/sprites/cd-go.png",
         "assets/img/sprites/orange.png",
         "assets/img/sprites/play.png"
     ])
