@@ -104,15 +104,12 @@ loader
         "assets/img/sprites/banana.png",
         "assets/img/sprites/bread.png",
         "assets/img/sprites/broccoli.png",
-<<<<<<< HEAD
         "assets/img/sprites/cd-1.png",
         "assets/img/sprites/cd-2.png",
         "assets/img/sprites/cd-3.png",
         "assets/img/sprites/cd-go.png"
-=======
         "assets/img/sprites/orange.png",
         "assets/img/sprites/play.png"
->>>>>>> abb1aede5d7eae42c4ae8e1f2624441d55eb76f3
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -232,11 +229,6 @@ function setup() {
 
     tk = new Tink(PIXI, renderer.view, scale);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> abb1aede5d7eae42c4ae8e1f2624441d55eb76f3
-
     //Touch and Mouse Controls
     pointer = tk.makePointer();
     //Pointer Definition
@@ -282,9 +274,6 @@ function play() {
     playerMovement();
     addScore();
 }
-<<<<<<< HEAD
-=======
-
 function gameMenuDisplay() {
     if (menuBuild) {
         console.log("ALERT");
@@ -344,4 +333,3 @@ function initCatcher() {
         catcherBuild = false;
     }
 }
->>>>>>> abb1aede5d7eae42c4ae8e1f2624441d55eb76f3
