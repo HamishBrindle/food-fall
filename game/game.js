@@ -4,7 +4,6 @@
  */
 
 // Speed of Game
-sizeOfEntry = 3;
 var scoreCount = 0;
 var childrenToDelete = [];
 var score = new PIXI.Text('Score: ', {
@@ -114,12 +113,10 @@ function foodCatchCollision() {
     if(true) {
         makeFood();
         makeObstacle();
-        for (var i in stage.children) {
-            var fallingItem = stage.children[i];
+        for (var i in game.stage.children) {
+            var fallingItem = game.stage.children[i];
             if (fallingItem.isObstacle) {
                 var curObstacle = fallingItem;
-                curObstacle.x -= 3;
-                obstacleCollision(catcher, curObstacle);
                 if(curObstacle.x < (-curObstacle.width)) {
                     childrenToDelete.push(curObstacle);
                     curObstacle.destroy();
@@ -232,10 +229,10 @@ function endGame() {
  * Adds all food and obstacles to list and destroys them.
  */
 function destroyOldObjects () {
-    for (var i in stage.children) {
-        var item = stage.children[i];
+    for (var i in game.stage.children) {
+        var item = game.stage.children[i];
         if(item.isFood || item.isObstacle || item.name == 'score') {
-            childrenToDelete.push(stage.children[i]);
+            childrenToDelete.push(game.stage.children[i]);
         }
     }
     for (var i = 0; i < childrenToDelete.length; i++) {
