@@ -1,6 +1,6 @@
 /*
-*   game.js
-*   Main file for Food Fall!
+ *   game.js
+ *   Main file for Food Fall!
  */
 
 // Speed of Game
@@ -10,9 +10,9 @@ setInterval(makeObstacle, 10);
 sizeOfEntry = 3;
 var scoreCount = 0;
 var score = new PIXI.Text('Score: ', {
-  fontSize: 30,
-  fontFamily: 'Arial',
-  fill: 'white'
+    fontSize: 30,
+    fontFamily: 'Arial',
+    fill: 'white'
 });
 
 
@@ -57,7 +57,7 @@ function isCollide(basket, food) {
     var upperLeft = {x:basket.x - xoffset, y:basket.y - yoffset};
     var lowerRight = {x:(basket.x + basket.width - xoffset), y:(basket.y + 10 - yoffset)};
     var inBasket = (food.x > upperLeft.x) && (food.y > upperLeft.y)
-                    && (food.x < lowerRight.x) && (food.y < lowerRight.y);
+        && (food.x < lowerRight.x) && (food.y < lowerRight.y);
     return inBasket;
 }
 
@@ -84,13 +84,13 @@ function foodCatchCollision() {
             fallingItem.y += deltaY;
             fallingItem.velocity += deltaVy;
             fallingItem.rotation += fallingItem.rotateFactor;
-             if (fallingItem.y > GAME_HEIGHT) {
-                 if (scoreCount > 0) {
-                     scoreCount -= 5;
-                 }
-                 if (scoreCount < 0) {
-                     scoreCount = 0;
-                 }
+            if (fallingItem.y > GAME_HEIGHT) {
+                if (scoreCount > 0) {
+                    scoreCount -= 5;
+                }
+                if (scoreCount < 0) {
+                    scoreCount = 0;
+                }
                 childrenToDelete.push(fallingItem);
                 fallingItem.destroy();
                 --foodCount;
@@ -149,8 +149,8 @@ function makeObstacle() {
 
 }
 /*
-    need xspeed
-*/
+ need xspeed
+ */
 function bounce() {
 
 }
@@ -166,17 +166,17 @@ function isCollideWholeBasket(basket, obstacle) {
     var xoffset = basket.width / 2;
     var yoffset = basket.height / 2;
     return !(((basket.y + basket.height - yoffset) < (obstacle.y)) ||
-            ((basket.y - yoffset) > (obstacle.y + obstacle.height)) ||
-            ((basket.x + basket.width - xoffset) < obstacle.x) ||
-            ((basket.x -xoffset)> (obstacle.x + obstacle.width)));
+    ((basket.y - yoffset) > (obstacle.y + obstacle.height)) ||
+    ((basket.x + basket.width - xoffset) < obstacle.x) ||
+    ((basket.x -xoffset)> (obstacle.x + obstacle.width)));
 }
 
 function addScore() {
-      score.x = GAME_WIDTH - 100;
-      score.y = GAME_HEIGHT - 50;
-      score.anchor.x = 0.5;
-      score.text = 'Score: ' + scoreCount;
-      stage.addChild(score);
+    score.x = GAME_WIDTH - 100;
+    score.y = GAME_HEIGHT - 50;
+    score.anchor.x = 0.5;
+    score.text = 'Score: ' + scoreCount;
+    stage.addChild(score);
 }
 /**
  * Returns the name of the given food.
