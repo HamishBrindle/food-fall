@@ -109,7 +109,8 @@ loader
         "assets/img/sprites/cd-go.png",
         "assets/img/sprites/orange.png",
         "assets/img/sprites/play.png",
-        "assets/img/web/site-logo-white-long.png"
+        "assets/img/web/site-logo-white-long.png",
+        "assets/img/sprites/obstacle.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -273,7 +274,6 @@ function play() {
     gameInit();
     foodCatchCollision();
     animateBackground();
-    initCatcher();
     playerMovement();
     addScore();
 }
