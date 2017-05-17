@@ -77,6 +77,8 @@ var menuBuild;
 
 var logo;
 
+var instructions;
+
 var catcherBuild;
 
 var soundOptions = {
@@ -115,7 +117,8 @@ loader
         "assets/img/tiling-sprites/trees.png",
         "assets/img/tiling-sprites/grass.png",
         "assets/img/sprites/sound-on.png",
-        "assets/img/sprites/sound-off.png"
+        "assets/img/sprites/sound-off.png",
+        "assets/img/sprites/instructions.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -267,7 +270,7 @@ function gameMenuDisplay() {
             resources['assets/img/web/site-logo-white-long-shadow.png'].texture
         );
         logo.x = (GAME_WIDTH / 2) - (logo.width / 2);
-        logo.y = GAME_HEIGHT - (logo.height * 2.15);
+        logo.y = GAME_HEIGHT - (logo.height * 3);
 
         // Add play-button to menu
         playButton = new Sprite(
@@ -277,7 +280,7 @@ function gameMenuDisplay() {
         playButton.width /= 2;
         playButton.height /= 2;
         playButton.x = (GAME_WIDTH / 2) - (playButton.width / 2);
-        playButton.y = GAME_HEIGHT - (playButton.height * 1.35);
+        playButton.y = GAME_HEIGHT - (playButton.height * 2);
 
         // Add listener for play button
         playButton.on('pointerdown', (event) => {
@@ -285,9 +288,19 @@ function gameMenuDisplay() {
             menuSound.play('menu')
         });
 
+        // Add logo to menu
+        instructions = new Sprite(
+            resources['assets/img/sprites/instructions.png'].texture
+        );
+        instructions.width /= 1.25;
+        instructions.height /= 1.25;
+        instructions.x = instructions.width / 2;
+        instructions.y = GAME_HEIGHT - (instructions.height * 1.5);
+
         // Add button and logo
         stage.addChild(playButton);
         stage.addChild(logo);
+        stage.addChild(instructions);
 
         // Add a fact to the stage
         initFacts();
@@ -344,7 +357,8 @@ function playGameFromMenu() {
     state = play;
     stage.removeChild(playButton);
     stage.removeChild(logo);
-    stage.removeChild(randFact)
+    stage.removeChild(randFact);
+    stage.removeChild(instructions);
 }
 
 
