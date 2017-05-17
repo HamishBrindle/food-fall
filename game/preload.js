@@ -34,16 +34,18 @@ var Container = PIXI.Container,
     resources = PIXI.loader.resources,
     Sprite = PIXI.Sprite;
 
+// Rendering Options.
+var myView = document.getElementById('myCanvas');
+
 var rendererOptions = {
     antiAliasing: false,
     transparent: false,
     resolution: window.devicePixelRatio,
-    autoResize: true,
-    view: document.getElementById("game-canvas")
+    autoResize: true
 };
 
 // Create renderer.
-var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
+var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, myView, rendererOptions);
 
 // Create new Container for stage.
 var stage = new Container();
@@ -53,6 +55,8 @@ renderer.view.style.position = "absolute";
 renderer.view.style.top = "0px";
 renderer.view.style.left = "0px"; // Centers window.
 
+// Add renderer to page.
+document.getElementById("game-window").appendChild(renderer.view);
 
 //Globals -------------------------------------------------------------------------------Globals
 var catcher;
