@@ -116,7 +116,8 @@ function foodCatchCollision() {
             var fallingItem = stage.children[i];
             if (fallingItem.isObstacle) {
                 var curObstacle = fallingItem;
-                curObstacle.x -= 3;
+                // console.log("curObstacle", curObstacle.x);
+                curObstacle.x -= backgroundScrollSpeed.grass;
                 obstacleCollision(catcher, curObstacle);
                 if(curObstacle.x < (-curObstacle.width)) {
                     childrenToDelete.push(curObstacle);
@@ -166,13 +167,13 @@ function makeObstacle() {
     if(obstacleCount >= MAX_OBSTACLE) return;
 
     var newTopObstacle = new Sprite(resources['assets/img/sprites/obstacle.png'].texture);
-    newTopObstacle.x = newTopObstacle.width + GAME_WIDTH;
+    newTopObstacle.x = GAME_WIDTH;
+    console.log(newTopObstacle.x);
     newTopObstacle.height = getRandomInt(30, (2 * (GAME_HEIGHT / 3))); //
     newTopObstacle.y = 0;
     newTopObstacle.width = 50;
     newTopObstacle.isObstacle = true;
     stage.addChild(newTopObstacle);
-
 
     var newBotObstacle = new Sprite(resources['assets/img/sprites/obstacle.png'].texture);
     newBotObstacle.x =  newTopObstacle.x;
