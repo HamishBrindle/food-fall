@@ -56,7 +56,7 @@ function keyControls() {
 }
 function leftPress() {
     //Change the catcher velocity when the key is pressed
-    if (catcher.vx > -maxXspeed && catcher.x > 0) {
+    if (catcher.vx > -maxXSpeed && catcher.x > 0) {
         catcher.accelerationX = -catcher.speed;
         catcher.frictionX = 1;
     }
@@ -70,7 +70,7 @@ function leftRelease() {
     }
 }
 function upPress() {
-    if (catcher.vy > -maxYspeed && catcher.y > GAME_HEIGHT / 6) {
+    if (catcher.vy > -maxYSpeed && catcher.y > GAME_HEIGHT / 6) {
         catcher.accelerationY = -catcher.speed;
         catcher.frictionY = 1;
     }
@@ -82,7 +82,7 @@ function upRelease() {
     }
 }
 function rightPress() {
-    if (catcher.vx < maxXspeed && catcher.x < GAME_WIDTH * 0.9) {
+    if (catcher.vx < maxXSpeed && catcher.x < GAME_WIDTH * 0.9) {
         catcher.accelerationX = catcher.speed;
         catcher.frictionX = 1;
     }
@@ -94,7 +94,7 @@ function rightRelease() {
     }
 }
 function downPress() {
-    if (catcher.vy < maxYspeed && catcher.y < GAME_WIDTH * 0.9)
+    if (catcher.vy < maxYSpeed && catcher.y < GAME_WIDTH * 0.9)
         catcher.accelerationY = catcher.speed;
     catcher.frictionY = 1;
 }
