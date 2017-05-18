@@ -404,7 +404,6 @@ function initCatcher() {
 
 //Brings back catcher if moved too far offscreen
 function onPointerMove() {
-    console.log("Dragged");
     if (catcher.x < 0) {
         catcher.x = 0;
     }
