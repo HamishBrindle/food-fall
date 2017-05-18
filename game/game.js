@@ -260,6 +260,10 @@ function getFoodType(food) {
     return food.name;
 }
 
+function getCaughtFood() {
+
+}
+
 /**
  * Modifies the score based on the type of food given.
  * @param food
@@ -285,18 +289,22 @@ function decreaseScore() {
         scoreCount = 0;
     }
 }
+var caughtFood = [];
+eggCount = 0;
 
 function isCombo(food) {
-    let caughtFood = [];
-    var type = getFoodType(food);
+    let type = getFoodType(food);
     caughtFood.push(type.name);
     console.log(caughtFood.length);
-    if (caughtFood.length === 3) {
-        for (f in caughtFood) {
-            if (type.name === "broccoli") {
-                return true;
-            }
+    for (i = 0; i < caughtFood.length; i++) {
+        console.log(caughtFood[i]);
+        if (caughtFood[i] === "egg") {
+            eggCount++;
         }
+    }
+    console.log("egg count: " + eggCount);
+    if (eggCount >= 3) {
+        return true;
     }
     return false;
 }
