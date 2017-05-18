@@ -398,12 +398,13 @@ function initCatcher() {
         catcherBuild = false;
 
         //Callback to bring catcher back to screen if moved off
-        catcher.on('pointermove', onPointerMove);
+        catcher.on('pointermove', onOutOfBounds);
+        catcher.on('pointerover', onOutOfBounds);
     }
 }
 
 //Brings back catcher if moved too far offscreen
-function onPointerMove() {
+function onOutOfBounds() {
     if (catcher.x < 0) {
         catcher.x = 0;
     }
