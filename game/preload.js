@@ -393,23 +393,27 @@ function initCatcher() {
         stage.addChild(catcher);
 
         catcherBuild = false;
-        catcher.on('pointermove', onDragMove);
-        catcher.on('pointerup', onDragEnd);
+
+        //Callback to bring catcher back to screen if moved off
+        catcher.on('pointermove', onPointerMove);
     }
 }
 
-var outboundx;
-var outboundy;
-
-function onDragMove() {
+//Brings back catcher if moved too far offscreen
+function onPointerMove() {
     console.log("Dragged");
-    if (catcher.x = 0) {
-       outboundy = catcher.y;
+    if (catcher.x < 0) {
+        catcher.x = 0;
     }
-}
-
-function onDragEnd() {
-    console.log("Drag Eneded");
+    if (catcher.x > GAME_WIDTH) {
+        catcher.x = GAME_WIDTH;
+    }
+    if (catcher.y < 0) {
+        catcher.y = 0;
+    }
+    if (catcher.y > GAME_HEIGHT) {
+        catcher.y = GAME_HEIGHT;
+    }
 }
 
 
