@@ -396,8 +396,28 @@ function initCatcher() {
 
         stage.addChild(catcher);
         catcherBuild = false;
+
+        //Callback to bring catcher back to screen if moved off
+        catcher.on('pointermove', onPointerMove);
     }
 }
+
+//Brings back catcher if moved too far offscreen
+function onPointerMove() {
+    if (catcher.x < 0) {
+        catcher.x = 0;
+    }
+    if (catcher.x > GAME_WIDTH) {
+        catcher.x = GAME_WIDTH;
+    }
+    if (catcher.y < 0) {
+        catcher.y = 0;
+    }
+    if (catcher.y > GAME_HEIGHT) {
+        catcher.y = GAME_HEIGHT;
+    }
+}
+
 
 /**
  * Adds a random zero food waste tip to the screen.
