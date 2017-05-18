@@ -139,19 +139,16 @@ function foodCatchCollision() {
                 fallingItem.velocity += deltaVy;
                 fallingItem.rotation += fallingItem.rotateFactor;
                  if (fallingItem.y > GAME_HEIGHT) {
-                     if (scoreCount > 0) {
-                         scoreCount -= 5;
-                     }
-                     if (scoreCount < 0) {
-                         scoreCount = 0;
-                     }
-                    childrenToDelete.push(fallingItem);
-                    fallingItem.destroy();
-                    --foodCount;
+                     decreaseScore();
+                     childrenToDelete.push(fallingItem);
+                     fallingItem.destroy();
+                     --foodCount;
                 }
                 try {
                     if (isCollide(catcher, fallingItem)) {
                         modScore(fallingItem);
+                        isCombo(fallingItem);
+                        console.log(isCombo(fallingItem));
                         childrenToDelete.push(fallingItem);
                         fallingItem.destroy();
                         sound.play('coin');
@@ -220,7 +217,7 @@ function addScore() {
     score.x = GAME_WIDTH - 100;
     score.y = GAME_HEIGHT - 50;
     score.anchor.x = 0.5;
-    score.text = 'Score: ' + scoreCount;
+    score.text = scoreCount;
     stage.addChild(score);
 }
 
@@ -265,4 +262,31 @@ function modScore(food) {
     if (type.name === "bread") {
         scoreCount += 2;
     }
+}
+
+/**
+ * Decrements the score.
+ */
+function decreaseScore() {
+    if (scoreCount > 0) {
+        scoreCount -= 5;
+    }
+    if (scoreCount < 0) {
+        scoreCount = 0;
+    }
+}
+
+function isCombo(food) {
+    let caughtFood = [];
+    var type = getFoodType(food);
+    caughtFood.push(type.name);
+    console.log(caughtFood.length);
+    if (caughtFood.length === 3) {
+        for (f in caughtFood) {
+            if (type.name === "broccoli") {
+                return true;
+            }
+        }
+    }
+    return false;
 }
