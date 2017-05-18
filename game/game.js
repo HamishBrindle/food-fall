@@ -191,7 +191,8 @@ function bounce() {
 function obstacleCollision(catcher, obstacle) {
     if (isCollideWholeBasket(catcher, obstacle)) {
         endGame();
-        state = menu;
+        state = gameOver;
+        gameOverBuild = true;
         catcher.alpha = 0;
     }
 }
@@ -213,9 +214,29 @@ function addScore() {
     stage.addChild(score);
 }
 
+function addHighScore(scoreCount){
+    console.log(scoreCount);
+    firebase.auth().onAuthStateChanged((user) => {
+        //If there is a user signed in
+        if(user){
+            var scoreInDatabase = firebase.database().ref("users/" + user.uid + "/score");
+            scoreInDatabase.on('value', function(scoreSnapshot) {
+                if(scoreCount > scoreSnapshot.val()){
+                    //update database with new highscore.
+                    var updateScore = firebase.database().ref("users/" + user.uid);
+                    updateScore.update({
+                        score : scoreCount
+                    });
+                }
+            });
+        }
+    });
+}
+
 function endGame() {
     menuBuild = true;
     gameBuild = true;
+    addHighScore(scoreCount);
     score.alpha = 0;
     destroyOldObjects();
 }
