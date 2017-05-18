@@ -11,6 +11,13 @@ const foodFadeDuration = 1;
 
 const displayNoFadeDuration = 100;
 
+// check the amount of food caught
+// resets every 5 seconds in current implementation
+var caughtFood = [];
+
+// for combo function
+var eggCount = 0;
+
 var score = new PIXI.Text('Score: ', {
     fontSize: 30,
     fontFamily: 'Arial',
@@ -129,28 +136,28 @@ function foodCatchCollision() {
                 fallingItem.velocity += deltaVy;
                 fallingItem.rotation += fallingItem.rotateFactor;
                  if (fallingItem.y > GAME_HEIGHT) {
-                     if (scoreCount > 0) {
-                         scoreCount -= 5;
-                     }
-                     if (scoreCount < 0) {
-                         scoreCount = 0;
-                     }
-                    childrenToDelete.push(fallingItem);
-                    fallingItem.destroy();
-                    --foodCount;
-                } else
-                    try {
-                        if (isCollide(catcher, fallingItem)) {
-                            modScore(fallingItem);
-                            childrenToDelete.push(fallingItem);
-                            --foodCount;
-                            fallingItem.destroy();
-                            coin.play('coin');
-                            scoreCount += 10;
-                            stage.removeChild(score);
-                        }
-                } catch(err) {}
+                     decreaseScore();
+                     childrenToDelete.push(fallingItem);
+                     fallingItem.destroy();
+                     --foodCount;
+                }
+                else if (isCollide(catcher, fallingItem)) {
+
+                        let type = getFoodType(fallingItem);
+                        caughtFood.push(type.name);
+                        modScore(fallingItem);
+                        isCombo();
+                        childrenToDelete.push(fallingItem);
+                        fallingItem.destroy();
+                        //sound.play('coin');
+                        scoreCount += 10;
+                        stage.removeChild(score);
+                        --foodCount;
+                 }
             }
+        }
+        if (currentElapsedGameTime % 5 === 0) {
+            clearCaughtFood();
         }
         for (var i = 0; i < childrenToDelete.length; i++) {
             removeItem(childrenToDelete[i]);
@@ -210,13 +217,33 @@ function addScore() {
     score.x = GAME_WIDTH - 100;
     score.y = GAME_HEIGHT - 50;
     score.anchor.x = 0.5;
-    score.text = 'Score: ' + scoreCount;
+    score.text = scoreCount;
     stage.addChild(score);
+}
+
+function addHighScore(scoreCount){
+    console.log(scoreCount);
+    firebase.auth().onAuthStateChanged((user) => {
+        //If there is a user signed in
+        if(user){
+            var scoreInDatabase = firebase.database().ref("users/" + user.uid + "/score");
+            scoreInDatabase.on('value', function(scoreSnapshot) {
+                if(scoreCount > scoreSnapshot.val()){
+                    //update database with new highscore.
+                    var updateScore = firebase.database().ref("users/" + user.uid);
+                    updateScore.update({
+                        score : scoreCount
+                    });
+                }
+            });
+        }
+    });
 }
 
 function endGame() {
     menuBuild = true;
     gameBuild = true;
+    addHighScore(scoreCount);
     score.alpha = 0;
     destroyOldObjects();
 }
@@ -244,6 +271,13 @@ function getFoodType(food) {
 }
 
 /**
+ * Sets the amount of food caught to zero when needed.
+ */
+function clearCaughtFood() {
+    caughtFood.length = 0;
+}
+
+/**
  * Modifies the score based on the type of food given.
  * @param food
  */
@@ -255,4 +289,34 @@ function modScore(food) {
     if (type.name === "bread") {
         scoreCount += 2;
     }
+}
+
+/**
+ * Decrements the score.
+ */
+function decreaseScore() {
+    if (scoreCount > 0) {
+        scoreCount -= 5;
+    }
+    if (scoreCount < 0) {
+        scoreCount = 0;
+    }
+}
+/**
+ * Shows in logs how much food has been caught for a certain period
+ * @returns {boolean} : whether x (3 right now) eggs have been caught.
+ */
+function isCombo() {
+    console.log("you've caught : " + caughtFood.length + " foods");
+    for (i = 0; i < caughtFood.length; i++) {
+        if (caughtFood[i] === "egg") {
+            eggCount++;
+        }
+        console.log("egg count: " + eggCount);
+        if (eggCount >= 3) {
+            eggCount = 0;
+            return true;
+        }
+    }
+    return false;
 }

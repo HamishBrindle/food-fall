@@ -369,6 +369,35 @@ function menu() {
     gameMenuDisplay();
 }
 
+
+var config = {
+    apiKey: "AIzaSyDLI2-ikgpZ8N4EX89enO8ERiMz63Rv7eo",
+    authDomain: "fool-fall.firebaseapp.com",
+    databaseURL: "https://fool-fall.firebaseio.com",
+    projectId: "fool-fall",
+    storageBucket: "fool-fall.appspot.com",
+    messagingSenderId: "884200936745"
+};
+
+firebase.initializeApp(config);
+var database = firebase.database();
+var userData = [];
+var i = 0;
+
+var scoresRef = firebase.database().ref("users").orderByKey();
+scoresRef.once("value")
+    .then(function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+            var user = {};
+            var key = childSnapshot.key;
+            var childData = childSnapshot.val();
+            user.name = childData.userName;
+            user.score = childData.score;
+            userData[i] = user;
+            i++;
+        });
+    });
+
 function initCatcher() {
     if (catcherBuild) {
         catcher = new Sprite(resources['assets/img/sprites/basket.png'].texture);
@@ -391,8 +420,29 @@ function initCatcher() {
 
         stage.addChild(catcher);
         catcherBuild = false;
+
+        //Callback to bring catcher back to screen if moved off
+        catcher.on('pointermove', onOutOfBounds);
+        catcher.on('pointerover', onOutOfBounds);
     }
 }
+
+//Brings back catcher if moved too far offscreen
+function onOutOfBounds() {
+    if (catcher.x < 0) {
+        catcher.x = 0;
+    }
+    if (catcher.x > GAME_WIDTH) {
+        catcher.x = GAME_WIDTH;
+    }
+    if (catcher.y < 0) {
+        catcher.y = 0;
+    }
+    if (catcher.y > GAME_HEIGHT) {
+        catcher.y = GAME_HEIGHT;
+    }
+}
+
 
 /**
  * Adds a random zero food waste tip to the screen.
