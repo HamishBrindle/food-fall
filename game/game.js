@@ -136,9 +136,11 @@ function foodCatchCollision() {
                 }
                 try {
                     if (isCollide(catcher, fallingItem)) {
+                        let type = getFoodType(fallingItem);
+                        caughtFood.push(type.name);
                         modScore(fallingItem);
-                        isCombo(fallingItem);
-                        console.log(isCombo(fallingItem));
+                        isCombo();
+                        console.log(isCombo());
                         childrenToDelete.push(fallingItem);
                         fallingItem.destroy();
                         sound.play('coin');
@@ -148,6 +150,9 @@ function foodCatchCollision() {
                     }
                 } catch(err) {}
             }
+        }
+        if (currentElapsedGameTime % 5 === 0) {
+            clearCaughtFood();
         }
         for (var i = 0; i < childrenToDelete.length; i++) {
             removeItem(childrenToDelete[i]);
@@ -260,8 +265,8 @@ function getFoodType(food) {
     return food.name;
 }
 
-function getCaughtFood() {
-
+function clearCaughtFood() {
+    caughtFood.length = 0;
 }
 
 /**
@@ -292,19 +297,17 @@ function decreaseScore() {
 var caughtFood = [];
 eggCount = 0;
 
-function isCombo(food) {
-    let type = getFoodType(food);
-    caughtFood.push(type.name);
-    console.log(caughtFood.length);
+function isCombo() {
+    console.log("you've caught : " + caughtFood.length + " foods");
     for (i = 0; i < caughtFood.length; i++) {
-        console.log(caughtFood[i]);
         if (caughtFood[i] === "egg") {
             eggCount++;
         }
-    }
-    console.log("egg count: " + eggCount);
-    if (eggCount >= 3) {
-        return true;
+        console.log("egg count: " + eggCount);
+        if (eggCount >= 3) {
+            eggCount = 0;
+            return true;
+        }
     }
     return false;
 }
