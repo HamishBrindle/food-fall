@@ -57,7 +57,7 @@ function registerButtonPressed() {
         }
         //changes name to be required
         document.querySelector('#txtName').required = true;
-        btnRegister.type = 'button';
+        btnRegister.innerText = 'Register and Play!'
         txtPassword.classList.add('txtPasswordSignUp');
         backBtn.style.display = 'block';
         registerBtn = true;
@@ -81,7 +81,7 @@ function registerButtonPressed() {
                 }
                 txtPassword.classList.add('txtPasswordSignIn');
                 document.querySelector('#txtName').required = false;
-                btnRegister.type = 'button';
+                btnRegister.innerText = 'Register'
                 //pressing register again actually takes in the input
                 //to register the user into the database
                 backBtn.style.display = 'none';
@@ -106,7 +106,7 @@ function goBack() {
         }
         txtPassword.classList.add('txtPasswordSignIn');
         document.querySelector('#txtName').required = false;
-        registerBtn.type = 'button';
+        btnRegister.innerText = 'Register'
         //pressing register again actually takes in the input
         //to register the user into the database
         backBtn.style.display = 'none';
@@ -166,6 +166,12 @@ function emailAndPasswordSignUp() {
             }
             console.log(error);
         });
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            // alert(user.uid);
+            window.location.replace('game.html');
+        }
+    });
 }
 
 function createUser(user, name, email, pass) {
