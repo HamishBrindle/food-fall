@@ -17,6 +17,7 @@ var caughtFood = [];
 
 // for combo function
 var eggCount = 0;
+var cowLevelHasBeenActivated = false;
 
 var score = new PIXI.Text('Score: ', {
     fontSize: 30,
@@ -27,6 +28,7 @@ var score = new PIXI.Text('Score: ', {
 
 function gameInit() {
     if(gameBuild) {
+        BG_RATE = 50;
         obstacleCount = 0;
         countDownIndex = 0;
         foodCount = 0;
@@ -57,10 +59,6 @@ function displayNo() {
     curNum.y = 50;
     fadeOut(curNum, displayNoFadeDuration);
     ++countDownIndex;
-}
-
-function leaderBoardMenu() {
-    console.log('oh boy game over n00b');
 }
 
 function makeFood() {
@@ -125,7 +123,7 @@ function foodCatchCollision() {
                     curObstacle.destroy();
                     --obstacleCount;
                 }else {
-                    curObstacle.x -= backgroundScrollSpeed.grass;
+                    curObstacle.x -= BG_RATE * deltaTime + backgroundScrollSpeed.grass;
                     obstacleCollision(catcher, curObstacle);
                 }
             }
@@ -149,13 +147,18 @@ function foodCatchCollision() {
                         isCombo();
                         childrenToDelete.push(fallingItem);
                         fallingItem.destroy();
-                        //sound.play('coin');
+                        gameSFX.play('point');
                         scoreCount += 10;
                         stage.removeChild(score);
                         --foodCount;
                  }
             }
         }
+
+        if (currentElapsedGameTime % 2 === 0) {
+            speedUpGame(deltaTime);
+        }
+
         if (currentElapsedGameTime % 5 === 0) {
             clearCaughtFood();
         }
@@ -198,6 +201,7 @@ function bounce() {
 function obstacleCollision(catcher, obstacle) {
     if (isCollideWholeBasket(catcher, obstacle)) {
         endGame();
+        gameSFX.play('gameOver');
         state = gameOver;
         gameOverBuild = true;
         catcher.alpha = 0;
@@ -311,10 +315,17 @@ function isCombo() {
     for (i = 0; i < caughtFood.length; i++) {
         if (caughtFood[i] === "egg") {
             eggCount++;
+        } else {
+            eggCount = 0;
         }
         console.log("egg count: " + eggCount);
-        if (eggCount >= 3) {
+        if (eggCount >= 1) {
             eggCount = 0;
+            if (!cowLevelHasBeenActivated) {
+                cowLevelBuild = true;
+                state = cowLevel;
+                cowLevelHasBeenActivated = !cowLevelHasBeenActivated;
+            }
             return true;
         }
     }
