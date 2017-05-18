@@ -39,8 +39,6 @@ var facebookProvider = new firebase.auth.FacebookAuthProvider();
 
 var registerBtn = false;
 
-//Hi chris.  This function isn't working.  Not sure if my code will run without the rest of it.
-//the javascript and libraries and such.
 function registerButtonPressed() {
 
     //pressed to register
@@ -58,9 +56,8 @@ function registerButtonPressed() {
             txtPassword.classList.remove('txtPasswordSignIn');
         }
         //changes name to be required
-
         document.querySelector('#txtName').required = true;
-        registerBtn.type = 'button';
+        btnRegister.type = 'button';
         txtPassword.classList.add('txtPasswordSignUp');
         backBtn.style.display = 'block';
         registerBtn = true;
@@ -68,6 +65,33 @@ function registerButtonPressed() {
     //pressed to sign in
     else if (registerBtn === true) {
         emailAndPasswordSignUp();
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                //changes userName to be hidden
+                txtName.style.display = 'none';
+                //changes signin button to be showing
+                signInButton.style.display = 'block';
+                //changes input class to be signIn
+                if (txtEmail.classList.contains('txtEmailSignUp')) {
+                    txtEmail.classList.remove('txtEmailSignUp');
+                }
+                txtEmail.classList.add('txtEmailSignIn');
+                if (txtPassword.classList.contains('txtPasswordSignUp')) {
+                    txtPassword.classList.remove('txtPasswordSignUp');
+                }
+                txtPassword.classList.add('txtPasswordSignIn');
+                document.querySelector('#txtName').required = false;
+                btnRegister.type = 'button';
+                //pressing register again actually takes in the input
+                //to register the user into the database
+                backBtn.style.display = 'none';
+                registerBtn = false;
+            }
+        });
+    }
+}
+
+function goBack() {
         //changes userName to be hidden
         txtName.style.display = 'none';
         //changes signin button to be showing
@@ -87,11 +111,6 @@ function registerButtonPressed() {
         //to register the user into the database
         backBtn.style.display = 'none';
         registerBtn = false;
-    }
-}
-
-function goBack() {
-    window.location.replace('index.html');
 }
 
 function emailAndPasswordLogIn() {
@@ -100,34 +119,27 @@ function emailAndPasswordLogIn() {
     console.log(emailLogin);
     console.log(passLogin);
 
-    //Sign in
-    const promise = auth.signInWithEmailAndPassword(emailLogin, passLogin);
-    promise.catch(e => {
-        console.log(e.message);
-
-});
+    auth.signInWithEmailAndPassword(emailLogin, passLogin)
+        .catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            if (errorCode === 'auth/wrong-password' || 'errorCode === auth/invalid-email') {
+                alert('Wrong email or password.');
+                document.getElementById('txtEmail').value = '';
+                document.getElementById('txtPassword').value = '';
+            } else {
+                alert(errorMessage);
+            }
+            console.log(error);
+        });
 
     auth.onAuthStateChanged((user) => {
         if (user) {
-            alert(user.uid);
+            // alert(user.uid);
             window.location.replace('game.html');
         }
     });
-    // function(error) {
-    //     console.log("able to sign in");
-    //     var errorCode = error.code;
-    //     var errorMessage = error.message;
-    //     if(errorCode === 'auth/wrong-password' || errorCode === 'auth/wrong-email') {
-    //         alert("Error. Invaild username or password.")
-    //     } else {
-    //         alert(errorMessage + "hi mom");
-    //     }
-    //     console.log(error);
-    // });
-//     const promise = auth.signInWithEmailAndPassword(emailLogin, passLogin);
-//     promise.catch(console.log("Error, incorrect email or password"));
-//     console.log("login success");
-//     window.location.replace('game.html');
 }
 
 function emailAndPasswordSignUp() {
@@ -140,9 +152,20 @@ function emailAndPasswordSignUp() {
     //register
     auth.createUserWithEmailAndPassword(emailSignup, passSignup)
         .then(user => createUser(user, nameSignup, emailSignup, passSignup))
-.catch(e => console.log(e.message)
-)
-    ;
+        .catch(function(error){
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            if(errorCode === 'auth/weak-password'){
+                alert('Password must be at least 6 characters.');
+            }else if(errorCode === 'auth/invalid-email'){
+                alert('Wrong email');
+            }
+            else {
+                alert(errorMessage);
+            }
+            console.log(error);
+        });
 }
 
 function createUser(user, name, email, pass) {
@@ -154,28 +177,37 @@ function createUser(user, name, email, pass) {
             email: email,
             password: pass,
             score: score
-        })
+        });
     }
 }
 
-// function emailAndPasswordRegister() {
-// 	alert("jhi");
-// }
-
 function googleSignIn() {
-//Sign in and redirect to a page to select an account
-    auth.signInWithRedirect(googleProvider);
-    //after the page is finished loading, get data from the user.
+    //Sign in and redirect to a page to select an account
+    googleProvider.addScope('profile');
+    googleProvider.addScope('email');
+    auth.signInAndRetrieveDataWithCredential(googleProvider);
 
-    auth.onAuthStateChanged((user) => {
-        auth.getRedirectResult().then(function (result) {
-        if (user) {
+    auth.getRedirectResult()
+        .then(function(result){
+            if(result.credential) {
+                //This gives you a Google Access Token
+                var token = result.credential.accessToken;
+            }
+            var user = result.user;
             alert(user.uid);
-            window.location.replace('game.html');
-        }
-    });
-
-    });
+        });
+    //after the page is finished loading, get data from the user.
+    //
+    // auth.onAuthStateChanged((user) => {
+    //     auth.getRedirectResult().then(function (result) {
+    //         var person = result.user;
+    //     if (user) {
+    //         alert(person.uid);
+    //         window.location.replace('game.html');
+    //     }
+    // });
+    //
+    // });
 
     // firebase.auth().getRedirectResult().then(function (result) {
     //     //error here, get's data while choosing an account.
@@ -206,6 +238,7 @@ function userSignOut() {
         console.log('Sign-out successful!');
     }, function (error) {
         console.log('Sign-out failed');
+        console.log(error);
     });
 }
 
@@ -224,3 +257,4 @@ function facebookSignIn() {
         console.log(errorMessage);
     });
 }
+
