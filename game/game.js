@@ -5,12 +5,18 @@
 
 // Speed of Game
 var scoreCount = 0;
+
 var childrenToDelete = [];
+const foodFadeDuration = 1;
+
+const displayNoFadeDuration = 100;
+
 var score = new PIXI.Text('Score: ', {
     fontSize: 30,
     fontFamily: 'Arial',
     fill: 'white'
 });
+
 
 function gameInit() {
     if(gameBuild) {
@@ -37,34 +43,25 @@ function gameInit() {
     For displaying and removing the numbers for the countdown.
 */
 function displayNo() {
+    if(countDownIndex >= 4) return;
     var curNum = countDownNumbers[countDownIndex];
-    if(countDownIndex == 0) {
-        game.stage.addChild(curNum);
-    } else if(countDownIndex > 0 && countDownIndex < 4){
-        var prevNum = countDownNumbers[countDownIndex - 1];
-        prevNum.destroy();
-
-        game.stage.addChild(curNum);
-    } else {
-        var prevNum = countDownNumbers[countDownIndex - 1];
-        prevNum.destroy();
-
-    }
-    try {
-        curNum.x = 100;
-        curNum.y = 50;
-    } catch (err) {}
+    stage.addChild(curNum);
+    curNum.x = 100;
+    curNum.y = 50;
+    fadeOut(curNum, displayNoFadeDuration);
     ++countDownIndex;
 }
 
-var foodCount = 0;
+function leaderBoardMenu() {
+    console.log('oh boy game over n00b');
+}
+
 function makeFood() {
-    const MAX_FOOD = 5;
+    const MAX_FOOD = 10;
     if(foodCount >= MAX_FOOD) return;
+    ++foodCount;
     var newFoodIndex = weightedRand(fallingObjects);
-    var newFood = new Sprite(
-        resources['assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png'].texture
-    );
+    var newFood = PIXI.Sprite.fromImage('assets/img/sprites/' + fallingObjects[newFoodIndex].name + '.png');
     newFood.name = fallingObjects[newFoodIndex];
     newFood.x = getRandomInt(newFood.width, GAME_WIDTH - newFood.width);
     newFood.y = -newFood.height;
@@ -79,13 +76,12 @@ function makeFood() {
     }
     else
         newFood.rotateFactor = -Math.random() * 0.1;
-    ++foodCount;
 
-    game.stage.addChild(newFood);
+    stage.addChild(newFood);
 }
 
 function removeItem(childToDelete) {
-    game.stage.removeChild(childToDelete);
+    stage.removeChild(childToDelete);
 }
 
 // Determine if basket and food are colliding
@@ -104,24 +100,24 @@ function foodCatchCollision() {
     var deltaTime = parseFloat((currtime - lastTime)/1000);
     var currentElapsedGameTime = parseInt((currtime - gameBuildTime)/1000);
 
-    // if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
-    //     displayNo();
-    //     if (currentElapsedGameTime == 4) {
-    //         afterCountDown = true;
-    //     }
-    // }
-    if(true) {
+    if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
+        displayNo();
+        if (currentElapsedGameTime == 4) {
+            afterCountDown = true;
+        }
+    }
+    if(afterCountDown) {
         makeFood();
         makeObstacle();
-        for (var i in game.stage.children) {
-            var fallingItem = game.stage.children[i];
+        for (var i in stage.children) {
+            var fallingItem = stage.children[i];
             if (fallingItem.isObstacle) {
                 var curObstacle = fallingItem;
                 if(curObstacle.x < (-curObstacle.width)) {
                     childrenToDelete.push(curObstacle);
                     curObstacle.destroy();
                     --obstacleCount;
-                } else {
+                }else {
                     curObstacle.x -= backgroundScrollSpeed.grass;
                     obstacleCollision(catcher, curObstacle);
                 }
@@ -142,17 +138,17 @@ function foodCatchCollision() {
                     childrenToDelete.push(fallingItem);
                     fallingItem.destroy();
                     --foodCount;
-                }
-                try {
-                    if (isCollide(catcher, fallingItem)) {
-                        modScore(fallingItem);
-                        childrenToDelete.push(fallingItem);
-                        fallingItem.destroy();
-                        sound.play('coin');
-                        scoreCount += 10;
-                        game.stage.removeChild(score);
-                        --foodCount;
-                    }
+                } else
+                    try {
+                        if (isCollide(catcher, fallingItem)) {
+                            modScore(fallingItem);
+                            childrenToDelete.push(fallingItem);
+                            --foodCount;
+                            fallingItem.destroy();
+                            coin.play('coin');
+                            scoreCount += 10;
+                            stage.removeChild(score);
+                        }
                 } catch(err) {}
             }
         }
@@ -173,8 +169,7 @@ function makeObstacle() {
     newTopObstacle.y = 0;
     newTopObstacle.width = 50;
     newTopObstacle.isObstacle = true;
-    game.stage.addChild(newTopObstacle);
-
+    stage.addChild(newTopObstacle);
 
     var newBotObstacle = new Sprite(resources['assets/img/sprites/obstacle.png'].texture);
     newBotObstacle.x =  newTopObstacle.x;
@@ -182,11 +177,10 @@ function makeObstacle() {
     newBotObstacle.height = GAME_HEIGHT - newBotObstacle.y;
     newBotObstacle.width = newTopObstacle.width;
     newBotObstacle.isObstacle = true;
-    game.stage.addChild(newBotObstacle);
+    stage.addChild(newBotObstacle);
     obstacleCount += 2;
 
 }
-
 /*
  need xspeed
  */
@@ -216,7 +210,7 @@ function addScore() {
     score.y = GAME_HEIGHT - 50;
     score.anchor.x = 0.5;
     score.text = 'Score: ' + scoreCount;
-    game.stage.addChild(score);
+    stage.addChild(score);
 }
 
 function endGame() {
@@ -226,13 +220,13 @@ function endGame() {
     destroyOldObjects();
 }
 /**
- * Adds all food and obstacles to list and destroys them.
- */
+  * Adds all food and obstacles to list and destroys them.
+  */
 function destroyOldObjects () {
-    for (var i in game.stage.children) {
-        var item = game.stage.children[i];
+    for (var i in stage.children) {
+        var item = stage.children[i];
         if(item.isFood || item.isObstacle || item.name == 'score') {
-            childrenToDelete.push(game.stage.children[i]);
+            childrenToDelete.push(stage.children[i]);
         }
     }
     for (var i = 0; i < childrenToDelete.length; i++) {
@@ -240,7 +234,6 @@ function destroyOldObjects () {
         childrenToDelete[i].destroy()
     }
 }
-
 /**
  * Returns the name of the given food.
  * @param food the food to decipher.
