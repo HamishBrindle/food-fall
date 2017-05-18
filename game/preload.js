@@ -345,6 +345,35 @@ function menu() {
     gameMenuDisplay();
 }
 
+
+var config = {
+    apiKey: "AIzaSyDLI2-ikgpZ8N4EX89enO8ERiMz63Rv7eo",
+    authDomain: "fool-fall.firebaseapp.com",
+    databaseURL: "https://fool-fall.firebaseio.com",
+    projectId: "fool-fall",
+    storageBucket: "fool-fall.appspot.com",
+    messagingSenderId: "884200936745"
+};
+
+firebase.initializeApp(config);
+var database = firebase.database();
+var userData = [];
+var i = 0;
+
+var scoresRef = firebase.database().ref("users").orderByKey();
+scoresRef.once("value")
+    .then(function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+            var user = {};
+            var key = childSnapshot.key;
+            var childData = childSnapshot.val();
+            user.name = childData.userName;
+            user.score = childData.score;
+            userData[i] = user;
+            i++;
+        });
+    });
+
 function initCatcher() {
     if (catcherBuild) {
         catcher = new Sprite(resources['assets/img/sprites/basket.png'].texture);
