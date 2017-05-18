@@ -141,20 +141,18 @@ function foodCatchCollision() {
                      fallingItem.destroy();
                      --foodCount;
                 }
-                try {
-                    if (isCollide(catcher, fallingItem)) {
+                else if (isCollide(catcher, fallingItem)) {
                         let type = getFoodType(fallingItem);
                         caughtFood.push(type.name);
                         modScore(fallingItem);
                         isCombo();
                         childrenToDelete.push(fallingItem);
                         fallingItem.destroy();
-                        sound.play('coin');
+                        //sound.play('coin');
                         scoreCount += 10;
                         stage.removeChild(score);
                         --foodCount;
-                    }
-                } catch(err) {}
+                 }
             }
         }
         if (currentElapsedGameTime % 5 === 0) {
