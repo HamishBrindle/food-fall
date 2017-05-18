@@ -142,6 +142,7 @@ function foodCatchCollision() {
                      --foodCount;
                 }
                 else if (isCollide(catcher, fallingItem)) {
+
                         let type = getFoodType(fallingItem);
                         caughtFood.push(type.name);
                         modScore(fallingItem);
