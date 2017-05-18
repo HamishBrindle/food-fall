@@ -8,6 +8,12 @@ var scoreCount = 0;
 
 var childrenToDelete = [];
 
+// check the amount of food caught
+// resets every 5 seconds in current implementation
+var caughtFood = [];
+
+// for combo function
+var eggCount = 0;
 
 var score = new PIXI.Text('Score: ', {
     fontSize: 30,
@@ -150,7 +156,6 @@ function foodCatchCollision() {
                         caughtFood.push(type.name);
                         modScore(fallingItem);
                         isCombo();
-                        console.log(isCombo());
                         childrenToDelete.push(fallingItem);
                         fallingItem.destroy();
                         sound.play('coin');
@@ -255,6 +260,9 @@ function getFoodType(food) {
     return food.name;
 }
 
+/**
+ * Sets the amount of food caught to zero when needed.
+ */
 function clearCaughtFood() {
     caughtFood.length = 0;
 }
@@ -284,9 +292,10 @@ function decreaseScore() {
         scoreCount = 0;
     }
 }
-var caughtFood = [];
-eggCount = 0;
-
+/**
+ * Shows in logs how much food has been caught for a certain period
+ * @returns {boolean} : whether x (3 right now) eggs have been caught.
+ */
 function isCombo() {
     console.log("you've caught : " + caughtFood.length + " foods");
     for (i = 0; i < caughtFood.length; i++) {
