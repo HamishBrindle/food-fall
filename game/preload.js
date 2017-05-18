@@ -64,7 +64,7 @@ document.getElementById("game-window").appendChild(renderer.view);
 var catcher;
 var tk;
 var scale = scaleToWindow(renderer.view);
-var setupdone = false;
+var setupDone = false;
 var pointer;
 var gameBuild = true;
 var playButton;
@@ -73,26 +73,69 @@ var logo;
 var instructions;
 var catcherBuild;
 
+// Sound options
 var soundOptions = {
     soundEnabled: false,
     soundButtonOnDisplayed: true,
     soundButtonOffDisplayed: false,
 };
-
 var soundButtonOn;
 var soundButtonOff;
 
+// Random facts
 var randFact;
 
+// Game-over menu
 var gameOverBuild;
 var menuButton;
 var retryButton;
 var gameOverBanner;
 
+// Cow level
+var renderTexture;
+var renderTexture2;
+var currentTexture;
+var outputSprite;
+var stuffContainer = new PIXI.Container();
+var spinningItems = [];
+var profs = [
+    "albert",
+    "bruce",
+    "carly",
+    "chris",
+    "keith",
+    "medhat",
+    "paul",
+    "peter",
+    "sam",
+    "trevor"
+];
+
+var filter = new PIXI.filters.ColorMatrixFilter();
+stage.filters = [filter];
+var matrix = filter.matrix;
+
+// Food items in game
+var numberOfFood = 6;
+apple = {name: "apple", weight: 1 / numberOfFood};
+banana = {name: "banana", weight: 1 / numberOfFood};
+bread = {name: "bread", weight: 1 / numberOfFood};
+orange = {name: "orange", weight: 1 / numberOfFood};
+broccoli = {name: "broccoli", weight: 1 / numberOfFood};
+egg = {name: "egg", weight: 1 / numberOfFood};
+fallingObjects = [apple, banana, bread, orange, broccoli, egg];
+
+console.log(fallingObjects);
+
+//Set the game's current state to `menu`:
+var state = cowLevel;
+menuBuild = true;
+catcherBuild = false;
+cowLevelBuild = true;
+
 loader
     .add([
         "assets/img/sprites/basket.png",
-        "assets/img/sprites/basket_bottom.png",
         "assets/img/sprites/apple.png",
         "assets/img/sprites/banana.png",
         "assets/img/sprites/bread.png",
@@ -118,7 +161,10 @@ loader
         "assets/img/sprites/instructions.png",
         "assets/img/sprites/game-over.png",
         "assets/img/sprites/retry.png",
-        "assets/img/sprites/menu.png"
+        "assets/img/sprites/menu.png",
+        "assets/img/sprites/portal.json",
+        "assets/img/sprites/profs.json",
+        "assets/img/sprites/cow-level-banner.png",
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -149,23 +195,18 @@ function initBackground() {
 
 }
 
-
 function animateBackground() {
-
     // Determine seconds elapsed since last frame
     var currtime = new Date().getTime();
     var delta = (currtime - lastTime) / 1000;
-
     // Scroll the terrain
     mtnFar.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnFar;
     mtnMid.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnMid;
     clouds.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.clouds;
     trees.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.trees;
     grass.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.grass;
-
     // Draw the stage and prepare for the next frame
     lastTime = currtime;
-
 }
 
 /*
@@ -174,18 +215,6 @@ Prints loading log to console.
 function loadProgressHandler() {
     console.log("loading");
 }
-
-var numberOfFood = 6;
-
-apple = {name: "apple", weight: 1 / numberOfFood};
-banana = {name: "banana", weight: 1 / numberOfFood};
-bread = {name: "bread", weight: 1 / numberOfFood};
-orange = {name: "orange", weight: 1 / numberOfFood};
-broccoli = {name: "broccoli", weight: 1 / numberOfFood};
-egg = {name: "egg", weight: 1 / numberOfFood};
-
-fallingObjects = [apple, banana, bread, orange, broccoli, egg];
-
 
 /*
 Main game driver.
@@ -206,7 +235,7 @@ function setup() {
     pointer.press = function () {};
     pointer.release = function () {};
 
-    setupdone = true;
+    setupDone = true;
 
     // Resize screen when window size is adjusted.
     window.addEventListener("resize", function (event) {
@@ -221,11 +250,6 @@ function setup() {
     gameLoop();
 
 }
-//Set the game's current state to `menu`:
-var state = menu;
-
-menuBuild = true;
-catcherBuild = false;
 
 //Animation loop
 function gameLoop() {
@@ -449,4 +473,123 @@ function gameOverDisplay() {
 
         gameOverBuild = false;
     }
+}
+
+function fuckUpBackground() {
+    // Determine seconds elapsed since last frame
+    var currtime = new Date().getTime();
+    var delta = (currtime - lastTime) / 1000;
+    // Scroll the terrain
+    mtnFar.tilePosition.x -= BG_RATE * delta - 5;
+    mtnMid.tilePosition.x -= BG_RATE * delta + 3;
+    clouds.tilePosition.x -= BG_RATE * delta + 4;
+    trees.tilePosition.x -= BG_RATE * delta + 2;
+    grass.tilePosition.x -= BG_RATE * delta - 6;
+    // Draw the stage and prepare for the next frame
+    lastTime = currtime;
+}
+
+function cowLevel() {
+
+    fuckUpBackground();
+
+    // create two render textures... these dynamic textures will be used to draw the scene into itself
+    renderTexture = PIXI.RenderTexture.create(
+        renderer.width,
+        renderer.height
+    );
+    renderTexture2 = PIXI.RenderTexture.create(
+        renderer.width,
+        renderer.height
+    );
+    currentTexture = renderTexture;
+
+    outputSprite = new PIXI.Sprite(currentTexture);
+
+    if (cowLevelBuild) {
+
+        outputSprite.x = 400;
+        outputSprite.y = 300;
+        outputSprite.anchor.set(0.5);
+
+        stage.addChild(outputSprite);
+
+        stuffContainer.x = 400;
+        stuffContainer.y = 300;
+
+        stage.addChild(stuffContainer);
+
+        for (let i = 0; i < profs.length; i++) {
+            var item = new Sprite(resources['assets/img/sprites/profs.json'].textures['' + profs[i % profs.length] + '.png']);
+            item.interactive = true;
+            item.on('pointerdown', (event) => {
+                score += 100;
+            });
+            item.x = Math.random() * 400 - 200;
+            item.y = Math.random() * 400 - 200;
+            item.anchor.set(0.5);
+            stuffContainer.addChild(item);
+            spinningItems.push(item);
+        }
+
+        var count = 0;
+
+        // Easter egg level state
+        var frames = [];
+        for (let i = 0; i < 7; i++) {
+            frames.push(PIXI.Texture.fromFrame('portal_0000_Layer-7' + i + '.png'));
+        }
+        var portal = new PIXI.extras.AnimatedSprite(frames);
+        portal.x = renderer.width / 2;
+        portal.y = renderer.height / 2;
+        portal.width *= 2;
+        portal.height *= 2;
+        portal.anchor.set(0.5);
+        portal.animationSpeed = 0.5;
+        portal.play();
+
+        stage.addChild(portal);
+
+        // secret cow level image
+        secretCowLevelBanner = new Sprite(resources['assets/img/sprites/cow-level-banner.png'].texture);
+        secretCowLevelBanner.width /= 2;
+        secretCowLevelBanner.height /= 2;
+        secretCowLevelBanner.x = (GAME_WIDTH / 2) - (secretCowLevelBanner.width / 2);
+        secretCowLevelBanner.y = GAME_HEIGHT - (secretCowLevelBanner.height * 1.5);
+
+        stage.addChild(secretCowLevelBanner);
+
+        cowLevelBuild = false;
+    }
+
+    for (let i = 0; i < spinningItems.length; i++) {
+        // rotate each item
+        var item = spinningItems[i];
+        item.rotation += 0.1;
+    }
+
+    count += 0.02;
+
+    // swap the buffers ...
+    var temp = renderTexture;
+    renderTexture = renderTexture2;
+    renderTexture2 = temp;
+
+    // set the new texture
+    outputSprite.texture = renderTexture;
+
+    // twist this up!
+    stuffContainer.rotation -= 0.01;
+    outputSprite.scale.set(1 + Math.sin(count) * 0.1);
+
+    for (let i = 0; i < 7; i++) {
+        sky.tint = Math.random() * 0xFFFFFF;
+        mtnFar.tint = Math.random() * 0xFFFFFF;
+        mtnMid.tint = Math.random() * 0xFFFFFF;
+        ground.tint = Math.random() * 0xFFFFFF;
+        clouds.tint = Math.random() * 0xFFFFFF;
+        grass.tint = Math.random() * 0xFFFFFF;
+        trees.tint = Math.random() * 0xFFFFFF;
+    }
+
 }
