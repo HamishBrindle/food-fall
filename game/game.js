@@ -191,7 +191,8 @@ function bounce() {
 function obstacleCollision(catcher, obstacle) {
     if (isCollideWholeBasket(catcher, obstacle)) {
         endGame();
-        state = menu;
+        state = gameOver;
+        gameOverBuild = true;
         catcher.alpha = 0;
     }
 }
