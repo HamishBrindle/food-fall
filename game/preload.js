@@ -313,7 +313,23 @@ function initCatcher() {
         game.stage.addChild(catcher);
 
         catcherBuild = false;
+        catcher.on('pointermove', onDragMove);
+        catcher.on('pointerup', onDragEnd);
     }
+}
+
+var outboundx;
+var outboundy;
+
+function onDragMove() {
+    console.log("Dragged");
+    if (catcher.x = 0) {
+       outboundy = catcher.y;
+    }
+}
+
+function onDragEnd() {
+    console.log("Drag Eneded");
 }
 
 function easterEgg() {
