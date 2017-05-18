@@ -10,7 +10,14 @@ var childrenToDelete = [];
 const foodFadeDuration = 1;
 const displayNoFadeDuration = 100;
 
+
 var lastXPos = 0;
+// check the amount of food caught
+// resets every 5 seconds in current implementation
+var caughtFood = [];
+
+// for combo function
+var eggCount = 0;
 
 var score = new PIXI.Text('Score: ', {
     fontSize: 30,
@@ -172,21 +179,18 @@ function foodCatchCollision() {
     var deltaTime = parseFloat((currtime - lastTime)/1000);
     var currentElapsedGameTime = parseInt((currtime - gameBuildTime)/1000);
     var currXPos = catcher.x;
-    // console.log("currXPos", currXPos);
-    // console.log("lastXPos", lastXPos);
-    // console.log("deltaTime", deltaTime);
 
     var catcherVelocityX = (lastXPos - currXPos) / deltaTime;
-    // if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
-    //     displayNo();
-    //     if (currentElapsedGameTime == 4) {
-    //         afterCountDown = true;
-    //     }
-    // }
-    if(true) {
+    if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
+        displayNo();
+        if (currentElapsedGameTime == 4) {
+            afterCountDown = true;
+        }
+    }
+    if(afterCountDown) {
         lastXPos = catcher.x;
         makeFood();
-        // makeObstacle();
+        makeObstacle();
         for (var i in stage.children) {
             var fallingItem = stage.children[i];
             if (fallingItem.isObstacle) {
@@ -210,34 +214,34 @@ function foodCatchCollision() {
 
                 fallingItem.velocityY += deltaVy;
                 fallingItem.rotation += fallingItem.rotateFactor;
-
                 if (fallingItem.y > GAME_HEIGHT) {
-                     if (scoreCount > 0) {
-                         scoreCount -= 5;
-                     }
-                     if (scoreCount < 0) {
-                         scoreCount = 0;
-                     }
+                    decreaseScore();
                     childrenToDelete.push(fallingItem);
                     fallingItem.destroy();
                     --foodCount;
-                }
-                else if (isInBasket(catcher, fallingItem)) {
-                    modScore(fallingItem);
+                } else if (isInBasket(catcher, fallingItem)) {
+
+                    let type = getFoodType(fallingItem);
                     childrenToDelete.push(fallingItem);
                     --foodCount;
+                    caughtFood.push(type.name);
+                    modScore(fallingItem);
+                    isCombo();
                     fallingItem.destroy();
                     coin.play('coin');
                     scoreCount += 10;
                     stage.removeChild(score);
                     fallingItem.hasBounced = true;
-                }
-                else if (isBounce(catcher, fallingItem, catcherVelocityX)) {
+                } else if (isBounce(catcher, fallingItem, catcherVelocityX)) {
                     // !fallingItem.hasBounced &&
                     fallingItem.hasBounced = true;
                     fallingItem.velocityX = -(1000 / catcherVelocityX);
                 }
+
             }
+        }
+        if (currentElapsedGameTime % 5 === 0) {
+            clearCaughtFood();
         }
         for (var i = 0; i < childrenToDelete.length; i++) {
             removeItem(childrenToDelete[i]);
@@ -278,7 +282,8 @@ function bounce() {
 function obstacleCollision(catcher, obstacle) {
     if (isCollideObstacle(catcher, obstacle)) {
         endGame();
-        state = menu;
+        state = gameOver;
+        gameOverBuild = true;
         catcher.alpha = 0;
     }
 }
@@ -295,13 +300,33 @@ function addScore() {
     score.x = GAME_WIDTH - 100;
     score.y = GAME_HEIGHT - 50;
     score.anchor.x = 0.5;
-    score.text = 'Score: ' + scoreCount;
+    score.text = scoreCount;
     stage.addChild(score);
+}
+
+function addHighScore(scoreCount){
+    console.log(scoreCount);
+    firebase.auth().onAuthStateChanged((user) => {
+        //If there is a user signed in
+        if(user){
+            var scoreInDatabase = firebase.database().ref("users/" + user.uid + "/score");
+            scoreInDatabase.on('value', function(scoreSnapshot) {
+                if(scoreCount > scoreSnapshot.val()){
+                    //update database with new highscore.
+                    var updateScore = firebase.database().ref("users/" + user.uid);
+                    updateScore.update({
+                        score : scoreCount
+                    });
+                }
+            });
+        }
+    });
 }
 
 function endGame() {
     menuBuild = true;
     gameBuild = true;
+    addHighScore(scoreCount);
     score.alpha = 0;
     destroyOldObjects();
 }
@@ -329,6 +354,13 @@ function getFoodType(food) {
 }
 
 /**
+ * Sets the amount of food caught to zero when needed.
+ */
+function clearCaughtFood() {
+    caughtFood.length = 0;
+}
+
+/**
  * Modifies the score based on the type of food given.
  * @param food
  */
@@ -340,4 +372,34 @@ function modScore(food) {
     if (type.name === "bread") {
         scoreCount += 2;
     }
+}
+
+/**
+ * Decrements the score.
+ */
+function decreaseScore() {
+    if (scoreCount > 0) {
+        scoreCount -= 5;
+    }
+    if (scoreCount < 0) {
+        scoreCount = 0;
+    }
+}
+/**
+ * Shows in logs how much food has been caught for a certain period
+ * @returns {boolean} : whether x (3 right now) eggs have been caught.
+ */
+function isCombo() {
+    console.log("you've caught : " + caughtFood.length + " foods");
+    for (i = 0; i < caughtFood.length; i++) {
+        if (caughtFood[i] === "egg") {
+            eggCount++;
+        }
+        console.log("egg count: " + eggCount);
+        if (eggCount >= 3) {
+            eggCount = 0;
+            return true;
+        }
+    }
+    return false;
 }
