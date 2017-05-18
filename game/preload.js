@@ -1,11 +1,12 @@
-// Stage-size parameters; aspect ratio.
-
+// Stage-size parameters
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
 
 //Variables
-var maxXspeed = 50;
-var maxYspeed = 25;
+var maxXSpeed = 50;
+var maxYSpeed = 25;
+
+// Background elements relative speeds
 var backgroundScrollSpeed = {
     mtnFar: 0,
     mtnMid: 0.25,
@@ -13,6 +14,9 @@ var backgroundScrollSpeed = {
     trees: 0.50,
     grass: 1.5
 };
+
+// Overall background rate
+var BG_RATE = 50;
 
 // Background textures
 var sky,
@@ -22,8 +26,6 @@ var sky,
     clouds,
     trees,
     grass;
-
-var BG_RATE = 50;
 
 var lastTime;
 
@@ -60,25 +62,15 @@ document.getElementById("game-window").appendChild(renderer.view);
 
 //Globals -------------------------------------------------------------------------------Globals
 var catcher;
-
 var tk;
-
 var scale = scaleToWindow(renderer.view);
-
 var setupdone = false;
-
 var pointer;
-
-gameBuild = true;
-
+var gameBuild = true;
 var playButton;
-
 var menuBuild;
-
 var logo;
-
 var instructions;
-
 var catcherBuild;
 
 var soundOptions = {
@@ -91,6 +83,11 @@ var soundButtonOn;
 var soundButtonOff;
 
 var randFact;
+
+var gameOverBuild;
+var menuButton;
+var retryButton;
+var gameOverBanner;
 
 loader
     .add([
@@ -118,7 +115,10 @@ loader
         "assets/img/tiling-sprites/grass.png",
         "assets/img/sprites/sound-on.png",
         "assets/img/sprites/sound-off.png",
-        "assets/img/sprites/instructions.png"
+        "assets/img/sprites/instructions.png",
+        "assets/img/sprites/game-over.png",
+        "assets/img/sprites/retry.png",
+        "assets/img/sprites/menu.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -126,36 +126,23 @@ loader
 
 function initBackground() {
 
-    /*
-     Layer order:
-     sky | mtnFar | mtnMid | ground | clouds | trees | grass
-     */
-    sky =
-        new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/sky.png'].texture, GAME_WIDTH, GAME_HEIGHT);
+    // Load sprites from loader resources
+    sky = new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/sky.png'].texture, GAME_WIDTH, GAME_HEIGHT);
+    mtnFar = new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/mtn-far.png'].texture, GAME_WIDTH, GAME_HEIGHT);
+    mtnMid = new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/mtn-mid.png'].texture, GAME_WIDTH, GAME_HEIGHT);
+    ground = new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/ground.png'].texture, GAME_WIDTH, GAME_HEIGHT);
+    clouds = new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/clouds.png'].texture, GAME_WIDTH, GAME_HEIGHT);
+    trees = new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/trees.png'].texture, GAME_WIDTH, GAME_HEIGHT);
+    grass = new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/grass.png'].texture, GAME_WIDTH, GAME_HEIGHT);
+
+    // Add background sprites to stage
     stage.addChild(sky);
-
-    mtnFar =
-        new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/mtn-far.png'].texture, GAME_WIDTH, GAME_HEIGHT);
     stage.addChild(mtnFar);
-
-    mtnMid =
-        new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/mtn-mid.png'].texture, GAME_WIDTH, GAME_HEIGHT);
     stage.addChild(mtnMid);
-
-    ground =
-        new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/ground.png'].texture, GAME_WIDTH, GAME_HEIGHT);
     stage.addChild(ground);
-
-    clouds =
-        new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/clouds.png'].texture, GAME_WIDTH, GAME_HEIGHT);
     stage.addChild(clouds);
-
-    trees =
-        new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/trees.png'].texture, GAME_WIDTH, GAME_HEIGHT);
     stage.addChild(trees);
-
-    grass =
-        new PIXI.extras.TilingSprite(resources['assets/img/tiling-sprites/grass.png'].texture, GAME_WIDTH, GAME_HEIGHT);
+    stage.addChild(grass);
 
     // Prepare for first frame of game loop/animation
     lastTime = new Date().getTime();
@@ -207,9 +194,6 @@ function setup() {
 
     // Initialize the the tiling-sprites background
     initBackground();
-
-    // Add sprites to stage
-    stage.addChild(grass);
 
     tk = new Tink(PIXI, renderer.view, scale);
 
@@ -266,16 +250,12 @@ function gameMenuDisplay() {
     if (menuBuild) {
 
         // Add logo to menu
-        logo = new Sprite(
-            resources['assets/img/web/site-logo-white-long-shadow.png'].texture
-        );
+        logo = new Sprite(resources['assets/img/web/site-logo-white-long-shadow.png'].texture);
         logo.x = (GAME_WIDTH / 2) - (logo.width / 2);
         logo.y = GAME_HEIGHT - (logo.height * 3);
 
         // Add play-button to menu
-        playButton = new Sprite(
-            resources['assets/img/sprites/play.png'].texture
-        );
+        playButton = new Sprite(resources['assets/img/sprites/play.png'].texture);
         playButton.interactive = true;
         playButton.width /= 2;
         playButton.height /= 2;
@@ -289,9 +269,7 @@ function gameMenuDisplay() {
         });
 
         // Add logo to menu
-        instructions = new Sprite(
-            resources['assets/img/sprites/instructions.png'].texture
-        );
+        instructions = new Sprite(resources['assets/img/sprites/instructions.png'].texture);
         instructions.width /= 1.25;
         instructions.height /= 1.25;
         instructions.x = instructions.width / 2;
@@ -398,9 +376,7 @@ scoresRef.once("value")
 
 function initCatcher() {
     if (catcherBuild) {
-        //Setting up sprites
         catcher = new Sprite(resources['assets/img/sprites/basket.png'].texture);
-        //Catcher movement
         catcher.y = GAME_HEIGHT / 2;
         catcher.x = GAME_WIDTH / 2;
         catcher.vx = 0;
@@ -416,11 +392,9 @@ function initCatcher() {
         catcher.interactive = true;
 
         keyControls();
-
         tk.makeDraggable(catcher);
 
         stage.addChild(catcher);
-
         catcherBuild = false;
     }
 }
@@ -444,4 +418,64 @@ function initFacts() {
     randFact.y = GAME_HEIGHT - 450;
     randFact.anchor.x = 0.5;
     stage.addChild(randFact);
+}
+
+function gameOver() {
+    animateBackground();
+    gameOverDisplay();
+}
+
+function gameOverDisplay() {
+    if (gameOverBuild) {
+
+        // Add logo to menu
+        gameOverBanner = new Sprite(resources['assets/img/sprites/game-over.png'].texture);
+        gameOverBanner.x = (GAME_WIDTH / 2) - (gameOverBanner.width / 2);
+        gameOverBanner.y = GAME_HEIGHT - (gameOverBanner.height * 4);
+
+        // Add play-button to menu
+        retryButton = new Sprite(resources['assets/img/sprites/retry.png'].texture);
+        retryButton.interactive = true;
+        retryButton.width /= 2;
+        retryButton.height /= 2;
+        retryButton.x = GAME_WIDTH - (retryButton.width * 2);
+        retryButton.y = GAME_HEIGHT - (retryButton.height * 2);
+
+        // Add logo to menu
+        menuButton = new Sprite(resources['assets/img/sprites/menu.png'].texture);
+        menuButton.interactive = true;
+        menuButton.width /= 2;
+        menuButton.height /= 2;
+        menuButton.x = (GAME_WIDTH / 3) - (menuButton.width / 2);
+        menuButton.y = GAME_HEIGHT - (menuButton.height * 2);
+
+        // Add button and logo
+        stage.addChild(retryButton);
+        stage.addChild(gameOverBanner);
+        stage.addChild(menuButton);
+
+        // Add listener for play button
+        retryButton.on('pointerdown', (event) => {
+            playGameFromMenu();
+            stage.removeChild(retryButton);
+            stage.removeChild(gameOverBanner);
+            stage.removeChild(menuButton);
+        });
+
+        // Add listener for play button
+        menuButton.on('pointerdown', (event) => {
+            state = menu;
+            menuBuild = true;
+            gameMenuDisplay();
+            stage.removeChild(retryButton);
+            stage.removeChild(gameOverBanner);
+            stage.removeChild(menuButton);
+        });
+
+        // Set game state indicators (e.i. has menu been built / has catcher been built)
+        menuBuild = false;
+        catcherBuild = true;
+
+        gameOverBuild = false;
+    }
 }
