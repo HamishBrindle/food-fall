@@ -434,11 +434,6 @@ function initCatcher() {
         //Callback to bring catcher back to screen if moved off
         catcher.on('pointermove', onOutOfBounds);
         catcher.on('pointerover', onOutOfBounds);
-
-        //Test code
-        catcher.on("pointerdown", function() {
-            dumpScores();
-        });
     }
 }
 
