@@ -28,6 +28,54 @@ scoresRef.once("value")
         });
     });
 
+/* MENU---------------------------------------------------------------------------------------------------------------*/
+
+/* TODO: Menu button listeners */
+
+var btnLeaderBoardExit = document.getElementById("btn-leader-board-exit");
+var btnMainMenuLeaderBoard = document.getElementById("btn-main-menu-leader-board");
+var btnMainMenuVolumeOn = document.getElementById("btn-main-menu-volume-on");
+var btnMainMenuVolumeOff = document.getElementById("btn-main-menu-volume-off");
+var leaderBoard = document.getElementById("leader-board");
+
+// Listeners for exiting the leader-board
+btnLeaderBoardExit.addEventListener("click", btnExitLeaderBoard);
+btnLeaderBoardExit.addEventListener("touchend", btnExitLeaderBoard);
+
+function btnExitLeaderBoard(){
+    leaderBoard.style.display = "none";
+    btnMainMenuLeaderBoard.style.display = "block";
+}
+
+// Listeners for entering the leader-board
+
+btnMainMenuLeaderBoard.addEventListener("click", btnLeaderBoard);
+btnMainMenuLeaderBoard.addEventListener("touchend", btnLeaderBoard);
+
+function btnLeaderBoard(){
+    leaderBoard.style.display = "block";
+    btnMainMenuLeaderBoard.style.display = "none";
+}
+
+// Sound on and off buttons
+btnMainMenuVolumeOn.addEventListener("click", btnVolumeOff);
+btnMainMenuVolumeOn.addEventListener("touchend", btnVolumeOff);
+
+function btnVolumeOn() {
+    unmuteSound();
+    btnMainMenuVolumeOn.style.display = "inline-block";
+    btnMainMenuVolumeOff.style.display = "none";
+}
+
+btnMainMenuVolumeOff.addEventListener("click", btnVolumeOn);
+btnMainMenuVolumeOff.addEventListener("touchend", btnVolumeOn);
+
+function btnVolumeOff() {
+    muteSound();
+    btnMainMenuVolumeOn.style.display = "none";
+    btnMainMenuVolumeOff.style.display = "inline-block";
+}
+
 /* GAME --------------------------------------------------------------------------------------------------------------*/
 
 // Stage-size parameters
@@ -46,7 +94,6 @@ var backgroundScrollSpeed = {
     trees: 0.50,
     grass: 1.5,
     obstacle: 1.5
-
 };
 
 // Overall background rate
@@ -61,6 +108,7 @@ var sky,
     trees,
     grass;
 
+// Time comparison (currentTime - lastTime)
 var lastTime;
 
 //Aliases.
@@ -120,17 +168,13 @@ var soundOptions = {
 var soundButtonOn;
 var soundButtonOff;
 
-// Random facts
-var randFact;
-var textbox;
-
 // Game-over menu
 var gameOverBuild;
 var menuButton;
 var retryButton;
 var gameOverBanner;
 
-// Cow level
+// Secret cow level
 var renderTexture;
 var renderTexture2;
 var currentTexture;
@@ -311,6 +355,9 @@ function play() {
 function gameMenuDisplay() {
     if (menuBuild) {
 
+        /* TODO: Display leader-board button on load */
+        btnMainMenuLeaderBoard.style.display = "block";
+
         // Add logo to menu
         logo = new Sprite(resources['assets/img/web/site-logo-white-long-shadow.png'].texture);
         logo.x = (GAME_WIDTH / 2) - (logo.width / 2);
@@ -330,17 +377,21 @@ function gameMenuDisplay() {
             menuSound.play('menu')
         });
 
-        // Add logo to menu
+        /* TODO: Removed shitty instructions
         instructions = new Sprite(resources['assets/img/sprites/instructions.png'].texture);
         instructions.width /= 1.25;
         instructions.height /= 1.25;
         instructions.x = instructions.width / 2;
         instructions.y = GAME_HEIGHT - (instructions.height * 1.5);
+        */
 
         // Add button and logo
         stage.addChild(playButton);
         stage.addChild(logo);
-        stage.addChild(instructions);
+        btnMainMenuVolumeOn.style.display = "inline-block";
+        /* TODO: Not adding shitty instructions to stage
+        //stage.addChild(instructions);
+        */
 
         // Add a fact to the stage
         initFacts();
@@ -370,6 +421,7 @@ function soundButtonDisplay() {
                 stage.removeChild(soundButtonOn);
             });
             stage.addChild(soundButtonOn);
+            btnMainMenuVolumeOn.style.display = "none";
         }
     } else if (!soundOptions.soundButtonOnDisplayed && soundOptions.soundButtonOffDisplayed) {
         if (!soundOptions.soundEnabled) {
@@ -399,9 +451,13 @@ function playGameFromMenu() {
     stage.removeChild(logo);
     stage.removeChild(randFact);
     stage.removeChild(textbox);
-    stage.removeChild(instructions);
-}
+    /* TODO: Not removing shitty instructions because it doesnt exist yet*/
+    //stage.removeChild(instructions);
 
+    btnMainMenuLeaderBoard.style.display = "none";
+    document.getElementById("instructions").style.display = "none";
+
+}
 
 function menu() {
     animateBackground();
@@ -459,30 +515,11 @@ function onOutOfBounds() {
  */
 function initFacts() {
 
-
-    var padding = 10;
-    var txtStyle = new PIXI.TextStyle({
-        fontFamily: 'LemonMilk',
-        fontSize: 24,
-        fill: 'white',
-        wordWrap: true,
-        wordWrapWidth: 250,
-    });
     var factIndex = getRandomInt(0, 13);
-    randFact = new PIXI.Text(foodFacts[factIndex], txtStyle);
-    randFact.x = GAME_WIDTH - 150;
-    randFact.y = instructions.y + padding;
-    randFact.anchor.x = 0.5;
 
-    textbox = new Sprite(resources["assets/img/sprites/text-box.png"].texture);
-    textbox.x = GAME_WIDTH - (140 + padding);
-    textbox.y = instructions.y;
-    textbox.width = randFact.width + (4 * padding);
-    textbox.height = randFact.height + (2 * padding);
-    textbox.anchor.x = 0.5;
-
-    stage.addChild(textbox);
-    stage.addChild(randFact);
+    document.getElementById("instructions").style.display = "inline-block";
+    document.getElementById("random-fact")
+        .innerHTML = '<h2>Did You Know</h2><hr /><p>' + foodFacts[factIndex] + '</p>';
 
 }
 
@@ -504,7 +541,8 @@ function gameOverDisplay() {
         retryButton.interactive = true;
         retryButton.width /= 2;
         retryButton.height /= 2;
-        retryButton.x = GAME_WIDTH - (retryButton.width * 2);
+        retryButton.anchor.x = 0.5;
+        retryButton.x = GAME_WIDTH - (retryButton.width);
         retryButton.y = GAME_HEIGHT - (retryButton.height * 2);
 
         // Add logo to menu
@@ -512,6 +550,7 @@ function gameOverDisplay() {
         menuButton.interactive = true;
         menuButton.width /= 2;
         menuButton.height /= 2;
+        menuButton.anchor.x = 0.5;
         menuButton.x = (GAME_WIDTH / 3) - (menuButton.width / 2);
         menuButton.y = GAME_HEIGHT - (menuButton.height * 2);
 
@@ -534,6 +573,14 @@ function gameOverDisplay() {
             stage.removeChild(menuButton);
             stage.removeChild(score);
         });
+        retryButton.mouseover = function(mouseData) {
+            this.width *= 1.25;
+            this.height *= 1.25;
+        };
+        retryButton.mouseout = function(mouseData) {
+            this.width /= 1.25;
+            this.height /= 1.25;
+        };
 
         // Add listener for play button
         menuButton.on('pointerdown', (event) => {
@@ -545,6 +592,14 @@ function gameOverDisplay() {
             stage.removeChild(menuButton);
             stage.removeChild(score);
         });
+        menuButton.mouseover = function(mouseData) {
+            this.width *= 1.25;
+            this.height *= 1.25;
+        };
+        menuButton.mouseout = function(mouseData) {
+            this.width /= 1.25;
+            this.height /= 1.25;
+        };
 
         // Set game state indicators (e.i. has menu been built / has catcher been built)
         menuBuild = false;

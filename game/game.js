@@ -26,6 +26,17 @@ var score = new PIXI.Text(scoreCount, {
     fill: 'white'
 });
 
+/* Scorebox for displaying
+var scoreBox = new PIXI.Sprite(resources['assets/img/sprites/text-box.png'].texture);
+
+scoreBox.x = GAME_WIDTH / 2;
+scoreBox.y = GAME_HEIGHT / 2;
+scoreBox.anchor.x = 0.5;
+scoreBox.width = 100;
+scoreBox.height = 100;
+
+stage.addChild(scoreBox);
+*/
 
 function gameInit() {
     if(gameBuild) {
@@ -81,7 +92,6 @@ function makeFood() {
     newFood.velocityY = 0; //10 pixels per second
     newFood.velocityX = 0;
     newFood.accelerationY = 210;
-    newFood.hasBounced = false;
     var randomBoolean = Math.random() >= 0.5;
     if (randomBoolean) {
         newFood.rotateFactor = Math.random() * 0.1;
@@ -107,7 +117,7 @@ function isInBasket(basket, food) {
     var basketBotY = basket.y + BASKET_HEIGHT - Y_OFFSET;
 
     var upperLeftBasket = {x:basketLeftX, y:basketTopY};
-    var lowerRightBasket = {x:basketRightX, y:(basketTopY + 10)};
+    var lowerRightBasket = {x:basketRightX, y:(basketTopY + 30)};
 
     var inBasket = (food.x > upperLeftBasket.x) && (food.y > upperLeftBasket.y)
         && (food.x < lowerRightBasket.x) && (food.y < lowerRightBasket.y);
@@ -120,8 +130,8 @@ function isBounce(basket, food, catcherVelocityX) {
     var foodLeftX = food.x - food.width / 2;
     var foodRightX = food.x + food.width / 2;
 
-    var foodTopY = food.y;
-    var foodBotY = food.y + food.height;
+    var foodTopY = food.y - food.height / 2;
+    var foodBotY = food.y + food.height / 2;
 
     var basketLeftX = basket.x - X_OFFSET;
     var basketRightX = basket.x + BASKET_WIDTH - X_OFFSET;
@@ -147,7 +157,7 @@ function isBounce(basket, food, catcherVelocityX) {
             isBounce = (catcherVelocityX > 0) && (foodRightX > upperLeftBasket.x);
         }
         else if(foodIsRightOfBasket) {
-            var upperRightBasket = {x:basketRightX, y:basketTopY};
+            var upperRightBasket = {x:basketRightX, y:basketTopY + 20};
             isBounce = (catcherVelocityX < 0) && (foodLeftX < upperRightBasket.x);
         }
     } else if(foodWithinHeightBasket) {
@@ -231,11 +241,15 @@ function foodCatchCollision() {
                     gameSFX.play('point');
                     scoreCount += 10;
                     stage.removeChild(score);
-                    fallingItem.hasBounced = true;
                 } else if (isBounce(catcher, fallingItem, catcherVelocityX)) {
-                    // !fallingItem.hasBounced &&
-                    fallingItem.hasBounced = true;
-                    fallingItem.velocityX = -(1000 / catcherVelocityX);
+                    var newItemVelocityX = 1000 / catcherVelocityX;
+                    if(newItemVelocityX > 6) {
+                        newItemVelocityX = 6;
+                    } else if(newItemVelocityX < -6) {
+                        newItemVelocityX = -6;
+                    }
+                    console.log("newItemVelocityX", newItemVelocityX);
+                    fallingItem.velocityX = -newItemVelocityX;
                 }
 
             }
@@ -303,11 +317,14 @@ function isCollideObstacle(basket, obstacle) {
 }
 
 function addScore() {
-    score.x = GAME_WIDTH - 100;
-    score.y = GAME_HEIGHT - 50;
+
+    score.x = GAME_WIDTH - (score.width);
+    score.y = GAME_HEIGHT - (score.height + 50);
     score.anchor.x = 0.5;
     score.text = scoreCount;
+
     stage.addChild(score);
+
 }
 
 function addHighScore(scoreCount){

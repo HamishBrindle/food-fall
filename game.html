@@ -8,50 +8,105 @@
     user-scalable=no, initial-scale=1, maximum-scale=1, user-scalable=0"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
     <title>Food Fall | Group 9</title>
-    <!-- Bootstrap -->
+
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="assets/css/game.css">
-    <!-- Font CSS -->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="assets/font/font.css">
-    <!-- Pixi.JS -->
+    <link rel="stylesheet" href="assets/css/game.css">
+
     <script src="lib/pixi.js"></script>
-    <!-- Howler.js | Audio -->
-    <script src="bower_components/howler.js/dist/howler.js"></script>
-    <!-- isMobile.js -->
-    <script src="bower_components/isMobile/isMobile.js"></script>
-    <!-- tink.js -->
-    <script src="lib/tink/bin/tink.js"></script>
-    <!-- scaleToWindow.js -->
-    <script src="lib/scaleToWindow/scaleToWindow.js"></script>
-    <!-- Firebase Script Link -->
-    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
-    <!-- Font.js -->
     <script src="lib/font.js"></script>
+    <script src="lib/tink.js"></script>
+    <script src="bower_components/howler.js/dist/howler.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
 
 </head>
 
 <body>
-<header>
-
-</header>
 
 <main>
     <div class="container-fluid text-center outer" id="game-window">
-        <canvas id="game-canvas"></canvas>
+        <div id="overlay">
+            <div id="leader-board">
+                <h1 class="overlay-title">Leader Board</h1>
+                <table class="table table-striped" id="table-leader-board">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Username</th>
+                        <th>Score</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>John</td>
+                        <td>2973</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Mary</td>
+                        <td>2940</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Leo</td>
+                        <td>2844</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Paul</td>
+                        <td>2543</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>July</td>
+                        <td>1964</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Delores</td>
+                        <td>1277</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Teddy</td>
+                        <td>1130</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-success" id="btn-leader-board-exit">EXIT</button>
+            </div>
+
+            <div id="main-menu">
+                <div class="btn-group">
+                    <button class="btn btn-info bottom-align-text" id="btn-main-menu-volume-on"><i class="fa fa-volume-up"></i></button>
+                    <button class="btn btn-info bottom-align-text" id="btn-main-menu-volume-off"><i class="fa fa-volume-off"></i></button>
+                    <button class="btn btn-info bottom-align-text" id="btn-main-menu-leader-board"><i class="fa fa-trophy"></i></button>
+                </div>
+                <div class="text-box text-centered" id="instructions">
+                    <h2>Instructions</h2>
+                    <hr />
+                    <ul class="list-unstyled">
+                        <li>Use mouse/touch to drag your basket around.</li>
+                        <li>Avoid the obstacles!</li>
+                        <li>Catching food will get you 10 points each.</li>
+                        <li>Dropping food will cost you 2 points each.</li>
+                    </ul>
+                </div>
+                <div class="text-box text-centered" id="random-fact">
+                </div>
+            </div>
+
+        </div>
     </div>
 </main>
 
-<footer>
-
-</footer>
-
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-<!-- Food Fall Driver -->
+<script src="lib/scaleToWindow.js"></script>
 
 <script src="game/preload.js"></script>
 <script src="game/controls.js" defer></script>
