@@ -12,6 +12,21 @@ h1, h2, h3, button {
 
 button {
     pointer-events: auto;
+    outline: none;
+    border: none;
+}
+
+button:focus {
+    outline:0;
+}
+
+i {
+    display: inline-block;
+    border-radius: 60px;
+    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.5);
+    width: 75px;
+    height: 75px;
+    padding: 15px;
 }
 
 #overlay {
@@ -71,7 +86,28 @@ button {
 
 #btn-main-menu-leader-board {
     display: none;
-    margin: 0 auto 10px auto;
+    margin: 0 auto 0 auto;
+    font-size: 48px;
+    background: none;
+    border: none;
+}
+
+#btn-main-menu-leader-board i {
+    background: #d92c3f;
+}
+
+#btn-main-menu-volume-on,
+#btn-main-menu-volume-off{
+    display: none;
+    margin: 0 auto 0 auto;
+    font-size: 48px;
+    background: none;
+    border: none;
+}
+
+#btn-main-menu-volume-on i,
+#btn-main-menu-volume-off i{
+    background: #2c64d9;
 }
 
 #instructions {

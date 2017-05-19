@@ -32,23 +32,48 @@ scoresRef.once("value")
 
 /* TODO: Menu button listeners */
 
+var btnLeaderBoardExit = document.getElementById("btn-leader-board-exit");
+var btnMainMenuLeaderBoard = document.getElementById("btn-main-menu-leader-board");
+var btnMainMenuVolumeOn = document.getElementById("btn-main-menu-volume-on");
+var btnMainMenuVolumeOff = document.getElementById("btn-main-menu-volume-off");
+var leaderBoard = document.getElementById("leader-board");
+
 // Listeners for exiting the leader-board
-document.getElementById("btn-leader-board-exit").addEventListener("click", btnExitLeaderBoard);
-document.getElementById("btn-leader-board-exit").addEventListener("touchend", btnExitLeaderBoard);
+btnLeaderBoardExit.addEventListener("click", btnExitLeaderBoard);
+btnLeaderBoardExit.addEventListener("touchend", btnExitLeaderBoard);
 
 function btnExitLeaderBoard(){
-    document.getElementById("leader-board").style.display = "none";
-    document.getElementById("btn-main-menu-leader-board").style.display = "block";
+    leaderBoard.style.display = "none";
+    btnMainMenuLeaderBoard.style.display = "block";
 }
 
 // Listeners for entering the leader-board
 
-document.getElementById("btn-main-menu-leader-board").addEventListener("click", btnLeaderBoard);
-document.getElementById("btn-main-menu-leader-board").addEventListener("touchend", btnLeaderBoard);
+btnMainMenuLeaderBoard.addEventListener("click", btnLeaderBoard);
+btnMainMenuLeaderBoard.addEventListener("touchend", btnLeaderBoard);
 
 function btnLeaderBoard(){
-    document.getElementById("leader-board").style.display = "block";
-    document.getElementById("btn-main-menu-leader-board").style.display = "none";
+    leaderBoard.style.display = "block";
+    btnMainMenuLeaderBoard.style.display = "none";
+}
+
+// Sound on and off buttons
+btnMainMenuVolumeOn.addEventListener("click", btnVolumeOff);
+btnMainMenuVolumeOn.addEventListener("touchend", btnVolumeOff);
+
+function btnVolumeOn() {
+    unmuteSound();
+    btnMainMenuVolumeOn.style.display = "inline-block";
+    btnMainMenuVolumeOff.style.display = "none";
+}
+
+btnMainMenuVolumeOff.addEventListener("click", btnVolumeOn);
+btnMainMenuVolumeOff.addEventListener("touchend", btnVolumeOn);
+
+function btnVolumeOff() {
+    muteSound();
+    btnMainMenuVolumeOn.style.display = "none";
+    btnMainMenuVolumeOff.style.display = "inline-block";
 }
 
 /* GAME --------------------------------------------------------------------------------------------------------------*/
@@ -331,7 +356,7 @@ function gameMenuDisplay() {
     if (menuBuild) {
 
         /* TODO: Display leader-board button on load */
-        document.getElementById("btn-main-menu-leader-board").style.display = "block";
+        btnMainMenuLeaderBoard.style.display = "block";
 
         // Add logo to menu
         logo = new Sprite(resources['assets/img/web/site-logo-white-long-shadow.png'].texture);
@@ -363,6 +388,7 @@ function gameMenuDisplay() {
         // Add button and logo
         stage.addChild(playButton);
         stage.addChild(logo);
+        btnMainMenuVolumeOn.style.display = "inline-block";
         /* TODO: Not adding shitty instructions to stage
         //stage.addChild(instructions);
         */
@@ -395,6 +421,7 @@ function soundButtonDisplay() {
                 stage.removeChild(soundButtonOn);
             });
             stage.addChild(soundButtonOn);
+            btnMainMenuVolumeOn.style.display = "none";
         }
     } else if (!soundOptions.soundButtonOnDisplayed && soundOptions.soundButtonOffDisplayed) {
         if (!soundOptions.soundEnabled) {
@@ -427,7 +454,7 @@ function playGameFromMenu() {
     /* TODO: Not removing shitty instructions because it doesnt exist yet*/
     //stage.removeChild(instructions);
 
-    document.getElementById("btn-main-menu-leader-board").style.display = "none";
+    btnMainMenuLeaderBoard.style.display = "none";
     document.getElementById("instructions").style.display = "none";
 
 }
