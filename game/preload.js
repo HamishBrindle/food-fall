@@ -731,13 +731,40 @@ function speedUpGame(deltaTime) {
 }
 
 var scoreRef = firebase.database().ref("users").orderByKey();
+var scores = [];
 function dumpScores() {
     scoreRef.once("value")
         .then(function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
                 var key = childSnapshot.key;
-                var childData = childSnapshot.child("score");
-                console.log(childData);
+                var childName = childSnapshot.child("userName").val();
+                var childScore = childSnapshot.child("score").val();
+                scores.push({childName, childScore});
+                //console.log("Username: " + childName + " Score: " + childScore);
             });
         });
+    scores.sort(sortFunction);
+
+    function sortFunction(a, b) {
+        if (a.childScore === b.childScore) {
+            return 0;
+        } else {
+            return (a.childScore > b.childScore) ? -1 : 1;
+        }
+    }
+
+
+    var myTable = "<table class='table' id='leader-board-table'><thead><tr>";
+    myTable += "<th>User Name</th><th>Score</th></tr>";
+    myTable += "</thead><tbody>";
+
+    for (var i = 0; i < 10; i++) {
+        myTable += "<tr><td>" + scores[i].childName + "</td>";
+        myTable += "<td>" + scores[i].childScore + "</td></tr>";
+        console.log("" + scores[i].childName + scores[i].childScore);
+    }
+    myTable += "</tbody></table>";
+
+    document.getElementById('leaderboard').innerHTML = myTable;
+
 }
