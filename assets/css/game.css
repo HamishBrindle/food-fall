@@ -84,6 +84,18 @@ i {
 
 /* Main Menu ---------------------------------------------------------------------------------------------------------*/
 
+#game-header {
+    position: absolute;
+    width: 100%;
+    margin: auto;
+    padding: 0;
+}
+
+#game-banner {
+    width: 70%;
+    margin: auto;
+}
+
 #btn-main-menu-leader-board {
     display: none;
     margin: 0 auto 0 auto;
