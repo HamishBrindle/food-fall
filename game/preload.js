@@ -39,21 +39,19 @@ var btnMainMenuVolumeOff = document.getElementById("btn-main-menu-volume-off");
 var leaderBoard = document.getElementById("leader-board");
 var instructions = document.getElementById("instructions");
 var randomFactBox = document.getElementById("random-fact");
+var logo = document.getElementById("game-header");
 
 // Listeners for exiting the leader-board
 btnLeaderBoardExit.addEventListener("click", btnExitLeaderBoard);
 btnLeaderBoardExit.addEventListener("touchend", btnExitLeaderBoard);
-
 function btnExitLeaderBoard(){
     leaderBoard.style.display = "none";
     btnMainMenuLeaderBoard.style.display = "block";
 }
 
 // Listeners for entering the leader-board
-
 btnMainMenuLeaderBoard.addEventListener("click", btnLeaderBoard);
 btnMainMenuLeaderBoard.addEventListener("touchend", btnLeaderBoard);
-
 function btnLeaderBoard(){
     document.getElementById("table-body").innerHTML = "";
     dumpScores();
@@ -65,16 +63,13 @@ function btnLeaderBoard(){
 // Sound on and off buttons
 btnMainMenuVolumeOn.addEventListener("click", btnVolumeOff);
 btnMainMenuVolumeOn.addEventListener("touchend", btnVolumeOff);
-
 function btnVolumeOn() {
     unmuteSound();
     btnMainMenuVolumeOn.style.display = "inline-block";
     btnMainMenuVolumeOff.style.display = "none";
 }
-
 btnMainMenuVolumeOff.addEventListener("click", btnVolumeOn);
 btnMainMenuVolumeOff.addEventListener("touchend", btnVolumeOn);
-
 function btnVolumeOff() {
     muteSound();
     btnMainMenuVolumeOn.style.display = "none";
@@ -160,7 +155,6 @@ var pointer;
 var gameBuild = true;
 var playButton;
 var menuBuild;
-var logo;
 var catcherBuild;
 
 // Sound options
@@ -358,12 +352,7 @@ function play() {
 function gameMenuDisplay() {
     if (menuBuild) {
 
-        btnMainMenuLeaderBoard.style.display = "block";
 
-        // Add logo to menu
-        logo = new Sprite(resources['assets/img/web/site-logo-white-long-shadow.png'].texture);
-        logo.x = (GAME_WIDTH / 2) - (logo.width / 2);
-        logo.y = GAME_HEIGHT - (logo.height * 3);
 
         // Add play-button to menu
         playButton = new Sprite(resources['assets/img/sprites/play.png'].texture);
@@ -381,8 +370,10 @@ function gameMenuDisplay() {
 
         // Add button and logo
         stage.addChild(playButton);
-        stage.addChild(logo);
         btnMainMenuVolumeOn.style.display = "inline-block";
+        btnMainMenuLeaderBoard.style.display = "block";
+        // TODO: Add logo
+        logo.style.display = "block";
 
         // Add a fact to the stage
         initFacts();
@@ -439,13 +430,13 @@ function soundButtonDisplay() {
 function playGameFromMenu() {
     state = play;
     stage.removeChild(playButton);
-    stage.removeChild(logo);
     btnMainMenuVolumeOn.style.display = "none";
     btnMainMenuVolumeOff.style.display = "none";
     btnMainMenuLeaderBoard.style.display = "none";
     leaderBoard.style.display = "none";
     instructions.style.display = "none";
     randomFactBox.style.display = "none";
+    logo.style.display = "none";
 }
 
 function menu() {

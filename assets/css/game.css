@@ -55,7 +55,7 @@ i {
 #leader-board {
     position: relative;
     display: none;
-    width: 60%;
+    width: 50%;
     height: 90%;
     margin: auto;
     padding: 0;
@@ -69,6 +69,8 @@ i {
 #btn-leader-board-exit {
     font-family: 'LemonMilk', "Arial Black", serif;
     font-size: 1em;
+    margin-top: 0;
+    margin-bottom: 7px;
 }
 
 #table-leader-board {
@@ -86,6 +88,18 @@ i {
 }
 
 /* Main Menu ---------------------------------------------------------------------------------------------------------*/
+
+#game-header {
+    position: absolute;
+    width: 100%;
+    margin: auto;
+    padding: 0;
+}
+
+#game-banner {
+    width: 70%;
+    margin: auto;
+}
 
 #btn-main-menu-leader-board {
     display: none;
