@@ -326,9 +326,6 @@ function addScore() {
 
     stage.addChild(score);
 
-    console.log("ScoreBox-x: " + scoreBox.x);
-    console.log("ScoreBox-y: " + scoreBox.y);
-
 }
 
 function addHighScore(scoreCount){
