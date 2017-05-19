@@ -1,3 +1,35 @@
+/* DATABASE ----------------------------------------------------------------------------------------------------------*/
+
+var config = {
+    apiKey: "AIzaSyDLI2-ikgpZ8N4EX89enO8ERiMz63Rv7eo",
+    authDomain: "fool-fall.firebaseapp.com",
+    databaseURL: "https://fool-fall.firebaseio.com",
+    projectId: "fool-fall",
+    storageBucket: "fool-fall.appspot.com",
+    messagingSenderId: "884200936745"
+};
+
+firebase.initializeApp(config);
+var database = firebase.database();
+var userData = [];
+var i = 0;
+
+var scoresRef = firebase.database().ref("users").orderByKey();
+scoresRef.once("value")
+    .then(function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+            var user = {};
+            var key = childSnapshot.key;
+            var childData = childSnapshot.val();
+            user.name = childData.userName;
+            user.score = childData.score;
+            userData[i] = user;
+            i++;
+        });
+    });
+
+/* GAME --------------------------------------------------------------------------------------------------------------*/
+
 // Stage-size parameters
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
@@ -86,6 +118,7 @@ var soundButtonOff;
 
 // Random facts
 var randFact;
+var textbox;
 
 // Game-over menu
 var gameOverBuild;
@@ -165,6 +198,7 @@ loader
         "assets/img/sprites/portal.json",
         "assets/img/sprites/profs.json",
         "assets/img/sprites/cow-level-banner.png",
+        "assets/img/sprites/text-box.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -369,35 +403,6 @@ function menu() {
     gameMenuDisplay();
 }
 
-
-var config = {
-    apiKey: "AIzaSyDLI2-ikgpZ8N4EX89enO8ERiMz63Rv7eo",
-    authDomain: "fool-fall.firebaseapp.com",
-    databaseURL: "https://fool-fall.firebaseio.com",
-    projectId: "fool-fall",
-    storageBucket: "fool-fall.appspot.com",
-    messagingSenderId: "884200936745"
-};
-
-firebase.initializeApp(config);
-var database = firebase.database();
-var userData = [];
-var i = 0;
-
-var scoresRef = firebase.database().ref("users").orderByKey();
-scoresRef.once("value")
-    .then(function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-            var user = {};
-            var key = childSnapshot.key;
-            var childData = childSnapshot.val();
-            user.name = childData.userName;
-            user.score = childData.score;
-            userData[i] = user;
-            i++;
-        });
-    });
-
 function initCatcher() {
     if (catcherBuild) {
         catcher = new Sprite(resources['assets/img/sprites/basket.png'].texture);
@@ -448,21 +453,30 @@ function onOutOfBounds() {
  * Adds a random zero food waste tip to the screen.
  */
 function initFacts() {
+    var padding = 10;
     var txtStyle = new PIXI.TextStyle({
         fontFamily: 'Arial',
-        fontSize: 30,
+        fontSize: 24,
         fill: 'white',
-        stroke: 'black',
-        strokeThickness: 3,
         wordWrap: true,
         wordWrapWidth: 250,
     });
     var factIndex = getRandomInt(0, 13);
     randFact = new PIXI.Text(foodFacts[factIndex], txtStyle);
-    randFact.x = GAME_WIDTH - 130;
-    randFact.y = GAME_HEIGHT - 450;
+    randFact.x = GAME_WIDTH - 150;
+    randFact.y = instructions.y + padding;
     randFact.anchor.x = 0.5;
+
+    textbox = new Sprite(resources["assets/img/sprites/text-box.png"].texture);
+    textbox.x = GAME_WIDTH - (140 + padding);
+    textbox.y = instructions.y;
+    textbox.width = randFact.width + (4 * padding);
+    textbox.height = randFact.height + (2 * padding);
+    textbox.anchor.x = 0.5;
+
+    stage.addChild(textbox);
     stage.addChild(randFact);
+
 }
 
 function gameOver() {
