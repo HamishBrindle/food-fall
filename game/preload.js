@@ -520,11 +520,26 @@ function gameOverDisplay() {
         score.y = GAME_HEIGHT / 2;
         score.text = scoreCount;
 
+        var leaderButton = new Sprite(resources['assets/img/sprites/menu.png'].texture);
+        leaderButton.interactive = true;
+        leaderButton.width /= 2;
+        leaderButton.height /= 2;
+        leaderButton.anchor.x = 0.5;
+        leaderButton.x = GAME_WIDTH / 2;
+        leaderButton.y = GAME_HEIGHT / 2 - 50;
+
             // Add button and logo
         stage.addChild(retryButton);
         stage.addChild(gameOverBanner);
         stage.addChild(menuButton);
         stage.addChild(score);
+        stage.addChild(leaderButton);
+
+        // Add leaderboard listener
+        leaderButton.on('pointerdown', (event) => {
+            dumpScores();
+        });
+
 
         // Add listener for play button
         retryButton.on('pointerdown', (event) => {
@@ -756,7 +771,6 @@ function dumpScores() {
     for (var i = 0; i < 10; i++) {
         myTable += "<tr><td>" + scores[i].childName + "</td>";
         myTable += "<td>" + scores[i].childScore + "</td></tr>";
-        console.log("" + scores[i].childName + scores[i].childScore);
     }
     myTable += "</tbody></table>";
 
