@@ -37,7 +37,8 @@ var portalSFX = new Howl({
     sprite: {
         portal: [0, 10000],
     },
-    volume: 0.25
+    volume: 0.25,
+    loop: true
 });
 
 function muteSound() {
@@ -53,4 +54,3 @@ function unmuteSound() {
     menuSound.volume(0.5);
     portalSFX.volume(0.5);
 }
-
