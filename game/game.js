@@ -102,6 +102,8 @@ function isInBasket(basket, food) {
     var basketLeftX = basket.x - X_OFFSET;
     var basketRightX = basket.x  + BASKET_WIDTH - X_OFFSET;
     var basketTopY = basket.y - Y_OFFSET;
+
+    // TODO: change naming conventions - Kerry
     var basketBotY = basket.y + BASKET_HEIGHT - Y_OFFSET;
 
     var upperLeftBasket = {x:basketLeftX, y:basketTopY};
@@ -154,7 +156,7 @@ function isBounce(basket, food, catcherVelocityX) {
             isBounce =  (catcherVelocityX > 0) && (foodRightX > midLeftBasket.x);
         }
         else if(foodIsRightOfBasket) {
-            var midRightBasket = {x:basketRightX, y:basketTopY};
+            var midRightBasket = {x:basketMidRightX, y:basketMidRightY};
             isBounce = (catcherVelocityX < 0) && (foodLeftX < midRightBasket.x);
         }
     } else if(foodJustBelowBasket) {
