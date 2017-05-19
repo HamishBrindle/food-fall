@@ -20,7 +20,7 @@ var caughtFood = [];
 var eggCount = 0;
 var cowLevelHasBeenActivated = false;
 
-var score = new PIXI.Text('Score: ', {
+var score = new PIXI.Text(scoreCount, {
     fontSize: 30,
     fontFamily: 'Arial',
     fill: 'white'
