@@ -424,6 +424,7 @@ function playGameFromMenu() {
     stage.removeChild(textbox);
     //stage.removeChild(instructions);
     document.getElementById("btn-main-menu-leader-board").style.display = "none";
+    document.getElementById("instructions").style.display = "none";
 }
 
 
@@ -493,11 +494,11 @@ function initFacts() {
     var factIndex = getRandomInt(0, 13);
     randFact = new PIXI.Text(foodFacts[factIndex], txtStyle);
     randFact.x = GAME_WIDTH - 150;
-    randFact.y = GAME_HEIGHT / 2 + padding;
+    randFact.y = GAME_HEIGHT / 3 + padding;
     randFact.anchor.x = 0.5;
 
     textbox = new Sprite(resources["assets/img/sprites/text-box.png"].texture);
-    textbox.x = GAME_WIDTH - (140 + padding);
+    textbox.x = GAME_WIDTH - (150 + padding);
     textbox.y = randFact.y - 10;
     textbox.width = randFact.width + (4 * padding);
     textbox.height = randFact.height + (2 * padding);
@@ -505,6 +506,7 @@ function initFacts() {
 
     stage.addChild(textbox);
     stage.addChild(randFact);
+    document.getElementById("instructions").style.display = "inline-block";
 
 }
 

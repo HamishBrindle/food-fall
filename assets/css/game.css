@@ -74,10 +74,21 @@ button {
 }
 
 #instructions {
-    display: inline-block;
-    background-color: rgba(0,0,0,0.15);
-    width: 3em;
+    position: absolute;
+    display: none;
+    top: 12em;
+    left: 2em;
+    background-color: rgba(0,0,0,0.50);
+    width: 20em;
     height: auto;
+    color: #fff;
+    border-radius: 5px;
+}
+
+#instructions li {
+    padding: 5px;
+    font-family: 'LemonMilk', "Arial Black", serif;
+    font-size: medium;
 }
 
 /* Overlay Mobile ----------------------------------------------------------------------------------------------------*/
