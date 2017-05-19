@@ -143,10 +143,6 @@ var soundOptions = {
 var soundButtonOn;
 var soundButtonOff;
 
-// Random facts
-var randFact;
-var textbox;
-
 // Game-over menu
 var gameOverBuild;
 var menuButton;
@@ -491,32 +487,12 @@ function onOutOfBounds() {
  * Adds a random zero food waste tip to the screen.
  */
 function initFacts() {
-    var padding = 10;
-    var txtStyle = new PIXI.TextStyle({
-        fontFamily: 'LemonMilk',
-        fontSize: 24,
-        fill: 'white',
-        wordWrap: true,
-        wordWrapWidth: 250,
-    });
+
     var factIndex = getRandomInt(0, 13);
-    randFact = new PIXI.Text(foodFacts[factIndex], txtStyle);
-    randFact.x = GAME_WIDTH - 150;
-    randFact.y = GAME_HEIGHT / 3 + padding;
-    randFact.anchor.x = 0.5;
 
-    textbox = new Sprite(resources["assets/img/sprites/text-box.png"].texture);
-    textbox.x = GAME_WIDTH - (150 + padding);
-    textbox.y = randFact.y - 10;
-    textbox.width = randFact.width + (4 * padding);
-    textbox.height = randFact.height + (2 * padding);
-    textbox.anchor.x = 0.5;
-
-    stage.addChild(textbox);
-    stage.addChild(randFact);
-
-    /* TODO: Add instructions to menu upon load */
     document.getElementById("instructions").style.display = "inline-block";
+    document.getElementById("random-fact")
+        .innerHTML = '<h2>Did You Know</h2><hr /><p>' + foodFacts[factIndex] + '</p>';
 
 }
 
