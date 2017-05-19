@@ -24,6 +24,7 @@ button {
     height: 500px;
     z-index: 1;
     pointer-events: none;
+    background: transparent;
 }
 
 .overlay-title {
@@ -41,7 +42,7 @@ button {
     height: 90%;
     margin: auto;
     padding: 0;
-    background-color: #ffffff;
+    background-color: #475893;
     border-radius: 6px;
     box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.50);
     z-index: 2;
@@ -62,7 +63,7 @@ button {
 }
 
 #table-leader-board tbody {
-    font-family: "Arial Black", serif;
+    font-family: "Arial Black", sans-serif;
     text-align: left;
     font-size: small;
 }
