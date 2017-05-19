@@ -21,8 +21,8 @@ var eggCount = 0;
 var cowLevelHasBeenActivated = false;
 
 var score = new PIXI.Text(scoreCount, {
-    fontSize: 30,
-    fontFamily: 'Arial',
+    fontSize: 50,
+    fontFamily: 'LemonMilk',
     fill: 'white'
 });
 
@@ -221,7 +221,6 @@ function foodCatchCollision() {
                     fallingItem.destroy();
                     --foodCount;
                 } else if (isInBasket(catcher, fallingItem)) {
-
                     let type = getFoodType(fallingItem);
                     childrenToDelete.push(fallingItem);
                     --foodCount;
