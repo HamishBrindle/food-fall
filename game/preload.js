@@ -38,10 +38,13 @@ document.getElementById("btn-leader-board-exit").addEventListener("touchend", bt
 
 function btnExitLeaderBoard(){
     document.getElementById("leader-board").style.display = "none";
+    /*
     document.getElementById("btn-main-menu-leader-board").style.display = "block";
+    */
 }
 
 // Listeners for entering the leader-board
+/*
 document.getElementById("btn-main-menu-leader-board").addEventListener("click", btnLeaderBoard);
 document.getElementById("btn-main-menu-leader-board").addEventListener("touchend", btnLeaderBoard);
 
@@ -50,7 +53,7 @@ function btnLeaderBoard(){
     document.getElementById("btn-main-menu-leader-board").style.display = "none";
 }
 
-
+*/
 
 /* GAME --------------------------------------------------------------------------------------------------------------*/
 
@@ -434,8 +437,10 @@ function playGameFromMenu() {
     //stage.removeChild(instructions);
     */
 
+    /*
     document.getElementById("btn-main-menu-leader-board").style.display = "none";
     document.getElementById("instructions").style.display = "none";
+    */
 
 }
 
@@ -518,8 +523,9 @@ function initFacts() {
     stage.addChild(textbox);
     stage.addChild(randFact);
 
-    /* TODO: Add instructions to menu upon load */
+    /* TODO: Add instructions to menu upon load
     document.getElementById("instructions").style.display = "inline-block";
+    */
 
 
 }

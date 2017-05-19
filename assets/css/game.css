@@ -35,7 +35,7 @@ button {
 
 #leader-board {
     position: relative;
-    display: none;
+    display: block;
     width: 60%;
     height: 90%;
     margin: auto;
