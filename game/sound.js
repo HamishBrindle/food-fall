@@ -54,4 +54,3 @@ function unmuteSound() {
     menuSound.volume(0.5);
     portalSFX.volume(0.5);
 }
-
