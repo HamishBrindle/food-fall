@@ -28,6 +28,30 @@ scoresRef.once("value")
         });
     });
 
+/* MENU---------------------------------------------------------------------------------------------------------------*/
+
+/* TODO: Menu button listeners
+
+// Listeners for exiting the leader-board
+document.getElementById("btn-leader-board-exit").addEventListener("click", btnExitLeaderBoard);
+document.getElementById("btn-leader-board-exit").addEventListener("touchend", btnExitLeaderBoard);
+
+function btnExitLeaderBoard(){
+    document.getElementById("leader-board").style.display = "none";
+    document.getElementById("btn-main-menu-leader-board").style.display = "block";
+}
+
+// Listeners for entering the leader-board
+document.getElementById("btn-main-menu-leader-board").addEventListener("click", btnLeaderBoard);
+document.getElementById("btn-main-menu-leader-board").addEventListener("touchend", btnLeaderBoard);
+
+function btnLeaderBoard(){
+    document.getElementById("leader-board").style.display = "block";
+    document.getElementById("btn-main-menu-leader-board").style.display = "none";
+}
+
+*/
+
 /* GAME --------------------------------------------------------------------------------------------------------------*/
 
 // Stage-size parameters
@@ -311,6 +335,10 @@ function play() {
 function gameMenuDisplay() {
     if (menuBuild) {
 
+        /* TODO: Display leader-board button on load
+        document.getElementById("btn-main-menu-leader-board").style.display = "block";
+        */
+
         // Add logo to menu
         logo = new Sprite(resources['assets/img/web/site-logo-white-long-shadow.png'].texture);
         logo.x = (GAME_WIDTH / 2) - (logo.width / 2);
@@ -330,17 +358,20 @@ function gameMenuDisplay() {
             menuSound.play('menu')
         });
 
-        // Add logo to menu
+        /* TODO: Removed shitty instructions
         instructions = new Sprite(resources['assets/img/sprites/instructions.png'].texture);
         instructions.width /= 1.25;
         instructions.height /= 1.25;
         instructions.x = instructions.width / 2;
         instructions.y = GAME_HEIGHT - (instructions.height * 1.5);
+        */
 
         // Add button and logo
         stage.addChild(playButton);
         stage.addChild(logo);
-        stage.addChild(instructions);
+        /* TODO: Not adding shitty instructions to stage
+        //stage.addChild(instructions);
+        */
 
         // Add a fact to the stage
         initFacts();
@@ -399,9 +430,13 @@ function playGameFromMenu() {
     stage.removeChild(logo);
     stage.removeChild(randFact);
     stage.removeChild(textbox);
-    stage.removeChild(instructions);
+    /* TODO: Not removing shitty instructions because it doesnt exist yet
+    //stage.removeChild(instructions);
+    /* TODO: Hide leaderboard button & hide instructions
+    document.getElementById("btn-main-menu-leader-board").style.display = "none";
+    document.getElementById("instructions").style.display = "none";
+    */
 }
-
 
 function menu() {
     animateBackground();
@@ -469,18 +504,22 @@ function initFacts() {
     var factIndex = getRandomInt(0, 13);
     randFact = new PIXI.Text(foodFacts[factIndex], txtStyle);
     randFact.x = GAME_WIDTH - 150;
-    randFact.y = instructions.y + padding;
+    randFact.y = GAME_HEIGHT / 3 + padding;
     randFact.anchor.x = 0.5;
 
     textbox = new Sprite(resources["assets/img/sprites/text-box.png"].texture);
-    textbox.x = GAME_WIDTH - (140 + padding);
-    textbox.y = instructions.y;
+    textbox.x = GAME_WIDTH - (150 + padding);
+    textbox.y = randFact.y - 10;
     textbox.width = randFact.width + (4 * padding);
     textbox.height = randFact.height + (2 * padding);
     textbox.anchor.x = 0.5;
 
     stage.addChild(textbox);
     stage.addChild(randFact);
+
+    /* TODO: Add instructions to menu upon load
+    document.getElementById("instructions").style.display = "inline-block";
+    */
 
 }
 
