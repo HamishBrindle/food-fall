@@ -323,7 +323,6 @@ function addScore() {
     score.anchor.x = 0.5;
     score.text = scoreCount;
 
-
     stage.addChild(score);
 
 }
