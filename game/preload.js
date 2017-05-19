@@ -1,3 +1,35 @@
+/* DATABASE ----------------------------------------------------------------------------------------------------------*/
+
+var config = {
+    apiKey: "AIzaSyDLI2-ikgpZ8N4EX89enO8ERiMz63Rv7eo",
+    authDomain: "fool-fall.firebaseapp.com",
+    databaseURL: "https://fool-fall.firebaseio.com",
+    projectId: "fool-fall",
+    storageBucket: "fool-fall.appspot.com",
+    messagingSenderId: "884200936745"
+};
+
+firebase.initializeApp(config);
+var database = firebase.database();
+var userData = [];
+var i = 0;
+
+var scoresRef = firebase.database().ref("users").orderByKey();
+scoresRef.once("value")
+    .then(function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+            var user = {};
+            var key = childSnapshot.key;
+            var childData = childSnapshot.val();
+            user.name = childData.userName;
+            user.score = childData.score;
+            userData[i] = user;
+            i++;
+        });
+    });
+
+/* GAME --------------------------------------------------------------------------------------------------------------*/
+
 // Stage-size parameters
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
@@ -12,7 +44,9 @@ var backgroundScrollSpeed = {
     mtnMid: 0.25,
     clouds: 0.25,
     trees: 0.50,
-    grass: 1.5
+    grass: 1.5,
+    obstacle: 1.5
+
 };
 
 // Overall background rate
@@ -64,7 +98,7 @@ document.getElementById("game-window").appendChild(renderer.view);
 var catcher;
 var tk;
 var scale = scaleToWindow(renderer.view);
-var setupdone = false;
+var setupDone = false;
 var pointer;
 var gameBuild = true;
 var playButton;
@@ -73,26 +107,68 @@ var logo;
 var instructions;
 var catcherBuild;
 
+// Sound options
 var soundOptions = {
     soundEnabled: false,
     soundButtonOnDisplayed: true,
     soundButtonOffDisplayed: false,
 };
-
 var soundButtonOn;
 var soundButtonOff;
 
+// Random facts
 var randFact;
+var textbox;
 
+// Game-over menu
 var gameOverBuild;
 var menuButton;
 var retryButton;
 var gameOverBanner;
 
+// Cow level
+var renderTexture;
+var renderTexture2;
+var currentTexture;
+var outputSprite;
+var stuffContainer = new PIXI.Container();
+var spinningItems = [];
+var profs = [
+    "albert",
+    "bruce",
+    "carly",
+    "chris",
+    "keith",
+    "medhat",
+    "paul",
+    "peter",
+    "sam",
+    "trevor"
+];
+var cowLevelElapsedTime;
+var portal;
+
+// Food items in game
+var numberOfFood = 6;
+apple = {name: "apple", weight: 1 / numberOfFood};
+banana = {name: "banana", weight: 1 / numberOfFood};
+bread = {name: "bread", weight: 1 / numberOfFood};
+orange = {name: "orange", weight: 1 / numberOfFood};
+broccoli = {name: "broccoli", weight: 1 / numberOfFood};
+egg = {name: "egg", weight: 1 / numberOfFood};
+fallingObjects = [apple, banana, bread, orange, broccoli, egg];
+
+console.log(fallingObjects);
+
+//Set the game's current state to `menu`:
+var state = menu;
+menuBuild = true;
+catcherBuild = false;
+cowLevelBuild = true;
+
 loader
     .add([
         "assets/img/sprites/basket.png",
-        "assets/img/sprites/basket_bottom.png",
         "assets/img/sprites/apple.png",
         "assets/img/sprites/banana.png",
         "assets/img/sprites/bread.png",
@@ -118,7 +194,11 @@ loader
         "assets/img/sprites/instructions.png",
         "assets/img/sprites/game-over.png",
         "assets/img/sprites/retry.png",
-        "assets/img/sprites/menu.png"
+        "assets/img/sprites/menu.png",
+        "assets/img/sprites/portal.json",
+        "assets/img/sprites/profs.json",
+        "assets/img/sprites/cow-level-banner.png",
+        "assets/img/sprites/text-box.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -149,23 +229,18 @@ function initBackground() {
 
 }
 
-
 function animateBackground() {
-
     // Determine seconds elapsed since last frame
     var currtime = new Date().getTime();
     var delta = (currtime - lastTime) / 1000;
-
     // Scroll the terrain
     mtnFar.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnFar;
     mtnMid.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.mtnMid;
     clouds.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.clouds;
     trees.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.trees;
     grass.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.grass;
-
     // Draw the stage and prepare for the next frame
     lastTime = currtime;
-
 }
 
 /*
@@ -174,18 +249,6 @@ Prints loading log to console.
 function loadProgressHandler() {
     console.log("loading");
 }
-
-var numberOfFood = 6;
-
-apple = {name: "apple", weight: 1 / numberOfFood};
-banana = {name: "banana", weight: 1 / numberOfFood};
-bread = {name: "bread", weight: 1 / numberOfFood};
-orange = {name: "orange", weight: 1 / numberOfFood};
-broccoli = {name: "broccoli", weight: 1 / numberOfFood};
-egg = {name: "egg", weight: 1 / numberOfFood};
-
-fallingObjects = [apple, banana, bread, orange, broccoli, egg];
-
 
 /*
 Main game driver.
@@ -206,7 +269,7 @@ function setup() {
     pointer.press = function () {};
     pointer.release = function () {};
 
-    setupdone = true;
+    setupDone = true;
 
     // Resize screen when window size is adjusted.
     window.addEventListener("resize", function (event) {
@@ -221,11 +284,6 @@ function setup() {
     gameLoop();
 
 }
-//Set the game's current state to `menu`:
-var state = menu;
-
-menuBuild = true;
-catcherBuild = false;
 
 //Animation loop
 function gameLoop() {
@@ -345,35 +403,6 @@ function menu() {
     gameMenuDisplay();
 }
 
-
-var config = {
-    apiKey: "AIzaSyDLI2-ikgpZ8N4EX89enO8ERiMz63Rv7eo",
-    authDomain: "fool-fall.firebaseapp.com",
-    databaseURL: "https://fool-fall.firebaseio.com",
-    projectId: "fool-fall",
-    storageBucket: "fool-fall.appspot.com",
-    messagingSenderId: "884200936745"
-};
-
-firebase.initializeApp(config);
-var database = firebase.database();
-var userData = [];
-var i = 0;
-
-var scoresRef = firebase.database().ref("users").orderByKey();
-scoresRef.once("value")
-    .then(function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-            var user = {};
-            var key = childSnapshot.key;
-            var childData = childSnapshot.val();
-            user.name = childData.userName;
-            user.score = childData.score;
-            userData[i] = user;
-            i++;
-        });
-    });
-
 function initCatcher() {
     if (catcherBuild) {
         catcher = new Sprite(resources['assets/img/sprites/basket.png'].texture);
@@ -424,21 +453,30 @@ function onOutOfBounds() {
  * Adds a random zero food waste tip to the screen.
  */
 function initFacts() {
+    var padding = 10;
     var txtStyle = new PIXI.TextStyle({
         fontFamily: 'Arial',
-        fontSize: 30,
+        fontSize: 24,
         fill: 'white',
-        stroke: 'black',
-        strokeThickness: 3,
         wordWrap: true,
         wordWrapWidth: 250,
     });
     var factIndex = getRandomInt(0, 13);
     randFact = new PIXI.Text(foodFacts[factIndex], txtStyle);
-    randFact.x = GAME_WIDTH - 130;
-    randFact.y = GAME_HEIGHT - 450;
+    randFact.x = GAME_WIDTH - 150;
+    randFact.y = instructions.y + padding;
     randFact.anchor.x = 0.5;
+
+    textbox = new Sprite(resources["assets/img/sprites/text-box.png"].texture);
+    textbox.x = GAME_WIDTH - (140 + padding);
+    textbox.y = instructions.y;
+    textbox.width = randFact.width + (4 * padding);
+    textbox.height = randFact.height + (2 * padding);
+    textbox.anchor.x = 0.5;
+
+    stage.addChild(textbox);
     stage.addChild(randFact);
+
 }
 
 function gameOver() {
@@ -507,4 +545,150 @@ function gameOverDisplay() {
 
         gameOverBuild = false;
     }
+}
+
+function fuckUpBackground() {
+    // Determine seconds elapsed since last frame
+    var currtime = new Date().getTime();
+    var delta = (currtime - lastTime) / 1000;
+    // Scroll the terrain
+    mtnFar.tilePosition.x -= BG_RATE * delta - 5;
+    mtnMid.tilePosition.x -= BG_RATE * delta + 3;
+    clouds.tilePosition.x -= BG_RATE * delta + 4;
+    trees.tilePosition.x -= BG_RATE * delta + 2;
+    grass.tilePosition.x -= BG_RATE * delta - 6;
+    // Draw the stage and prepare for the next frame
+    lastTime = currtime;
+}
+
+function cowLevel() {
+
+    fuckUpBackground();
+    soundButtonDisplay();
+    addScore();
+
+    // create two render textures... these dynamic textures will be used to draw the scene into itself
+    renderTexture = PIXI.RenderTexture.create(
+        renderer.width,
+        renderer.height
+    );
+    renderTexture2 = PIXI.RenderTexture.create(
+        renderer.width,
+        renderer.height
+    );
+    currentTexture = renderTexture;
+
+    outputSprite = new PIXI.Sprite(currentTexture);
+
+    if (cowLevelBuild) {
+
+        addScore();
+
+        destroyOldObjects();
+
+        outputSprite.x = 400;
+        outputSprite.y = 300;
+        outputSprite.anchor.set(0.5);
+
+        stage.addChild(outputSprite);
+
+        stuffContainer.x = 400;
+        stuffContainer.y = 300;
+
+        stage.addChild(stuffContainer);
+
+        for (let i = 0; i < profs.length; i++) {
+            var item = new Sprite(resources['assets/img/sprites/profs.json'].textures['' + profs[i % profs.length] + '.png']);
+            item.interactive = true;
+            item.on('pointerdown', (event) => {
+                scoreCount += 100;
+            });
+            item.x = Math.random() * 400 - 200;
+            item.y = Math.random() * 400 - 200;
+            item.anchor.set(0.5);
+            stuffContainer.addChild(item);
+            spinningItems.push(item);
+        }
+
+        var count = 0;
+
+        // Easter egg level state
+        var frames = [];
+        for (let i = 0; i < 7; i++) {
+            frames.push(PIXI.Texture.fromFrame('portal_0000_Layer-7' + i + '.png'));
+        }
+        portal = new PIXI.extras.AnimatedSprite(frames);
+        portal.x = renderer.width / 2;
+        portal.y = renderer.height / 2;
+        portal.width *= 2;
+        portal.height *= 2;
+        portal.anchor.set(0.5);
+        portal.animationSpeed = 0.5;
+        portal.play();
+
+        stage.addChild(portal);
+
+        // secret cow level image
+        secretCowLevelBanner = new Sprite(resources['assets/img/sprites/cow-level-banner.png'].texture);
+        secretCowLevelBanner.width /= 2;
+        secretCowLevelBanner.height /= 2;
+        secretCowLevelBanner.x = (GAME_WIDTH / 2) - (secretCowLevelBanner.width / 2);
+        secretCowLevelBanner.y = GAME_HEIGHT - (secretCowLevelBanner.height * 1.5);
+
+        stage.addChild(secretCowLevelBanner);
+
+        cowLevelBuild = false;
+
+        cowLevelElapsedTime = 0;
+    }
+
+    for (let i = 0; i < spinningItems.length; i++) {
+        // rotate each item
+        var item = spinningItems[i];
+        item.rotation += 0.1;
+    }
+
+    count += 0.02;
+
+    // swap the buffers ...
+    var temp = renderTexture;
+    renderTexture = renderTexture2;
+    renderTexture2 = temp;
+
+    // set the new texture
+    outputSprite.texture = renderTexture;
+
+    // twist this up!
+    stuffContainer.rotation -= 0.01;
+    outputSprite.scale.set(1 + Math.sin(count) * 0.1);
+
+    var currtime = new Date().getTime();
+    var delta = (currtime - lastTime) / 10;
+    cowLevelElapsedTime += delta;
+
+    if (cowLevelElapsedTime >= 20) {
+        for (let item in spinningItems) {
+            stuffContainer.removeChild(item);
+        }
+        stage.removeChild(stuffContainer);
+        portal.destroy();
+        stage.removeChild(secretCowLevelBanner);
+        state = play;
+        renderer.render(stage);
+        cowLevelEnd();
+    }
+
+}
+
+function cowLevelEnd() {
+        obstacleCount = 0;
+        countDownIndex = 0;
+        foodCount = 0;
+        afterCountDown = true;
+        catcher.alpha = 1;
+        score.alpha = 1;
+}
+
+function speedUpGame(deltaTime) {
+    BG_RATE += deltaTime * 10;
 }

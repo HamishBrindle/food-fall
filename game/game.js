@@ -8,8 +8,8 @@ var scoreCount = 0;
 
 var childrenToDelete = [];
 const foodFadeDuration = 1;
-const displayNoFadeDuration = 100;
 
+const displayNoFadeDuration = 100;
 
 var lastXPos = 0;
 // check the amount of food caught
@@ -18,6 +18,7 @@ var caughtFood = [];
 
 // for combo function
 var eggCount = 0;
+var cowLevelHasBeenActivated = false;
 
 var score = new PIXI.Text('Score: ', {
     fontSize: 30,
@@ -28,6 +29,7 @@ var score = new PIXI.Text('Score: ', {
 
 function gameInit() {
     if(gameBuild) {
+        BG_RATE = 50;
         obstacleCount = 0;
         countDownIndex = 0;
         foodCount = 0;
@@ -62,10 +64,6 @@ function displayNo() {
     curNum.y = 50;
     fadeOut(curNum, displayNoFadeDuration);
     ++countDownIndex;
-}
-
-function leaderBoardMenu() {
-    console.log('oh boy game over n00b');
 }
 
 function makeFood() {
@@ -104,6 +102,8 @@ function isInBasket(basket, food) {
     var basketLeftX = basket.x - X_OFFSET;
     var basketRightX = basket.x  + BASKET_WIDTH - X_OFFSET;
     var basketTopY = basket.y - Y_OFFSET;
+
+    // TODO: change naming conventions - Kerry
     var basketBotY = basket.y + BASKET_HEIGHT - Y_OFFSET;
 
     var upperLeftBasket = {x:basketLeftX, y:basketTopY};
@@ -156,7 +156,7 @@ function isBounce(basket, food, catcherVelocityX) {
             isBounce =  (catcherVelocityX > 0) && (foodRightX > midLeftBasket.x);
         }
         else if(foodIsRightOfBasket) {
-            var midRightBasket = {x:basketRightX, y:basketTopY};
+            var midRightBasket = {x:basketMidRightX, y:basketMidRightY};
             isBounce = (catcherVelocityX < 0) && (foodLeftX < midRightBasket.x);
         }
     } else if(foodJustBelowBasket) {
@@ -174,6 +174,7 @@ function isBounce(basket, food, catcherVelocityX) {
 function bounceOffBottom(basket, food) {
 
 }
+
 function foodCatchCollision() {
     var currtime = new Date().getTime();
     var deltaTime = parseFloat((currtime - lastTime)/1000);
@@ -200,7 +201,7 @@ function foodCatchCollision() {
                     curObstacle.destroy();
                     --obstacleCount;
                 }else {
-                    curObstacle.x -= backgroundScrollSpeed.grass;
+                    curObstacle.x -= BG_RATE * deltaTime + backgroundScrollSpeed.grass;
                     obstacleCollision(catcher, curObstacle);
                 }
             }
@@ -228,7 +229,7 @@ function foodCatchCollision() {
                     modScore(fallingItem);
                     isCombo();
                     fallingItem.destroy();
-                    coin.play('coin');
+                    gameSFX.play('point');
                     scoreCount += 10;
                     stage.removeChild(score);
                     fallingItem.hasBounced = true;
@@ -240,6 +241,11 @@ function foodCatchCollision() {
 
             }
         }
+
+        if (currentElapsedGameTime % 2 === 0) {
+            speedUpGame(deltaTime);
+        }
+
         if (currentElapsedGameTime % 5 === 0) {
             clearCaughtFood();
         }
@@ -282,6 +288,7 @@ function bounce() {
 function obstacleCollision(catcher, obstacle) {
     if (isCollideObstacle(catcher, obstacle)) {
         endGame();
+        gameSFX.play('gameOver');
         state = gameOver;
         gameOverBuild = true;
         catcher.alpha = 0;
@@ -393,10 +400,17 @@ function isCombo() {
     for (i = 0; i < caughtFood.length; i++) {
         if (caughtFood[i] === "egg") {
             eggCount++;
+        } else {
+            eggCount = 0;
         }
         console.log("egg count: " + eggCount);
-        if (eggCount >= 3) {
+        if (eggCount >= 1) {
             eggCount = 0;
+            if (!cowLevelHasBeenActivated) {
+                cowLevelBuild = true;
+                state = cowLevel;
+                cowLevelHasBeenActivated = !cowLevelHasBeenActivated;
+            }
             return true;
         }
     }
