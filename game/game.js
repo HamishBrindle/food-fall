@@ -398,7 +398,7 @@ function modScore(food) {
  */
 function decreaseScore() {
     if (scoreCount > 0) {
-        scoreCount -= 5;
+        scoreCount -= 1;
     }
     if (scoreCount < 0) {
         scoreCount = 0;
