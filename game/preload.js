@@ -30,6 +30,8 @@ scoresRef.once("value")
 
 /* MENU---------------------------------------------------------------------------------------------------------------*/
 
+/* TODO: Menu button listeners
+
 // Listeners for exiting the leader-board
 document.getElementById("btn-leader-board-exit").addEventListener("click", btnExitLeaderBoard);
 document.getElementById("btn-leader-board-exit").addEventListener("touchend", btnExitLeaderBoard);
@@ -47,6 +49,8 @@ function btnLeaderBoard(){
     document.getElementById("leader-board").style.display = "block";
     document.getElementById("btn-main-menu-leader-board").style.display = "none";
 }
+
+*/
 
 /* GAME --------------------------------------------------------------------------------------------------------------*/
 
@@ -331,7 +335,9 @@ function play() {
 function gameMenuDisplay() {
     if (menuBuild) {
 
+        /* TODO: Display leader-board button on load
         document.getElementById("btn-main-menu-leader-board").style.display = "block";
+        */
 
         // Add logo to menu
         logo = new Sprite(resources['assets/img/web/site-logo-white-long-shadow.png'].texture);
@@ -352,7 +358,7 @@ function gameMenuDisplay() {
             menuSound.play('menu')
         });
 
-        /* Add instructions to menu
+        /* TODO: Removed shitty instructions
         instructions = new Sprite(resources['assets/img/sprites/instructions.png'].texture);
         instructions.width /= 1.25;
         instructions.height /= 1.25;
@@ -363,7 +369,9 @@ function gameMenuDisplay() {
         // Add button and logo
         stage.addChild(playButton);
         stage.addChild(logo);
+        /* TODO: Not adding shitty instructions to stage
         //stage.addChild(instructions);
+        */
 
         // Add a fact to the stage
         initFacts();
@@ -422,9 +430,12 @@ function playGameFromMenu() {
     stage.removeChild(logo);
     stage.removeChild(randFact);
     stage.removeChild(textbox);
+    /* TODO: Not removing shitty instructions because it doesnt exist yet
     //stage.removeChild(instructions);
+    /* TODO: Hide leaderboard button & hide instructions
     document.getElementById("btn-main-menu-leader-board").style.display = "none";
     document.getElementById("instructions").style.display = "none";
+    */
 }
 
 function menu() {
@@ -505,7 +516,10 @@ function initFacts() {
 
     stage.addChild(textbox);
     stage.addChild(randFact);
+
+    /* TODO: Add instructions to menu upon load
     document.getElementById("instructions").style.display = "inline-block";
+    */
 
 }
 
