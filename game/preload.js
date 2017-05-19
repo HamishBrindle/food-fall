@@ -55,8 +55,11 @@ btnMainMenuLeaderBoard.addEventListener("click", btnLeaderBoard);
 btnMainMenuLeaderBoard.addEventListener("touchend", btnLeaderBoard);
 
 function btnLeaderBoard(){
+    document.getElementById("table-body").innerHTML = "";
+    dumpScores();
     leaderBoard.style.display = "block";
     btnMainMenuLeaderBoard.style.display = "none";
+
 }
 
 // Sound on and off buttons
@@ -747,4 +750,42 @@ function cowLevelEnd() {
 
 function speedUpGame(deltaTime) {
     BG_RATE += deltaTime * 20;
+}
+
+var scoreRef = firebase.database().ref("users").orderByKey();
+var scores = [];
+function dumpScores() {
+    scoreRef.once("value")
+        .then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+                var key = childSnapshot.key;
+                var childName = childSnapshot.child("userName").val();
+                var childScore = childSnapshot.child("score").val();
+                scores.push({childName, childScore});
+                //console.log("Username: " + childName + " Score: " + childScore);
+            });
+        });
+    scores.sort(sortFunction);
+
+    function sortFunction(a, b) {
+        if (a.childScore === b.childScore) {
+            return 0;
+        } else {
+            return (a.childScore > b.childScore) ? -1 : 1;
+        }
+    }
+
+    var myTable = "";
+
+    console.log(scores[0].childName);
+    for (var i = 0; i < 8; i++) {
+        myTable += "<tr><td>" + (i + 1) + "</td>"
+        myTable += "<td>" + scores[i].childName + "</td>";
+        myTable += "<td>" + scores[i].childScore + "</td></tr>";
+        console.log(scores[i].childName);
+    }
+    myTable += "";
+
+    document.getElementById('table-body').innerHTML = myTable;
+    scores = [];
 }
