@@ -327,7 +327,6 @@ function endGame() {
     menuBuild = true;
     gameBuild = true;
     addHighScore(scoreCount);
-    score.alpha = 0;
     destroyOldObjects();
 }
 /**
