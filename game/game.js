@@ -26,6 +26,17 @@ var score = new PIXI.Text(scoreCount, {
     fill: 'white'
 });
 
+/* Scorebox for displaying
+var scoreBox = new PIXI.Sprite(resources['assets/img/sprites/text-box.png'].texture);
+
+scoreBox.x = GAME_WIDTH / 2;
+scoreBox.y = GAME_HEIGHT / 2;
+scoreBox.anchor.x = 0.5;
+scoreBox.width = 100;
+scoreBox.height = 100;
+
+stage.addChild(scoreBox);
+*/
 
 function gameInit() {
     if(gameBuild) {
@@ -306,11 +317,18 @@ function isCollideObstacle(basket, obstacle) {
 }
 
 function addScore() {
-    score.x = GAME_WIDTH - 100;
-    score.y = GAME_HEIGHT - 50;
+
+    score.x = GAME_WIDTH - (score.width);
+    score.y = GAME_HEIGHT - (score.height + 50);
     score.anchor.x = 0.5;
     score.text = scoreCount;
+
+
     stage.addChild(score);
+
+    console.log("ScoreBox-x: " + scoreBox.x);
+    console.log("ScoreBox-y: " + scoreBox.y);
+
 }
 
 function addHighScore(scoreCount){

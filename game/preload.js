@@ -46,7 +46,6 @@ var backgroundScrollSpeed = {
     trees: 0.50,
     grass: 1.5,
     obstacle: 1.5
-
 };
 
 // Overall background rate
@@ -61,6 +60,7 @@ var sky,
     trees,
     grass;
 
+// Time comparison (currentTime - lastTime)
 var lastTime;
 
 //Aliases.
@@ -130,7 +130,7 @@ var menuButton;
 var retryButton;
 var gameOverBanner;
 
-// Cow level
+// Secret cow level
 var renderTexture;
 var renderTexture2;
 var currentTexture;
@@ -458,8 +458,6 @@ function onOutOfBounds() {
  * Adds a random zero food waste tip to the screen.
  */
 function initFacts() {
-
-
     var padding = 10;
     var txtStyle = new PIXI.TextStyle({
         fontFamily: 'LemonMilk',
@@ -504,7 +502,8 @@ function gameOverDisplay() {
         retryButton.interactive = true;
         retryButton.width /= 2;
         retryButton.height /= 2;
-        retryButton.x = GAME_WIDTH - (retryButton.width * 2);
+        retryButton.anchor.x = 0.5;
+        retryButton.x = GAME_WIDTH - (retryButton.width);
         retryButton.y = GAME_HEIGHT - (retryButton.height * 2);
 
         // Add logo to menu
@@ -512,6 +511,7 @@ function gameOverDisplay() {
         menuButton.interactive = true;
         menuButton.width /= 2;
         menuButton.height /= 2;
+        menuButton.anchor.x = 0.5;
         menuButton.x = (GAME_WIDTH / 3) - (menuButton.width / 2);
         menuButton.y = GAME_HEIGHT - (menuButton.height * 2);
 
@@ -534,6 +534,14 @@ function gameOverDisplay() {
             stage.removeChild(menuButton);
             stage.removeChild(score);
         });
+        retryButton.mouseover = function(mouseData) {
+            this.width *= 1.25;
+            this.height *= 1.25;
+        };
+        retryButton.mouseout = function(mouseData) {
+            this.width /= 1.25;
+            this.height /= 1.25;
+        };
 
         // Add listener for play button
         menuButton.on('pointerdown', (event) => {
@@ -545,6 +553,14 @@ function gameOverDisplay() {
             stage.removeChild(menuButton);
             stage.removeChild(score);
         });
+        menuButton.mouseover = function(mouseData) {
+            this.width *= 1.25;
+            this.height *= 1.25;
+        };
+        menuButton.mouseout = function(mouseData) {
+            this.width /= 1.25;
+            this.height /= 1.25;
+        };
 
         // Set game state indicators (e.i. has menu been built / has catcher been built)
         menuBuild = false;
