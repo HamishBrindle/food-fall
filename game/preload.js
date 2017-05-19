@@ -37,6 +37,8 @@ var btnMainMenuLeaderBoard = document.getElementById("btn-main-menu-leader-board
 var btnMainMenuVolumeOn = document.getElementById("btn-main-menu-volume-on");
 var btnMainMenuVolumeOff = document.getElementById("btn-main-menu-volume-off");
 var leaderBoard = document.getElementById("leader-board");
+var instructions = document.getElementById("instructions");
+var randomFactBox = document.getElementById("random-fact");
 
 // Listeners for exiting the leader-board
 btnLeaderBoardExit.addEventListener("click", btnExitLeaderBoard);
@@ -156,7 +158,6 @@ var gameBuild = true;
 var playButton;
 var menuBuild;
 var logo;
-var instructions;
 var catcherBuild;
 
 // Sound options
@@ -239,7 +240,6 @@ loader
         "assets/img/tiling-sprites/grass.png",
         "assets/img/sprites/sound-on.png",
         "assets/img/sprites/sound-off.png",
-        "assets/img/sprites/instructions.png",
         "assets/img/sprites/game-over.png",
         "assets/img/sprites/retry.png",
         "assets/img/sprites/menu.png",
@@ -355,7 +355,6 @@ function play() {
 function gameMenuDisplay() {
     if (menuBuild) {
 
-        /* TODO: Display leader-board button on load */
         btnMainMenuLeaderBoard.style.display = "block";
 
         // Add logo to menu
@@ -377,21 +376,10 @@ function gameMenuDisplay() {
             menuSound.play('menu')
         });
 
-        /* TODO: Removed shitty instructions
-        instructions = new Sprite(resources['assets/img/sprites/instructions.png'].texture);
-        instructions.width /= 1.25;
-        instructions.height /= 1.25;
-        instructions.x = instructions.width / 2;
-        instructions.y = GAME_HEIGHT - (instructions.height * 1.5);
-        */
-
         // Add button and logo
         stage.addChild(playButton);
         stage.addChild(logo);
         btnMainMenuVolumeOn.style.display = "inline-block";
-        /* TODO: Not adding shitty instructions to stage
-        //stage.addChild(instructions);
-        */
 
         // Add a fact to the stage
         initFacts();
@@ -449,14 +437,12 @@ function playGameFromMenu() {
     state = play;
     stage.removeChild(playButton);
     stage.removeChild(logo);
-    stage.removeChild(randFact);
-    stage.removeChild(textbox);
-    /* TODO: Not removing shitty instructions because it doesnt exist yet*/
-    //stage.removeChild(instructions);
-
+    btnMainMenuVolumeOn.style.display = "none";
+    btnMainMenuVolumeOff.style.display = "none";
     btnMainMenuLeaderBoard.style.display = "none";
-    document.getElementById("instructions").style.display = "none";
-
+    leaderBoard.style.display = "none";
+    instructions.style.display = "none";
+    randomFactBox.style.display = "none";
 }
 
 function menu() {
@@ -516,11 +502,10 @@ function onOutOfBounds() {
 function initFacts() {
 
     var factIndex = getRandomInt(0, 13);
-
-    document.getElementById("instructions").style.display = "inline-block";
-    document.getElementById("random-fact")
+    instructions.style.display = "inline-block";
+    randomFactBox
         .innerHTML = '<h2>Did You Know</h2><hr /><p>' + foodFacts[factIndex] + '</p>';
-
+    randomFactBox.style.display = "inline-block";
 }
 
 function gameOver() {
