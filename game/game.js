@@ -227,7 +227,7 @@ function foodCatchCollision() {
                     modScore(fallingItem);
                     isCombo();
                     fallingItem.destroy();
-                    coin.play('coin');
+                    gameSFX.play('point');
                     scoreCount += 10;
                     stage.removeChild(score);
                     fallingItem.hasBounced = true;
@@ -284,7 +284,7 @@ function bounce() {
 }
 
 function obstacleCollision(catcher, obstacle) {
-    if (isCollideWholeBasket(catcher, obstacle)) {
+    if (isCollideObstacle(catcher, obstacle)) {
         endGame();
         gameSFX.play('gameOver');
         state = gameOver;
