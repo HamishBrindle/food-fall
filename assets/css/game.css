@@ -23,6 +23,7 @@ button {
     height: 500px;
     z-index: 1;
     pointer-events: none;
+    background: transparent;
 }
 
 .overlay-title {
