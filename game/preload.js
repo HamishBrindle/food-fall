@@ -427,7 +427,6 @@ function playGameFromMenu() {
     document.getElementById("instructions").style.display = "none";
 }
 
-
 function menu() {
     animateBackground();
     gameMenuDisplay();

@@ -1,5 +1,5 @@
 body {
-    overflow-y:scroll;
+    overflow-y: hidden;
 }
 
 canvas {
@@ -69,7 +69,7 @@ button {
 /* Main Menu ---------------------------------------------------------------------------------------------------------*/
 
 #btn-main-menu-leader-board {
-    display: block;
+    display: none;
     margin: 0 auto 10px auto;
 }
 

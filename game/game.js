@@ -420,7 +420,7 @@ function isCombo() {
             eggCount = 0;
         }
         console.log("egg count: " + eggCount);
-        if (eggCount >= 1) {
+        if (eggCount >= 3) {
             eggCount = 0;
             if (!cowLevelHasBeenActivated) {
                 cowLevelBuild = true;
