@@ -38,13 +38,11 @@ document.getElementById("btn-leader-board-exit").addEventListener("touchend", bt
 
 function btnExitLeaderBoard(){
     document.getElementById("leader-board").style.display = "none";
-    /*
     document.getElementById("btn-main-menu-leader-board").style.display = "block";
-    */
 }
 
 // Listeners for entering the leader-board
-/*
+
 document.getElementById("btn-main-menu-leader-board").addEventListener("click", btnLeaderBoard);
 document.getElementById("btn-main-menu-leader-board").addEventListener("touchend", btnLeaderBoard);
 
@@ -52,8 +50,6 @@ function btnLeaderBoard(){
     document.getElementById("leader-board").style.display = "block";
     document.getElementById("btn-main-menu-leader-board").style.display = "none";
 }
-
-*/
 
 /* GAME --------------------------------------------------------------------------------------------------------------*/
 
@@ -338,9 +334,8 @@ function play() {
 function gameMenuDisplay() {
     if (menuBuild) {
 
-        /* TODO: Display leader-board button on load
+        /* TODO: Display leader-board button on load */
         document.getElementById("btn-main-menu-leader-board").style.display = "block";
-        */
 
         // Add logo to menu
         logo = new Sprite(resources['assets/img/web/site-logo-white-long-shadow.png'].texture);
@@ -433,14 +428,11 @@ function playGameFromMenu() {
     stage.removeChild(logo);
     stage.removeChild(randFact);
     stage.removeChild(textbox);
-    /* TODO: Not removing shitty instructions because it doesnt exist yet
+    /* TODO: Not removing shitty instructions because it doesnt exist yet*/
     //stage.removeChild(instructions);
-    */
 
-    /*
     document.getElementById("btn-main-menu-leader-board").style.display = "none";
     document.getElementById("instructions").style.display = "none";
-    */
 
 }
 
@@ -523,10 +515,8 @@ function initFacts() {
     stage.addChild(textbox);
     stage.addChild(randFact);
 
-    /* TODO: Add instructions to menu upon load
+    /* TODO: Add instructions to menu upon load */
     document.getElementById("instructions").style.display = "inline-block";
-    */
-
 
 }
 

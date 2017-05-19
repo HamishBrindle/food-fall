@@ -1,5 +1,5 @@
 body {
-    overflow-y: hidden;
+    overflow-y: scroll;
 }
 
 canvas {
@@ -17,13 +17,13 @@ button {
 #overlay {
     position: absolute;
     display: table-cell;
+    background: transparent;
     top: 0;
     left: 0;
     width: 800px;
     height: 500px;
     z-index: 1;
     pointer-events: none;
-    background: transparent;
 }
 
 .overlay-title {
@@ -36,12 +36,12 @@ button {
 
 #leader-board {
     position: relative;
-    display: block;
+    display: none;
     width: 60%;
     height: 90%;
     margin: auto;
     padding: 0;
-    background-color: #475893;
+    background-color: #fff;
     border-radius: 6px;
     box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.50);
     z-index: 2;
