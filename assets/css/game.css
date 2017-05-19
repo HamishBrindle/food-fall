@@ -92,6 +92,38 @@ button {
     font-size: medium;
 }
 
+#instructions hr {
+    width: 80%;
+    margin: auto;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+#random-fact {
+    position: absolute;
+    display: inline-block;
+    top: 12em;
+    right: 2em;
+    background-color: rgba(0,0,0,0.50);
+    width: 20em;
+    height: auto;
+    color: #fff;
+    border-radius: 5px;
+}
+
+#random-fact p {
+    padding: 5px;
+    font-family: 'LemonMilk', "Arial Black", serif;
+    font-size: medium;
+}
+
+#random-fact hr {
+    width: 80%;
+    margin: auto;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
 /* Overlay Mobile ----------------------------------------------------------------------------------------------------*/
 
 @media only screen and (max-width: 320px) {
