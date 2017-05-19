@@ -394,6 +394,7 @@ function playGameFromMenu() {
     stage.removeChild(playButton);
     stage.removeChild(logo);
     stage.removeChild(randFact);
+    stage.removeChild(textbox);
     stage.removeChild(instructions);
 }
 
@@ -511,7 +512,7 @@ function gameOverDisplay() {
         // Change score position
         score.x = (GAME_WIDTH / 2);
         score.y = GAME_HEIGHT / 2;
-        score.text = "FINAL SCORE: " + scoreCount;
+        score.text = scoreCount;
 
             // Add button and logo
         stage.addChild(retryButton);
@@ -602,6 +603,7 @@ function cowLevel() {
             item.interactive = true;
             item.on('pointerdown', (event) => {
                 scoreCount += 100;
+                gameSFX.play('point');
             });
             item.x = Math.random() * 400 - 200;
             item.y = Math.random() * 400 - 200;
@@ -690,5 +692,5 @@ function cowLevelEnd() {
 }
 
 function speedUpGame(deltaTime) {
-    BG_RATE += deltaTime * 10;
+    BG_RATE += deltaTime * 20;
 }
