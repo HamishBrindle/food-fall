@@ -30,7 +30,7 @@ scoresRef.once("value")
 
 /* MENU---------------------------------------------------------------------------------------------------------------*/
 
-/* TODO: Menu button listeners
+/* TODO: Menu button listeners */
 
 // Listeners for exiting the leader-board
 document.getElementById("btn-leader-board-exit").addEventListener("click", btnExitLeaderBoard);
@@ -50,7 +50,7 @@ function btnLeaderBoard(){
     document.getElementById("btn-main-menu-leader-board").style.display = "none";
 }
 
-*/
+
 
 /* GAME --------------------------------------------------------------------------------------------------------------*/
 
@@ -432,10 +432,11 @@ function playGameFromMenu() {
     stage.removeChild(textbox);
     /* TODO: Not removing shitty instructions because it doesnt exist yet
     //stage.removeChild(instructions);
-    /* TODO: Hide leaderboard button & hide instructions
+    */
+
     document.getElementById("btn-main-menu-leader-board").style.display = "none";
     document.getElementById("instructions").style.display = "none";
-    */
+
 }
 
 function menu() {
@@ -517,9 +518,9 @@ function initFacts() {
     stage.addChild(textbox);
     stage.addChild(randFact);
 
-    /* TODO: Add instructions to menu upon load
+    /* TODO: Add instructions to menu upon load */
     document.getElementById("instructions").style.display = "inline-block";
-    */
+
 
 }
 
