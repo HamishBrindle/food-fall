@@ -221,7 +221,7 @@ function foodCatchCollision() {
                     fallingItem.destroy();
                     --foodCount;
                 } else if (isInBasket(catcher, fallingItem)) {
-
+                    console.log("CATCHING FOOD");
                     let type = getFoodType(fallingItem);
                     childrenToDelete.push(fallingItem);
                     --foodCount;
