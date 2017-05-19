@@ -470,10 +470,16 @@ function gameOverDisplay() {
         menuButton.x = (GAME_WIDTH / 3) - (menuButton.width / 2);
         menuButton.y = GAME_HEIGHT - (menuButton.height * 2);
 
-        // Add button and logo
+        // Change score position
+        score.x = (GAME_WIDTH / 2);
+        score.y = GAME_HEIGHT / 2;
+        score.text = "FINAL SCORE: " + scoreCount;
+
+            // Add button and logo
         stage.addChild(retryButton);
         stage.addChild(gameOverBanner);
         stage.addChild(menuButton);
+        stage.addChild(score);
 
         // Add listener for play button
         retryButton.on('pointerdown', (event) => {
@@ -481,6 +487,7 @@ function gameOverDisplay() {
             stage.removeChild(retryButton);
             stage.removeChild(gameOverBanner);
             stage.removeChild(menuButton);
+            stage.removeChild(score);
         });
 
         // Add listener for play button
@@ -491,6 +498,7 @@ function gameOverDisplay() {
             stage.removeChild(retryButton);
             stage.removeChild(gameOverBanner);
             stage.removeChild(menuButton);
+            stage.removeChild(score);
         });
 
         // Set game state indicators (e.i. has menu been built / has catcher been built)
