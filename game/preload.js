@@ -28,6 +28,59 @@ scoresRef.once("value")
         });
     });
 
+/* MENU---------------------------------------------------------------------------------------------------------------*/
+
+/* TODO: Menu button listeners */
+
+var btnLeaderBoardExit = document.getElementById("btn-leader-board-exit");
+var btnMainMenuLeaderBoard = document.getElementById("btn-main-menu-leader-board");
+var btnMainMenuVolumeOn = document.getElementById("btn-main-menu-volume-on");
+var btnMainMenuVolumeOff = document.getElementById("btn-main-menu-volume-off");
+var leaderBoard = document.getElementById("leader-board");
+var instructions = document.getElementById("instructions");
+var randomFactBox = document.getElementById("random-fact");
+
+// Listeners for exiting the leader-board
+btnLeaderBoardExit.addEventListener("click", btnExitLeaderBoard);
+btnLeaderBoardExit.addEventListener("touchend", btnExitLeaderBoard);
+
+function btnExitLeaderBoard(){
+    leaderBoard.style.display = "none";
+    btnMainMenuLeaderBoard.style.display = "block";
+}
+
+// Listeners for entering the leader-board
+
+btnMainMenuLeaderBoard.addEventListener("click", btnLeaderBoard);
+btnMainMenuLeaderBoard.addEventListener("touchend", btnLeaderBoard);
+
+function btnLeaderBoard(){
+    document.getElementById("table-body").innerHTML = "";
+    dumpScores();
+    leaderBoard.style.display = "block";
+    btnMainMenuLeaderBoard.style.display = "none";
+
+}
+
+// Sound on and off buttons
+btnMainMenuVolumeOn.addEventListener("click", btnVolumeOff);
+btnMainMenuVolumeOn.addEventListener("touchend", btnVolumeOff);
+
+function btnVolumeOn() {
+    unmuteSound();
+    btnMainMenuVolumeOn.style.display = "inline-block";
+    btnMainMenuVolumeOff.style.display = "none";
+}
+
+btnMainMenuVolumeOff.addEventListener("click", btnVolumeOn);
+btnMainMenuVolumeOff.addEventListener("touchend", btnVolumeOn);
+
+function btnVolumeOff() {
+    muteSound();
+    btnMainMenuVolumeOn.style.display = "none";
+    btnMainMenuVolumeOff.style.display = "inline-block";
+}
+
 /* GAME --------------------------------------------------------------------------------------------------------------*/
 
 // Stage-size parameters
@@ -108,7 +161,6 @@ var gameBuild = true;
 var playButton;
 var menuBuild;
 var logo;
-var instructions;
 var catcherBuild;
 
 // Sound options
@@ -119,10 +171,6 @@ var soundOptions = {
 };
 var soundButtonOn;
 var soundButtonOff;
-
-// Random facts
-var randFact;
-var textbox;
 
 // Game-over menu
 var gameOverBuild;
@@ -195,7 +243,6 @@ loader
         "assets/img/tiling-sprites/grass.png",
         "assets/img/sprites/sound-on.png",
         "assets/img/sprites/sound-off.png",
-        "assets/img/sprites/instructions.png",
         "assets/img/sprites/game-over.png",
         "assets/img/sprites/retry.png",
         "assets/img/sprites/menu.png",
@@ -311,6 +358,8 @@ function play() {
 function gameMenuDisplay() {
     if (menuBuild) {
 
+        btnMainMenuLeaderBoard.style.display = "block";
+
         // Add logo to menu
         logo = new Sprite(resources['assets/img/web/site-logo-white-long-shadow.png'].texture);
         logo.x = (GAME_WIDTH / 2) - (logo.width / 2);
@@ -330,17 +379,10 @@ function gameMenuDisplay() {
             menuSound.play('menu')
         });
 
-        // Add logo to menu
-        instructions = new Sprite(resources['assets/img/sprites/instructions.png'].texture);
-        instructions.width /= 1.25;
-        instructions.height /= 1.25;
-        instructions.x = instructions.width / 2;
-        instructions.y = GAME_HEIGHT - (instructions.height * 1.5);
-
         // Add button and logo
         stage.addChild(playButton);
         stage.addChild(logo);
-        stage.addChild(instructions);
+        btnMainMenuVolumeOn.style.display = "inline-block";
 
         // Add a fact to the stage
         initFacts();
@@ -370,6 +412,7 @@ function soundButtonDisplay() {
                 stage.removeChild(soundButtonOn);
             });
             stage.addChild(soundButtonOn);
+            btnMainMenuVolumeOn.style.display = "none";
         }
     } else if (!soundOptions.soundButtonOnDisplayed && soundOptions.soundButtonOffDisplayed) {
         if (!soundOptions.soundEnabled) {
@@ -397,11 +440,13 @@ function playGameFromMenu() {
     state = play;
     stage.removeChild(playButton);
     stage.removeChild(logo);
-    stage.removeChild(randFact);
-    stage.removeChild(textbox);
-    stage.removeChild(instructions);
+    btnMainMenuVolumeOn.style.display = "none";
+    btnMainMenuVolumeOff.style.display = "none";
+    btnMainMenuLeaderBoard.style.display = "none";
+    leaderBoard.style.display = "none";
+    instructions.style.display = "none";
+    randomFactBox.style.display = "none";
 }
-
 
 function menu() {
     animateBackground();
@@ -458,30 +503,12 @@ function onOutOfBounds() {
  * Adds a random zero food waste tip to the screen.
  */
 function initFacts() {
-    var padding = 10;
-    var txtStyle = new PIXI.TextStyle({
-        fontFamily: 'LemonMilk',
-        fontSize: 24,
-        fill: 'white',
-        wordWrap: true,
-        wordWrapWidth: 250,
-    });
+
     var factIndex = getRandomInt(0, 13);
-    randFact = new PIXI.Text(foodFacts[factIndex], txtStyle);
-    randFact.x = GAME_WIDTH - 150;
-    randFact.y = instructions.y + padding;
-    randFact.anchor.x = 0.5;
-
-    textbox = new Sprite(resources["assets/img/sprites/text-box.png"].texture);
-    textbox.x = GAME_WIDTH - (140 + padding);
-    textbox.y = instructions.y;
-    textbox.width = randFact.width + (4 * padding);
-    textbox.height = randFact.height + (2 * padding);
-    textbox.anchor.x = 0.5;
-
-    stage.addChild(textbox);
-    stage.addChild(randFact);
-
+    instructions.style.display = "inline-block";
+    randomFactBox
+        .innerHTML = '<h2>Did You Know</h2><hr /><p>' + foodFacts[factIndex] + '</p>';
+    randomFactBox.style.display = "inline-block";
 }
 
 function gameOver() {
@@ -533,12 +560,12 @@ function gameOverDisplay() {
         stage.addChild(gameOverBanner);
         stage.addChild(menuButton);
         stage.addChild(score);
-        stage.addChild(leaderButton);
+        //stage.addChild(leaderButton);
 
         // Add leaderboard listener
-        leaderButton.on('pointerdown', (event) => {
-            dumpScores();
-        });
+        //leaderButton.on('pointerdown', (event) => {
+         //   dumpScores();
+        //});
 
 
         // Add listener for play button
@@ -764,16 +791,17 @@ function dumpScores() {
     }
 
 
-    var myTable = "<table class='table' id='leader-board-table'><thead><tr>";
-    myTable += "<th>User Name</th><th>Score</th></tr>";
-    myTable += "</thead><tbody>";
+    var myTable = "";
 
-    for (var i = 0; i < 10; i++) {
-        myTable += "<tr><td>" + scores[i].childName + "</td>";
+    console.log(scores[0].childName);
+    for (var i = 0; i < 8; i++) {
+        myTable += "<tr><td>" + (i + 1) + "</td>"
+        myTable += "<td>" + scores[i].childName + "</td>";
         myTable += "<td>" + scores[i].childScore + "</td></tr>";
+        console.log(scores[i].childName);
     }
-    myTable += "</tbody></table>";
+    myTable += "";
 
-    document.getElementById('leaderboard').innerHTML = myTable;
-
+    document.getElementById('table-body').innerHTML = myTable;
+    scores = [];
 }
