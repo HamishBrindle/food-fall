@@ -95,6 +95,10 @@ renderer.view.style.left = "0px"; // Centers window.
 document.getElementById("game-window").appendChild(renderer.view);
 
 //Globals -------------------------------------------------------------------------------Globals
+var font = new Font();
+font.fontFamily = "LemonMilk";
+font.src = font.fontFamily;
+
 var catcher;
 var tk;
 var scale = scaleToWindow(renderer.view);
@@ -454,9 +458,11 @@ function onOutOfBounds() {
  * Adds a random zero food waste tip to the screen.
  */
 function initFacts() {
+
+
     var padding = 10;
     var txtStyle = new PIXI.TextStyle({
-        fontFamily: 'Arial',
+        fontFamily: 'LemonMilk',
         fontSize: 24,
         fill: 'white',
         wordWrap: true,
@@ -587,6 +593,8 @@ function cowLevel() {
 
         destroyOldObjects();
 
+        catcher.alpha = 0;
+
         outputSprite.x = 400;
         outputSprite.y = 300;
         outputSprite.anchor.set(0.5);
@@ -639,6 +647,8 @@ function cowLevel() {
 
         stage.addChild(secretCowLevelBanner);
 
+        portalSFX.play('portal');
+
         cowLevelBuild = false;
 
         cowLevelElapsedTime = 0;
@@ -672,6 +682,7 @@ function cowLevel() {
         for (let item in spinningItems) {
             stuffContainer.removeChild(item);
         }
+        portalSFX.volume(0);
         stage.removeChild(stuffContainer);
         portal.destroy();
         stage.removeChild(secretCowLevelBanner);
@@ -683,6 +694,9 @@ function cowLevel() {
 }
 
 function cowLevelEnd() {
+        catcher.alpha = 1;
+        catcher.x = (GAME_WIDTH / 2) - (catcher.width / 2);
+        catcher.y = (GAME_HEIGHT / 2) - (catcher.height / 2);
         obstacleCount = 0;
         countDownIndex = 0;
         foodCount = 0;
