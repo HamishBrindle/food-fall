@@ -401,7 +401,7 @@ function modScore(food) {
  */
 function decreaseScore() {
     if (scoreCount > 0) {
-        scoreCount -= 1;
+        scoreCount -= 5;
     }
     if (scoreCount < 0) {
         scoreCount = 0;
@@ -420,7 +420,7 @@ function isCombo() {
             eggCount = 0;
         }
         console.log("egg count: " + eggCount);
-        if (eggCount >= 3) {
+        if (eggCount >= 1) {
             eggCount = 0;
             if (!cowLevelHasBeenActivated) {
                 cowLevelBuild = true;

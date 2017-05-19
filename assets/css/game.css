@@ -1,120 +1,18 @@
+
 body {
-    overflow-y: hidden;
-}
-
-canvas {
-    z-index: 0;
-}
-
-h1, h2, h3, button {
-    font-family: 'LemonMilk', "Arial Black", serif;
-}
-
-button {
-    pointer-events: auto;
+    overflow-y:scroll;
 }
 
 #overlay {
-    position: absolute;
-    display: table-cell;
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
     top: 0;
     left: 0;
-    width: 800px;
-    height: 500px;
-    z-index: 1;
-    pointer-events: none;
-}
-
-.overlay-title {
-    font-size: 3.5em;
-    padding-top: 5%;
-    color: #000;
-}
-
-/* Leader-board ------------------------------------------------------------------------------------------------------*/
-
-#leader-board {
-    position: relative;
-    display: none;
-    width: 90%;
-    height: 90%;
-    margin: auto;
-    padding: 0;
-    background-color: #ffffff;
-    border-radius: 6px;
-    box-shadow: 10px 10px 5px #0F888888;
-    z-index: 2;
-    vertical-align: middle;
-}
-
-#btn-leader-board-exit {
-    font-family: 'LemonMilk', "Arial Black", serif;
-    font-size: 1em;
-}
-
-#table-leader-board {
-    width: 60%;
-    margin: 10px auto 10px auto;
-    padding-bottom: 10px;
-    font-family: 'LemonMilk', "Arial Black", serif;
-    text-align: left;
-}
-
-#table-leader-board tbody {
-    font-family: "Arial Black", serif;
-    text-align: left;
-    font-size: small;
-}
-
-/* Main Menu ---------------------------------------------------------------------------------------------------------*/
-
-#btn-main-menu-leader-board {
-    display: none;
-    margin: 0 auto 10px auto;
-}
-
-#instructions {
-    position: absolute;
-    display: none;
-    top: 12em;
-    left: 2em;
-    background-color: rgba(0,0,0,0.50);
-    width: 20em;
-    height: auto;
-    color: #fff;
-    border-radius: 5px;
-}
-
-#instructions li {
-    padding: 5px;
-    font-family: 'LemonMilk', "Arial Black", serif;
-    font-size: medium;
-}
-
-/* Overlay Mobile ----------------------------------------------------------------------------------------------------*/
-
-@media only screen and (max-width: 320px) {
-    .overlay-title {
-        font-size: 2em;
-    }
-}
-
-@media only screen and (max-width: 430px) {
-    .overlay-title {
-        font-size: 2.5em;
-    }
-}
-
-@media only screen and (max-width: 640px) {
-    .overlay-title {
-        font-size: 3em;
-    }
-}
-
-/* Misc --------------------------------------------------------------------------------------------------------------*/
-
-.bottom-align-text {
-    position: relative;
-    top: 400px;
-    text-align: center;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
 }
