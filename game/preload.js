@@ -434,6 +434,11 @@ function initCatcher() {
         //Callback to bring catcher back to screen if moved off
         catcher.on('pointermove', onOutOfBounds);
         catcher.on('pointerover', onOutOfBounds);
+
+        //Test code
+        catcher.on("pointerdown", function() {
+            dumpScores();
+        });
     }
 }
 
@@ -723,4 +728,16 @@ function cowLevelEnd() {
 
 function speedUpGame(deltaTime) {
     BG_RATE += deltaTime * 20;
+}
+
+var scoreRef = firebase.database().ref("users").orderByKey();
+function dumpScores() {
+    scoreRef.once("value")
+        .then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+                var key = childSnapshot.key;
+                var childData = childSnapshot.child("score");
+                console.log(childData);
+            });
+        });
 }
