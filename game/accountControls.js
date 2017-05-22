@@ -11,114 +11,64 @@ firebase.initializeApp(config);
 var database = firebase.database();
 var auth = firebase.auth();
 
+
 //vars for email and password
-var txtName = document.getElementById('txtName');
-var txtEmail = document.getElementById('txtEmail');
-var txtPassword = document.getElementById('txtPassword');
-var signInButton = document.getElementById('signInButton');
-var backBtn = document.getElementById('backBtn');
+// var idName = document.getElementById('txtName');
+// var idEmail = document.getElementById('txtEmail');
+// var idPassword = document.getElementById('txtPassword');
 
-
-var txtNameSignUp = document.getElementsByClassName('txtNameSignUp');
-var txtEmailSignUp = document.getElementsByClassName('txtEmailSignUp');
-var txtPasswordSignUp = document.getElementsByClassName('txtPasswordSignUp');
-
+var txtNameSignIn = document.getElementsByClassName('txtNameSignIn');
 var txtEmailSignIn = document.getElementsByClassName('txtEmailSignIn');
 var txtPasswordSignIn = document.getElementsByClassName('txtPasswordSignIn');
+
+var txtName = document.getElementById('txtName');
+
+var logoutInfo = document.getElementById('logoutInfo');
+var loginRegisterForm = document.getElementById('loginRegisterForm');
 
 
 const score = 0;
 
-//button pressed to show or hide signup information
-const btnRegister = document.getElementById('btnRegister');
-
 //Authentication for Google sign-in
 var googleProvider = new firebase.auth.GoogleAuthProvider();
-//Authentication for Facebook sign-in
-var facebookProvider = new firebase.auth.FacebookAuthProvider();
 
-var registerBtn = false;
 
-function registerButtonPressed() {
+// var playBtn = document.getElementById('playBtn');
 
-    //pressed to register
-    if (registerBtn === false) {
-        //changes userName to be showing
-        txtName.style.display = 'block';
-        //changes signin button to be hidden
-        signInButton.style.display = 'none';
-        //changes input class to be signUp
-        if (txtEmail.classList.contains('txtEmailSignIn')) {
-            txtEmail.classList.remove('txtEmailSignIn');
-        }
-        txtEmail.classList.add('txtEmailSignUp');
-        if (txtPassword.classList.contains('txtPasswordSignIn')) {
-            txtPassword.classList.remove('txtPasswordSignIn');
-        }
-        //changes name to be required
-        document.querySelector('#txtName').required = true;
-        btnRegister.innerText = 'Register and Play!'
-        txtPassword.classList.add('txtPasswordSignUp');
-        backBtn.style.display = 'block';
-        registerBtn = true;
-    }
-    //pressed to sign in
-    else if (registerBtn === true) {
-        emailAndPasswordSignUp();
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                //changes userName to be hidden
-                txtName.style.display = 'none';
-                //changes signin button to be showing
-                signInButton.style.display = 'block';
-                //changes input class to be signIn
-                if (txtEmail.classList.contains('txtEmailSignUp')) {
-                    txtEmail.classList.remove('txtEmailSignUp');
-                }
-                txtEmail.classList.add('txtEmailSignIn');
-                if (txtPassword.classList.contains('txtPasswordSignUp')) {
-                    txtPassword.classList.remove('txtPasswordSignUp');
-                }
-                txtPassword.classList.add('txtPasswordSignIn');
-                document.querySelector('#txtName').required = false;
-                btnRegister.innerText = 'Register'
-                //pressing register again actually takes in the input
-                //to register the user into the database
-                backBtn.style.display = 'none';
-                registerBtn = false;
-            }
-        });
-    }
-}
 
-function goBack() {
-        //changes userName to be hidden
-        txtName.style.display = 'none';
-        //changes signin button to be showing
-        signInButton.style.display = 'block';
-        //changes input class to be signIn
-        if (txtEmail.classList.contains('txtEmailSignUp')) {
-            txtEmail.classList.remove('txtEmailSignUp');
-        }
-        txtEmail.classList.add('txtEmailSignIn');
-        if (txtPassword.classList.contains('txtPasswordSignUp')) {
-            txtPassword.classList.remove('txtPasswordSignUp');
-        }
-        txtPassword.classList.add('txtPasswordSignIn');
-        document.querySelector('#txtName').required = false;
-        btnRegister.innerText = 'Register'
-        //pressing register again actually takes in the input
-        //to register the user into the database
-        backBtn.style.display = 'none';
-        registerBtn = false;
-}
-
-function emailAndPasswordLogIn() {
+function checkIfUserExists() {
+    var emailExists = false;
+    var passExists = false;
+    var query = database.ref("users/");
     const emailLogin = txtEmailSignIn[0].value;
     const passLogin = txtPasswordSignIn[0].value;
-    console.log(emailLogin);
-    console.log(passLogin);
+    const nameLogin = txtNameSignIn[0].value;
+    query.on('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+            // console.log(childSnapshot.child('email').val());
+            // console.log(emailLogin);
+            if ((childSnapshot.child('email').val() === emailLogin) && childSnapshot.child('password').val() === passLogin){
+                emailExists = true;
+                console.log(emailExists);
+                console.log("starting login process!");
+                txtName.required = true;
+                login(emailLogin, passLogin);
+                passExists = true;
+                return true;
+            }
 
+        });
+        console.log(emailExists);
+        if(emailExists === false && passExists === false){
+            console.log("Starting register process!")
+            register(nameLogin, emailLogin, passLogin);
+        }
+
+    });
+
+}
+
+function login(emailLogin, passLogin){
     auth.signInWithEmailAndPassword(emailLogin, passLogin)
         .catch(function (error) {
             // Handle Errors here.
@@ -141,17 +91,9 @@ function emailAndPasswordLogIn() {
         }
     });
 }
-
-function emailAndPasswordSignUp() {
-    var nameSignup = txtNameSignUp[0].value;
-    var emailSignup = txtEmailSignUp[0].value;
-    var passSignup = txtPasswordSignUp[0].value;
-    console.log(nameSignup);
-    console.log(emailSignup);
-    console.log(passSignup);
-    //register
-    auth.createUserWithEmailAndPassword(emailSignup, passSignup)
-        .then(user => createUser(user, nameSignup, emailSignup, passSignup))
+function register(nameLogin, emailLogin, passLogin) {
+    auth.createUserWithEmailAndPassword(emailLogin, passLogin)
+        .then(user => createUser(user, nameLogin, emailLogin, passLogin))
         .catch(function(error){
             // Handle Errors here.
             var errorCode = error.code;
@@ -186,6 +128,76 @@ function createUser(user, name, email, pass) {
         });
     }
 }
+
+function userSignOut() {
+    auth.signOut().then(function () {
+        console.log('Sign-out successful!');
+
+    }, function (error) {
+        console.log('Sign-out failed');
+        console.log(error);
+    });
+}
+
+function checkUser(){
+    auth.onAuthStateChanged(function(user){
+        //check if user is logged in
+        if(user){
+            //display div that shows currentUser name
+            //also retrieve top score and play button.
+
+            //if user is signed in, then check if the logout button is hidden
+            //if it is, then show it.
+            if(logoutInfo.style.display === 'none'){
+                logoutInfo.style.display = 'block';
+            }
+            //if user is signed in, then hide sign in inputs
+            if(loginRegisterForm.style.display === 'block'){
+                loginRegisterForm.style.display ='none';
+            }
+            //
+            displayScore(user);
+        }else {
+            //no user is signed in
+            //display div that shows login/register information
+            if(logoutInfo.style.display === 'block'){
+                logoutInfo.style.display = 'none';
+            }
+            //if user isn't logged in, show forms.
+            if(loginRegisterForm.style.display === 'none'){
+                loginRegisterForm.style.display = 'block';
+            }
+
+        }
+    });
+}
+
+function displayScore(user) {
+    var welcomeUserInfo = document.getElementById('welcomeUserInfo');
+    var userInDatabase = database.ref("users/" + user.uid);
+    // var welcomeUserInfo = database.ref("users/" + user.uid + "/userName");
+    console.log(userInDatabase);
+    userInDatabase.on('value', function(userSnapshot) {
+        console.log(userSnapshot.val());
+        welcomeUserInfo.innerText = "Welcome " + userSnapshot.child("userName").val()
+                        + ", your highscore is " + userSnapshot.child("score").val();
+        // if(scoreCount > scoreSnapshot.val()){
+        //     //update database with new highscore.
+        //     var updateScore = firebase.database().ref("users/" + user.uid);
+        //     updateScore.update({
+        //         score : scoreCount
+        //     });
+        // }
+    });
+}
+
+//button pressed to show or hide signup information
+const btnRegister = document.getElementById('btnRegister');
+
+
+//Authentication for Facebook sign-in
+var facebookProvider = new firebase.auth.FacebookAuthProvider();
+
 
 function googleSignIn() {
     //Sign in and redirect to a page to select an account
@@ -239,14 +251,7 @@ function googleSignIn() {
     // });
 }
 
-function userSignOut() {
-    firebase.auth().signOut().then(function () {
-        console.log('Sign-out successful!');
-    }, function (error) {
-        console.log('Sign-out failed');
-        console.log(error);
-    });
-}
+
 
 function facebookSignIn() {
     firebase.auth().signInWithRedirect(facebookProvider).then(function (result) {
