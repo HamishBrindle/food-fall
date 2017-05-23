@@ -32,10 +32,10 @@ function fadeOut(object, duration) {
                 timerToBeDeleted.push(timer);
                 if(!object.isCaught && object.isFood)  {
                     --foodCount;
+                    object.destroy();
                     object.isCaught = true;
                 }
-                childrenToDelete.push(object);
-                object.destroy();
+
             } else {
                 object.alpha -= alphaFactor;
             }

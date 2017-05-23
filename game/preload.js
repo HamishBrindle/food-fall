@@ -204,12 +204,12 @@ var portal;
 
 // Food items in game
 var numberOfFood = 6;
-apple = {name: "apple", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false};
-banana = {name: "banana", weight: 1 / numberOfFood, scoreValue: 5, isCaught: false};
-bread = {name: "bread", weight: 1 / numberOfFood, scoreValue: 9, isCaught: false};
-orange = {name: "orange", weight: 1 / numberOfFood, scoreValue: 7, isCaught: false};
-broccoli = {name: "broccoli", weight: 1 / numberOfFood, scoreValue: 3, isCaught: false};
-egg = {name: "egg", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false};
+apple = {name: "apple", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false, isHitBasket: false};
+banana = {name: "banana", weight: 1 / numberOfFood, scoreValue: 5, isCaught: false, isHitBasket: false};
+bread = {name: "bread", weight: 1 / numberOfFood, scoreValue: 9, isCaught: false, isHitBasket: false};
+orange = {name: "orange", weight: 1 / numberOfFood, scoreValue: 7, isCaught: false, isHitBasket: false};
+broccoli = {name: "broccoli", weight: 1 / numberOfFood, scoreValue: 3, isCaught: false, isHitBasket: false};
+egg = {name: "egg", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false, isHitBasket: false};
 fallingObjects = [apple, banana, bread, orange, broccoli, egg];
 
 console.log(fallingObjects);
@@ -771,4 +771,3 @@ function dumpScores() {
     document.getElementById('table-body').innerHTML = myTable;
     scores = [];
 }
->>>>>>> efbeb5e7e32247f25abde5b9767c2bc0e06f8f7b

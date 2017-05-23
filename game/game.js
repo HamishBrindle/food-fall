@@ -8,8 +8,8 @@ var scoreCount = 0;
 
 var childrenToDelete = [];
 const foodFadeDuration = 90;
-
 const displayNoFadeDuration = 100;
+const pointFadeDuration = 80;
 
 var lastXPos = 0;
 // check the amount of food caught
@@ -231,18 +231,19 @@ function foodCatchCollision() {
                     childrenToDelete.push(fallingItem);
                     fallingItem.destroy();
                     --foodCount;
-                } else if (isInBasket(catcher, fallingItem)) {
-
+                } else if (!fallingItem.isHitBasket && isInBasket(catcher, fallingItem)) {
                     let type = getFoodType(fallingItem);
-                    fadeOut(fallingItem, foodFadeDuration);
                     caughtFood.push(type.name);
+                    console.log("asdfasdf");
+                    makePointCounter(catcher, fallingItem)
+                    fadeOut(fallingItem, foodFadeDuration);
                     modScore(fallingItem);
                     isCombo();
                     gameSFX.play('point');
                     stage.removeChild(score);
-                    fadeOut(fallingItem, foodFadeDuration);
                     fallingItem.velocityY = 10;
                     fallingItem.rotateFactor = 0;
+                    fallingItem.isHitBasket = true;
                 } else if (isBounce(catcher, fallingItem, catcherVelocityX)) {
                     var newItemVelocityX = 1000 / catcherVelocityX;
                     if(newItemVelocityX > 6) {
@@ -254,8 +255,10 @@ function foodCatchCollision() {
                 }
 
             }
+            if(fallingItem.isPointCounter) {
+                fallingItem.y -= 3;
+            }
         }
-
         if (currentElapsedGameTime % 2 === 0) {
             speedUpGame(deltaTime);
         }
@@ -353,6 +356,20 @@ function endGame() {
     gameBuild = true;
     addHighScore(scoreCount);
     destroyOldObjects();
+}
+
+function makePointCounter(catcher, item) {
+
+    var pointCounter = new PIXI.Text("+" + item.name.scoreValue, {
+        fontSize: 50,
+        fontFamily: 'LemonMilk',
+        fill: 'green'
+    });
+    pointCounter.isPointCounter = true;
+    pointCounter.x = item.x;
+    pointCounter.y = catcher.y - catcher.height;
+    stage.addChild(pointCounter);
+    fadeOut(pointCounter, pointFadeDuration);
 }
 /**
   * Adds all food and obstacles to list and destroys them.
