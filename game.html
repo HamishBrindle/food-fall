@@ -29,6 +29,9 @@
 <main>
     <div class="container-fluid text-center outer" id="game-window">
         <div id="overlay">
+            <div id="game-header">
+                <img id="game-banner" src="assets/img/web/site-logo-white-long.svg" alt="Food-fall-logo"/>
+            </div>
             <div id="leader-board">
                 <h1 class="overlay-title">Leader Board</h1>
                 <table class="table table-striped" id="table-leader-board">
@@ -39,61 +42,27 @@
                         <th>Score</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>John</td>
-                        <td>2973</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Mary</td>
-                        <td>2940</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Leo</td>
-                        <td>2844</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Paul</td>
-                        <td>2543</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>July</td>
-                        <td>1964</td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>Delores</td>
-                        <td>1277</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>Teddy</td>
-                        <td>1130</td>
-                    </tr>
+                    <!-- Leaderboard fills here -->
+                    <tbody id="table-body">
                     </tbody>
                 </table>
                 <button class="btn btn-success" id="btn-leader-board-exit">EXIT</button>
             </div>
 
             <div id="main-menu">
-                <div class="btn-group">
+                <button class="btn btn-info bottom-align-text" id="btn-main-menu-play"><i class="fa fa-play"></i></button>
+                <div class="btn-group" id="menu-buttons">
                     <button class="btn btn-info bottom-align-text" id="btn-main-menu-volume-on"><i class="fa fa-volume-up"></i></button>
                     <button class="btn btn-info bottom-align-text" id="btn-main-menu-volume-off"><i class="fa fa-volume-off"></i></button>
                     <button class="btn btn-info bottom-align-text" id="btn-main-menu-leader-board"><i class="fa fa-trophy"></i></button>
                 </div>
                 <div class="text-box text-centered" id="instructions">
-                    <h2>Instructions</h2>
+                    <h2 class="text-box-header">Instructions</h2>
                     <hr />
                     <ul class="list-unstyled">
-                        <li>Use mouse/touch to drag your basket around.</li>
-                        <li>Avoid the obstacles!</li>
-                        <li>Catching food will get you 10 points each.</li>
-                        <li>Dropping food will cost you 2 points each.</li>
+                        <li>Use mouse/touch to drag your <span id="instructions-brown">basket</span> around.</li>
+                        <li>Catching food for <span id="instructions-green">points</span>. Don't let it go to <span id="instructions-red">waste</span>!</li>
+                        <li>Avoid the <span id="instructions-yellow">obstacles</span>.</li>
                     </ul>
                 </div>
                 <div class="text-box text-centered" id="random-fact">

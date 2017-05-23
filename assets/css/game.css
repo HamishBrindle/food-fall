@@ -27,8 +27,12 @@ i {
     width: 75px;
     height: 75px;
     padding: 15px;
+    text-align: center;
 }
 
+#leaderboard {
+    position: relative;
+}
 #overlay {
     position: absolute;
     display: table-cell;
@@ -52,7 +56,7 @@ i {
 #leader-board {
     position: relative;
     display: none;
-    width: 60%;
+    width: 50%;
     height: 90%;
     margin: auto;
     padding: 0;
@@ -66,6 +70,8 @@ i {
 #btn-leader-board-exit {
     font-family: 'LemonMilk', "Arial Black", serif;
     font-size: 1em;
+    margin-top: 0;
+    margin-bottom: 7px;
 }
 
 #table-leader-board {
@@ -83,6 +89,43 @@ i {
 }
 
 /* Main Menu ---------------------------------------------------------------------------------------------------------*/
+
+#game-header {
+    position: absolute;
+    width: 100%;
+    margin: auto;
+    padding: 0;
+}
+
+#game-banner {
+    width: 70%;
+    margin: auto;
+}
+
+#btn-main-menu-play {
+    position: absolute;
+    display: none;
+    margin: 0 auto 0 auto;
+    font-size: 80px;
+    background: none;
+    border: none;
+    top: 170px;
+    left: 340px;
+}
+
+#menu-buttons {
+    position: absolute;
+    top: -95px;
+    left: 315px;
+}
+
+#btn-main-menu-play i {
+    width: 120px;
+    height: 120px;
+    background: #40d97c;
+    padding: 20px;
+    padding-left: 35px;
+}
 
 #btn-main-menu-leader-board {
     display: none;
@@ -116,7 +159,7 @@ i {
     top: 12em;
     left: 2em;
     background-color: rgba(0,0,0,0.50);
-    width: 20em;
+    width: 15em;
     height: auto;
     color: #fff;
     border-radius: 5px;
@@ -135,13 +178,29 @@ i {
     margin-bottom: 5px;
 }
 
+#instructions-brown {
+    color: #795548;
+}
+
+#instructions-green {
+    color: #12ff19;
+}
+
+#instructions-red {
+    color: #ff0005;
+}
+
+#instructions-yellow {
+    color: #ffd226;
+}
+
 #random-fact {
     position: absolute;
     display: inline-block;
     top: 12em;
     right: 2em;
     background-color: rgba(0,0,0,0.50);
-    width: 20em;
+    width: 15em;
     height: auto;
     color: #fff;
     border-radius: 5px;
