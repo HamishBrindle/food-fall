@@ -215,7 +215,7 @@ fallingObjects = [apple, banana, bread, orange, broccoli, egg];
 console.log(fallingObjects);
 
 //Set the game's current state to `menu`:
-var state = menu;
+var state = login;
 menuBuild = true;
 catcherBuild = false;
 cowLevelBuild = true;
@@ -345,6 +345,15 @@ function gameLoop() {
     lastTime = new Date().getTime();
     tk.update();
     renderer.render(stage);
+}
+
+function login() {
+    animateBackground();
+    loginDisplay();
+}
+
+function loginDisplay() {
+
 }
 
 //State definition for "playing" the game
