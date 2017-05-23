@@ -225,7 +225,6 @@ function foodCatchCollision() {
                 } else if (!fallingItem.isHitBasket && isInBasket(catcher, fallingItem)) {
                     let type = getFoodType(fallingItem);
                     caughtFood.push(type.name);
-                    console.log("asdfasdf");
                     makePointIncrementer(catcher, fallingItem)
                     fadeOut(fallingItem, foodFadeDuration);
                     modScore(fallingItem);
@@ -353,7 +352,7 @@ function makePointDecrementer(item) {
     var pointDecrementer = new PIXI.Text("-2", {
         fontSize: 50,
         fontFamily: 'LemonMilk',
-        fill: 'red'
+        fill: '#ff0005'
     });
     pointDecrementer.isPointDecrementer = true;
     if(item.x > GAME_WIDTH) {
@@ -374,7 +373,7 @@ function makePointIncrementer(catcher, item) {
     var pointCounter = new PIXI.Text("+" + item.name.scoreValue, {
         fontSize: 50,
         fontFamily: 'LemonMilk',
-        fill: 'green'
+        fill: '#12ff19'
     });
     pointCounter.isPointCounter = true;
     pointCounter.x = item.x;
