@@ -50,19 +50,19 @@
             </div>
 
             <div id="main-menu">
-                <div class="btn-group">
+                <button class="btn btn-info bottom-align-text" id="btn-main-menu-play"><i class="fa fa-play"></i></button>
+                <div class="btn-group" id="menu-buttons">
                     <button class="btn btn-info bottom-align-text" id="btn-main-menu-volume-on"><i class="fa fa-volume-up"></i></button>
                     <button class="btn btn-info bottom-align-text" id="btn-main-menu-volume-off"><i class="fa fa-volume-off"></i></button>
                     <button class="btn btn-info bottom-align-text" id="btn-main-menu-leader-board"><i class="fa fa-trophy"></i></button>
                 </div>
                 <div class="text-box text-centered" id="instructions">
-                    <h2>Instructions</h2>
+                    <h2 class="text-box-header">Instructions</h2>
                     <hr />
                     <ul class="list-unstyled">
-                        <li>Use mouse/touch to drag your basket around.</li>
-                        <li>Avoid the obstacles!</li>
-                        <li>Catching food will get you 10 points each.</li>
-                        <li>Dropping food will cost you 2 points each.</li>
+                        <li>Use mouse/touch to drag your <span id="instructions-brown">basket</span> around.</li>
+                        <li>Catching food for <span id="instructions-green">points</span>. Don't let it go to <span id="instructions-red">waste</span>!</li>
+                        <li>Avoid the <span id="instructions-yellow">obstacles</span>.</li>
                     </ul>
                 </div>
                 <div class="text-box text-centered" id="random-fact">

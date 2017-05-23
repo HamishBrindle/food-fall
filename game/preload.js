@@ -36,10 +36,19 @@ var btnLeaderBoardExit = document.getElementById("btn-leader-board-exit");
 var btnMainMenuLeaderBoard = document.getElementById("btn-main-menu-leader-board");
 var btnMainMenuVolumeOn = document.getElementById("btn-main-menu-volume-on");
 var btnMainMenuVolumeOff = document.getElementById("btn-main-menu-volume-off");
+var btnPlay = document.getElementById("btn-main-menu-play");
 var leaderBoard = document.getElementById("leader-board");
 var instructions = document.getElementById("instructions");
 var randomFactBox = document.getElementById("random-fact");
 var logo = document.getElementById("game-header");
+
+// Main-menu play button
+btnPlay.addEventListener("click", playBtn);
+btnPlay.addEventListener("touchend", playBtn);
+function playBtn() {
+    playGameFromMenu();
+    menuSound.play('menu')
+}
 
 // Listeners for exiting the leader-board
 btnLeaderBoardExit.addEventListener("click", btnExitLeaderBoard);
@@ -57,7 +66,6 @@ function btnLeaderBoard(){
     dumpScores();
     leaderBoard.style.display = "block";
     btnMainMenuLeaderBoard.style.display = "none";
-
 }
 
 // Sound on and off buttons
@@ -352,27 +360,10 @@ function play() {
 function gameMenuDisplay() {
     if (menuBuild) {
 
-
-
-        // Add play-button to menu
-        playButton = new Sprite(resources['assets/img/sprites/play.png'].texture);
-        playButton.interactive = true;
-        playButton.width /= 2;
-        playButton.height /= 2;
-        playButton.x = (GAME_WIDTH / 2) - (playButton.width / 2);
-        playButton.y = GAME_HEIGHT - (playButton.height * 2);
-
-        // Add listener for play button
-        playButton.on('pointerdown', (event) => {
-            playGameFromMenu();
-            menuSound.play('menu')
-        });
-
         // Add button and logo
-        stage.addChild(playButton);
+        btnPlay.style.display = "block";
         btnMainMenuVolumeOn.style.display = "inline-block";
         btnMainMenuLeaderBoard.style.display = "block";
-        // TODO: Add logo
         logo.style.display = "block";
 
         // Add a fact to the stage
@@ -429,7 +420,7 @@ function soundButtonDisplay() {
 
 function playGameFromMenu() {
     state = play;
-    stage.removeChild(playButton);
+    btnPlay.style.display = "none";
     btnMainMenuVolumeOn.style.display = "none";
     btnMainMenuVolumeOff.style.display = "none";
     btnMainMenuLeaderBoard.style.display = "none";
