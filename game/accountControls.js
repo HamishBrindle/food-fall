@@ -1,3 +1,6 @@
+//Most code that is commented out, I don't need currently,
+//but I don't want to delete it just yet.
+
 var config = {
     apiKey: "AIzaSyDLI2-ikgpZ8N4EX89enO8ERiMz63Rv7eo",
     authDomain: "fool-fall.firebaseapp.com",
@@ -17,11 +20,8 @@ var auth = firebase.auth();
 // var idEmail = document.getElementById('txtEmail');
 // var idPassword = document.getElementById('txtPassword');
 
-var txtNameSignIn = document.getElementsByClassName('txtNameSignIn');
 var txtEmailSignIn = document.getElementsByClassName('txtEmailSignIn');
 var txtPasswordSignIn = document.getElementsByClassName('txtPasswordSignIn');
-
-var txtName = document.getElementById('txtName');
 
 var logoutInfo = document.getElementById('logoutInfo');
 var loginRegisterForm = document.getElementById('loginRegisterForm');
@@ -35,38 +35,80 @@ var googleProvider = new firebase.auth.GoogleAuthProvider();
 
 // var playBtn = document.getElementById('playBtn');
 
+//loop through database, and set a variable to true or false;
+//if function() === false {
+// then call the register function
+// }
+// function checkIfUserExists(){
+//
+//     console.log(checked);
+//
+//     if(loopToCheckDatabase(emailLogin, passLogin, checked) === false){
+//         console.log(checked);
+//         console.log("starting registration process!")
+//         register(nameLogin, emailLogin, passLogin);
+//     }
+// }
 
+// This function checks to see if the information used when
+// entering the credentials if the email already exists in the database or not.
+// If it does, then log in with the provided email and password.
+// If it doesn't, then register with the provided email and password and use the email
+// (ex. example@test.com becomes example) for the userName.
+// Or, that's what I'm trying to do.  On the side is the order of what code runs.
+// The image that goes with this code is the attempt at logging into an already
+// existing account.
 function checkIfUserExists() {
-    var emailExists = false;
-    var passExists = false;
-    var query = database.ref("users/");
+    //boolean to check if a user is in the database or not
+    var checkedEmail = false;
+    var checkedPass = false;
+
+    //values from the input on the website
     const emailLogin = txtEmailSignIn[0].value;
     const passLogin = txtPasswordSignIn[0].value;
-    const nameLogin = txtNameSignIn[0].value;
-    query.on('value', function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-            // console.log(childSnapshot.child('email').val());
-            // console.log(emailLogin);
-            if ((childSnapshot.child('email').val() === emailLogin) && childSnapshot.child('password').val() === passLogin){
-                emailExists = true;
-                console.log(emailExists);
-                console.log("starting login process!");
-                txtName.required = true;
-                login(emailLogin, passLogin);
-                passExists = true;
-                return true;
-            }
-
+    const nameLogin = createGameNameFromEmail(txtEmailSignIn[0].value);
+    var query = database.ref("users/").orderByKey();
+    query.once('value', function(snapshotOfDatabase) {
+        //loop through all the user id's
+        snapshotOfDatabase.forEach(function(childSnapshot) {
+                //if the data for that userID's email and password match with the inputs
+                if (childSnapshot.child('email').val() === emailLogin){
+                    checkedEmail = true;
+                    console.log("email is a match?", checkedEmail);
+                    if(childSnapshot.child('password').val() === passLogin){
+                        checkedPass = true;
+                        console.log("pass is a match?", checkedPass);
+                        console.log("starting login process!");
+                        // then log in
+                        login(emailLogin, passLogin);
+                        //return true to exit out of the forEach loop and stop comparing.
+                        return checkedEmail && checkedPass;
+                    }
+                }
         });
-        console.log(emailExists);
-        if(emailExists === false && passExists === false){
-            console.log("Starting register process!")
-            register(nameLogin, emailLogin, passLogin);
+        if(checkedEmail && !checkedPass){
+            console.log("Incorrect log in information.");
+            document.getElementById('txtEmail').value = '';
+            document.getElementById('txtPassword').value = '';
         }
-
+        if (!checkedEmail && !checkedPass) {
+            console.log("starting registration process!")
+            register(nameLogin, emailLogin, passLogin);
+            return true;
+        }
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // alert(user.uid);
+                console.log("redirecting to game");
+                // window.location.replace('game.html');
+            }
+        });
     });
+    //This query is called as I have no clue how to have the above code run before
+    //the bottom code. This is one attempt to solve that issue. This issue is my biggest issue.
 
 }
+
 
 function login(emailLogin, passLogin){
     auth.signInWithEmailAndPassword(emailLogin, passLogin)
@@ -74,22 +116,11 @@ function login(emailLogin, passLogin){
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
-            if (errorCode === 'auth/wrong-password' || 'errorCode === auth/invalid-email') {
-                alert('Wrong email or password.');
-                document.getElementById('txtEmail').value = '';
-                document.getElementById('txtPassword').value = '';
-            } else {
-                alert(errorMessage);
-            }
+            alert(errorMessage);
             console.log(error);
         });
 
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            // alert(user.uid);
-            window.location.replace('game.html');
-        }
-    });
+
 }
 function register(nameLogin, emailLogin, passLogin) {
     auth.createUserWithEmailAndPassword(emailLogin, passLogin)
@@ -108,12 +139,6 @@ function register(nameLogin, emailLogin, passLogin) {
             }
             console.log(error);
         });
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            // alert(user.uid);
-            window.location.replace('game.html');
-        }
-    });
 }
 
 function createUser(user, name, email, pass) {
@@ -129,10 +154,20 @@ function createUser(user, name, email, pass) {
     }
 }
 
+function createGameNameFromEmail(email) {
+    var name;
+    for(var i = 0; i < email.length; i++){
+        if(email[i] === '@'){
+            break;
+        }
+    }
+    name = email.substr(0, i);
+    return name;
+}
+
 function userSignOut() {
     auth.signOut().then(function () {
         console.log('Sign-out successful!');
-
     }, function (error) {
         console.log('Sign-out failed');
         console.log(error);
@@ -143,6 +178,38 @@ function checkUser(){
     auth.onAuthStateChanged(function(user){
         //check if user is logged in
         if(user){
+            console.log(user.uid);
+            console.log(user.email);
+            console.log(createGameNameFromEmail(user.email));
+
+            var userInSystem;
+            var query = database.ref("users/").orderByKey();
+            query.once('value', function(snapshotOfDatabase) {
+                //loop through all the user id's
+                snapshotOfDatabase.forEach(function(childSnapshot) {
+                        //if the data for that userID's email and password match with the inputs
+
+                    console.log(childSnapshot.key);
+                    console.log(user.uid);
+                    if (user.uid === childSnapshot.key) {
+                            console.log("email found in system");
+                            userInSystem = true;
+                            console.log(userInSystem);
+                            return userInSystem;
+                    }
+                    userInSystem = false;
+                });
+                console.log("Checking after database check", userInSystem);
+                if(userInSystem === false){
+                    console.log(userInSystem);
+                    console.log("this is called when reg a new account?");
+                    var nameReg = createGameNameFromEmail(user.email);
+                    var emailReg = user.email;
+                    var password = "123456";
+                    createUser(user, nameReg, emailReg, password);
+                }
+                displayScore(user);
+            });
             //display div that shows currentUser name
             //also retrieve top score and play button.
 
@@ -156,7 +223,7 @@ function checkUser(){
                 loginRegisterForm.style.display ='none';
             }
             //
-            displayScore(user);
+
         }else {
             //no user is signed in
             //display div that shows login/register information
@@ -176,24 +243,12 @@ function displayScore(user) {
     var welcomeUserInfo = document.getElementById('welcomeUserInfo');
     var userInDatabase = database.ref("users/" + user.uid);
     // var welcomeUserInfo = database.ref("users/" + user.uid + "/userName");
-    console.log(userInDatabase);
     userInDatabase.on('value', function(userSnapshot) {
         console.log(userSnapshot.val());
         welcomeUserInfo.innerText = "Welcome " + userSnapshot.child("userName").val()
                         + ", your highscore is " + userSnapshot.child("score").val();
-        // if(scoreCount > scoreSnapshot.val()){
-        //     //update database with new highscore.
-        //     var updateScore = firebase.database().ref("users/" + user.uid);
-        //     updateScore.update({
-        //         score : scoreCount
-        //     });
-        // }
     });
 }
-
-//button pressed to show or hide signup information
-const btnRegister = document.getElementById('btnRegister');
-
 
 //Authentication for Facebook sign-in
 var facebookProvider = new firebase.auth.FacebookAuthProvider();
@@ -203,17 +258,7 @@ function googleSignIn() {
     //Sign in and redirect to a page to select an account
     googleProvider.addScope('profile');
     googleProvider.addScope('email');
-    auth.signInAndRetrieveDataWithCredential(googleProvider);
-
-    auth.getRedirectResult()
-        .then(function(result){
-            if(result.credential) {
-                //This gives you a Google Access Token
-                var token = result.credential.accessToken;
-            }
-            var user = result.user;
-            alert(user.uid);
-        });
+    auth.signInWithRedirect(googleProvider);
     //after the page is finished loading, get data from the user.
     //
     // auth.onAuthStateChanged((user) => {
