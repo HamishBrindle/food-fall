@@ -63,7 +63,7 @@ btnMainMenuLeaderBoard.addEventListener("click", btnLeaderBoard);
 btnMainMenuLeaderBoard.addEventListener("touchend", btnLeaderBoard);
 function btnLeaderBoard(){
     document.getElementById("table-body").innerHTML = "";
-    popLeaderboard();
+    dumpScores();
     leaderBoard.style.display = "block";
     btnMainMenuLeaderBoard.style.display = "none";
 }
@@ -333,9 +333,6 @@ function setup() {
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
 
-    //Grabs top 10 scores from database
-    dumpScores();
-
     //Start the game loop
     gameLoop();
 
@@ -503,8 +500,6 @@ function gameOver() {
 
 function gameOverDisplay() {
     if (gameOverBuild) {
-
-        dumpScores();
 
         // Add logo to menu
         gameOverBanner = new Sprite(resources['assets/img/sprites/game-over.png'].texture);
@@ -740,19 +735,14 @@ function speedUpGame(deltaTime) {
 }
 
 var scoreRef = firebase.database().ref("users").orderByKey();
-
-//Leaderboard Variables and Functions
-var childName;
-var childScore;
 var scores = [];
 function dumpScores() {
-    scores = [];
     scoreRef.once("value")
-        .then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
+        .then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
                 var key = childSnapshot.key;
-                childName = childSnapshot.child("userName").val();
-                childScore = childSnapshot.child("score").val();
+                var childName = childSnapshot.child("userName").val();
+                var childScore = childSnapshot.child("score").val();
                 scores.push({childName, childScore});
                 //console.log("Username: " + childName + " Score: " + childScore);
             });
@@ -766,25 +756,18 @@ function dumpScores() {
             return (a.childScore > b.childScore) ? -1 : 1;
         }
     }
-}
-function popLeaderboard() {
 
-    if (scores === null) {
-        dumpScores();
-        popLeaderboard();
-    } else {
-        var myTable = "";
+    var myTable = "";
 
-        console.log(scores[0].childName);
-        for (var i = 0; i < 8; i++) {
-            myTable += "<tr><td>" + (i + 1) + "</td>"
-            myTable += "<td>" + scores[i].childName + "</td>";
-            myTable += "<td>" + scores[i].childScore + "</td></tr>";
-            console.log(scores[i].childName);
-        }
-        myTable += "";
-
-        document.getElementById('table-body').innerHTML = myTable;
+    console.log(scores[0].childName);
+    for (var i = 0; i < 8; i++) {
+        myTable += "<tr><td>" + (i + 1) + "</td>"
+        myTable += "<td>" + scores[i].childName + "</td>";
+        myTable += "<td>" + scores[i].childScore + "</td></tr>";
+        console.log(scores[i].childName);
     }
+    myTable += "";
 
+    document.getElementById('table-body').innerHTML = myTable;
+    scores = [];
 }
