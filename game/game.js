@@ -10,6 +10,7 @@ var childrenToDelete = [];
 const foodFadeDuration = 90;
 const displayNoFadeDuration = 100;
 const pointFadeDuration = 80;
+const MAX_OBSTACLE = 1;
 
 var lastXPos = 0;
 // check the amount of food caught
@@ -188,7 +189,12 @@ function foodCatchCollision() {
     if(afterCountDown) {
         lastXPos = catcher.x;
         makeFood();
-        makeObstacle();
+        if(currentElapsedGameTime < 20) {
+            makeObstacle();
+        } else {
+            makeTwoObstacles();
+        }
+
         for (var i in stage.children) {
             var fallingItem = stage.children[i];
             if (fallingItem.isObstacle) {
@@ -264,8 +270,8 @@ function foodCatchCollision() {
 
 }
 
-function makeObstacle() {
-    const MAX_OBSTACLE = 1;
+function makeTwoObstacles() {
+
     if(obstacleCount >= MAX_OBSTACLE) return;
 
     var newTopObstacle = new Sprite(resources['assets/img/sprites/obstacle.png'].texture);
@@ -284,6 +290,32 @@ function makeObstacle() {
     newBotObstacle.isObstacle = true;
     stage.addChild(newBotObstacle);
     obstacleCount += 2;
+}
+
+function makeObstacle() {
+
+    if(obstacleCount >= MAX_OBSTACLE) return;
+    var randomBoolean = Math.random() >= 0.5;
+
+    if (randomBoolean) {
+        var newTopObstacle = new Sprite(resources['assets/img/sprites/obstacle.png'].texture);
+        newTopObstacle.x = GAME_WIDTH;
+        newTopObstacle.height = getRandomInt(30, (2 * (GAME_HEIGHT / 3))); //
+        newTopObstacle.y = 0;
+        newTopObstacle.width = 50;
+        newTopObstacle.isObstacle = true;
+        stage.addChild(newTopObstacle);
+    }
+    else {
+        var newBotObstacle = new Sprite(resources['assets/img/sprites/obstacle.png'].texture);
+        newBotObstacle.x =  GAME_WIDTH;
+        newBotObstacle.y = 60 + (2 * catcher.height);
+        newBotObstacle.height = GAME_HEIGHT - newBotObstacle.y;
+        newBotObstacle.width = 50;
+        newBotObstacle.isObstacle = true;
+        stage.addChild(newBotObstacle);
+    }
+    ++obstacleCount;
 
 }
 /*
