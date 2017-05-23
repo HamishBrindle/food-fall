@@ -7,7 +7,7 @@
 var scoreCount = 0;
 
 var childrenToDelete = [];
-const foodFadeDuration = 1;
+const foodFadeDuration = 90;
 
 const displayNoFadeDuration = 100;
 
@@ -78,7 +78,7 @@ function displayNo() {
 }
 
 function makeFood() {
-    const MAX_FOOD = 5;
+    const MAX_FOOD = 2;
     if(foodCount >= MAX_FOOD) return;
     ++foodCount;
     var newFoodIndex = weightedRand(fallingObjects);
@@ -225,22 +225,24 @@ function foodCatchCollision() {
 
                 fallingItem.velocityY += deltaVy;
                 fallingItem.rotation += fallingItem.rotateFactor;
+
                 if (fallingItem.y > GAME_HEIGHT) {
                     decreaseScore();
                     childrenToDelete.push(fallingItem);
                     fallingItem.destroy();
                     --foodCount;
                 } else if (isInBasket(catcher, fallingItem)) {
+
                     let type = getFoodType(fallingItem);
-                    childrenToDelete.push(fallingItem);
-                    --foodCount;
+                    fadeOut(fallingItem, foodFadeDuration);
                     caughtFood.push(type.name);
                     modScore(fallingItem);
                     isCombo();
-                    fallingItem.destroy();
                     gameSFX.play('point');
-                    scoreCount += 10;
                     stage.removeChild(score);
+                    fadeOut(fallingItem, foodFadeDuration);
+                    fallingItem.velocityY = 10;
+                    fallingItem.rotateFactor = 0;
                 } else if (isBounce(catcher, fallingItem, catcherVelocityX)) {
                     var newItemVelocityX = 1000 / catcherVelocityX;
                     if(newItemVelocityX > 6) {
@@ -248,7 +250,6 @@ function foodCatchCollision() {
                     } else if(newItemVelocityX < -6) {
                         newItemVelocityX = -6;
                     }
-                    console.log("newItemVelocityX", newItemVelocityX);
                     fallingItem.velocityX = -newItemVelocityX;
                 }
 
@@ -265,6 +266,7 @@ function foodCatchCollision() {
         for (var i = 0; i < childrenToDelete.length; i++) {
             removeItem(childrenToDelete[i]);
         }
+        clearTimer();
     }
 
 }
@@ -388,12 +390,7 @@ function clearCaughtFood() {
  */
 function modScore(food) {
     var type = getFoodType(food);
-    if (type.name === "apple") {
-        scoreCount += 3;
-    }
-    if (type.name === "bread") {
-        scoreCount += 2;
-    }
+    scoreCount += type.scoreValue;
 }
 
 /**
@@ -412,15 +409,13 @@ function decreaseScore() {
  * @returns {boolean} : whether x (3 right now) eggs have been caught.
  */
 function isCombo() {
-    console.log("you've caught : " + caughtFood.length + " foods");
     for (i = 0; i < caughtFood.length; i++) {
         if (caughtFood[i] === "egg") {
             eggCount++;
         } else {
             eggCount = 0;
         }
-        console.log("egg count: " + eggCount);
-        if (eggCount >= 1) {
+        if (eggCount >= 10) {
             eggCount = 0;
             if (!cowLevelHasBeenActivated) {
                 cowLevelBuild = true;

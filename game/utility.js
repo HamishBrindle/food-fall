@@ -1,3 +1,5 @@
+
+var timerToBeDeleted = [];
 /*
     General utility functions
 */
@@ -24,19 +26,27 @@ function getRandomInt(min, max) {
 function fadeOut(object, duration) {
 
     var alphaFactor = (1 / duration);
-
-    timer = setInterval(
+    var timer = setInterval(
         function(){
-            if (object.alpha == 0) {
-                clearTimeout(timer);
-                stage.removeChild(object);
+            if (object.alpha < 0) {
+                timerToBeDeleted.push(timer);
+                if(!object.isCaught && object.isFood)  {
+                    --foodCount;
+                    object.isCaught = true;
+                }
+                childrenToDelete.push(object);
                 object.destroy();
-                return;
-             }
-            object.alpha -= alphaFactor;
+            } else {
+                object.alpha -= alphaFactor;
+            }
         }, duration / 10);
 }
 
+function clearTimer() {
+    for (var i = 0; i < timerToBeDeleted.length; i++) {
+        clearInterval(timerToBeDeleted[i]);
+    }
+}
 //
 // function fadeOut(object, duration) {
 //     // if(typeof object.velocity != 'undefined') {
