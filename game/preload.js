@@ -171,7 +171,6 @@ var scale = scaleToWindow(renderer.view);
 var setupDone = false;
 var pointer;
 var gameBuild = true;
-var playButton;
 var menuBuild;
 var catcherBuild;
 
@@ -221,8 +220,6 @@ orange = {name: "orange", weight: 1 / numberOfFood};
 broccoli = {name: "broccoli", weight: 1 / numberOfFood};
 egg = {name: "egg", weight: 1 / numberOfFood};
 fallingObjects = [apple, banana, bread, orange, broccoli, egg];
-
-console.log(fallingObjects);
 
 //Set the game's current state to `menu`:
 var state = menu;
@@ -513,11 +510,9 @@ function onOutOfBounds() {
  * Adds a random zero food waste tip to the screen.
  */
 function initFacts() {
-
     var factIndex = getRandomInt(0, 13);
-
     randomFactBox
-        .innerHTML = '<h2>Did You Know</h2><hr /><p>' + foodFacts[factIndex] + '</p>';
+        .innerHTML = '<h2 class="text-box-header">Did You Know</h2><hr /><p>' + foodFacts[factIndex] + '</p>';
 }
 
 function gameOver() {

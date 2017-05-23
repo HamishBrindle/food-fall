@@ -11,13 +11,21 @@ h1, h2, h3, button {
 }
 
 button {
+    margin-left: 20px;
+    margin-right: 20px;
     pointer-events: auto;
     outline: none;
     border: none;
 }
 
-button:focus {
+button:focus, button:hover, button::selection {
+    border: none;
     outline:0;
+    background: none;
+}
+
+tr {
+    border-radius: 10px;
 }
 
 i {
@@ -131,8 +139,8 @@ i {
     font-size: 80px;
     background: none;
     border: none;
-    top: 230px;
-    left: 350px;
+    top: 260px;
+    left: 325px;
 }
 
 #btn-main-menu-play i {
@@ -189,7 +197,7 @@ i {
 
 #instructions li {
     padding: 5px;
-    font-family: 'LemonMilk', "Arial Black", serif;
+    font-family: 'Varela Round', sans-serif;
     font-size: medium;
 }
 
@@ -230,7 +238,7 @@ i {
 
 #random-fact p {
     padding: 5px;
-    font-family: 'LemonMilk', "Arial Black", serif;
+    font-family: 'Varela Round', sans-serif;
     font-size: medium;
 }
 
