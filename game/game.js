@@ -271,9 +271,7 @@ function foodCatchCollision() {
 }
 
 function makeTwoObstacles() {
-
     if(obstacleCount >= MAX_OBSTACLE) return;
-
     var newTopObstacle = new Sprite(resources['assets/img/sprites/obstacle.png'].texture);
     newTopObstacle.x = GAME_WIDTH;
     newTopObstacle.height = getRandomInt(30, (2 * (GAME_HEIGHT / 3))); //
