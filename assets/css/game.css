@@ -11,13 +11,21 @@ h1, h2, h3, button {
 }
 
 button {
+    margin-left: 20px;
+    margin-right: 20px;
     pointer-events: auto;
     outline: none;
     border: none;
 }
 
-button:focus {
+button:focus, button:hover, button::selection {
+    border: none;
     outline:0;
+    background: none;
+}
+
+tr {
+    border-radius: 10px;
 }
 
 i {
@@ -46,9 +54,9 @@ i {
 }
 
 .overlay-title {
-    font-size: 3.5em;
+    font-size: 2.5em;
     padding-top: 5%;
-    color: #000;
+    color: #fff;
 }
 
 /* Leader-board ------------------------------------------------------------------------------------------------------*/
@@ -60,11 +68,11 @@ i {
     height: 90%;
     margin: auto;
     padding: 0;
-    background-color: #fff;
+    background-color: rgba(0, 0, 0, 0.4);
     border-radius: 6px;
-    box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.50);
     z-index: 2;
     vertical-align: middle;
+    color: #fff;
 }
 
 #btn-leader-board-exit {
@@ -90,7 +98,29 @@ i {
 
 /* Main Menu ---------------------------------------------------------------------------------------------------------*/
 
+.menu-button {
+    margin: 0 auto 0 auto;
+    font-size: 48px;
+    background: none;
+    border: none;
+}
+
+.text-box-header {
+    font-size: 25px;
+}
+
+.menu-button:hover {
+    border: none;
+    background: transparent;
+}
+
+.menu-button::selection {
+    border: none;
+    background: transparent;
+}
+
 #game-header {
+    display: none;
     position: absolute;
     width: 100%;
     margin: auto;
@@ -109,14 +139,8 @@ i {
     font-size: 80px;
     background: none;
     border: none;
-    top: 170px;
-    left: 340px;
-}
-
-#menu-buttons {
-    position: absolute;
-    top: -95px;
-    left: 315px;
+    top: 260px;
+    left: 325px;
 }
 
 #btn-main-menu-play i {
@@ -127,12 +151,14 @@ i {
     padding-left: 35px;
 }
 
+#menu-buttons {
+    position: absolute;
+    top: -230px;
+    left: 250px;
+}
+
 #btn-main-menu-leader-board {
     display: none;
-    margin: 0 auto 0 auto;
-    font-size: 48px;
-    background: none;
-    border: none;
 }
 
 #btn-main-menu-leader-board i {
@@ -142,15 +168,19 @@ i {
 #btn-main-menu-volume-on,
 #btn-main-menu-volume-off{
     display: none;
-    margin: 0 auto 0 auto;
-    font-size: 48px;
-    background: none;
-    border: none;
 }
 
 #btn-main-menu-volume-on i,
 #btn-main-menu-volume-off i{
     background: #2c64d9;
+}
+
+#btn-main-menu-share {
+    display: none;
+}
+
+#btn-main-menu-share i {
+    background: #d9c846;
 }
 
 #instructions {
@@ -167,7 +197,7 @@ i {
 
 #instructions li {
     padding: 5px;
-    font-family: 'LemonMilk', "Arial Black", serif;
+    font-family: 'Varela Round', sans-serif;
     font-size: medium;
 }
 
@@ -208,7 +238,7 @@ i {
 
 #random-fact p {
     padding: 5px;
-    font-family: 'LemonMilk', "Arial Black", serif;
+    font-family: 'Varela Round', sans-serif;
     font-size: medium;
 }
 
