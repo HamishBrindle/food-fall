@@ -305,10 +305,10 @@ function obstacleCollision(catcher, obstacle) {
 
 function isCollideObstacle(basket, obstacle) {
 
-    return !(((basket.y + BASKET_HEIGHT - Y_OFFSET) < (obstacle.y)) ||
-    ((basket.y - Y_OFFSET) > (obstacle.y + obstacle.height)) ||
-    ((basket.x + BASKET_WIDTH - X_OFFSET) < obstacle.x) ||
-    ((basket.x -X_OFFSET)> (obstacle.x + obstacle.width)));
+    return !(((basket.y + BASKET_HEIGHT - Y_OFFSET - 15) < (obstacle.y)) ||
+    ((basket.y - Y_OFFSET + 15) > (obstacle.y + obstacle.height)) ||
+    ((basket.x + BASKET_WIDTH - X_OFFSET - 15) < obstacle.x) ||
+    ((basket.x - X_OFFSET + 15) > (obstacle.x + obstacle.width)));
 }
 
 function addScore() {
