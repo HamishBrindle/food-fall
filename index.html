@@ -42,7 +42,7 @@
 
 </head>
 
-<body id="page-top" onload="userSignOut()">
+<body id="page-top" onload="checkUser()">
 
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -119,45 +119,51 @@
                 <p>Click the button below to start saving falling food! Get your high score up on the leader boards and
                     strike fear in the heart of food waste. </p>
                 <!-- /container -->
-                <form id="login" class="container">
-                    <div class="form-signin">
-                        <label for="txtName" class="sr-only">User Name</label>
-                        <input type="text" id="txtName" style="display:none" class="form-control txtNameSignUp"
-                               placeholder="User Name">
-                        <label for="txtEmail" class="sr-only">Email address</label>
-                        <input type="email" id="txtEmail" class="form-control txtEmailSignIn"
-                               placeholder="Email address" required>
-                        <label for="txtPassword" class="sr-only">Password</label>
-                        <input type="password" id="txtPassword" class="form-control txtPasswordSignIn"
-                               placeholder="Password" required>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="remember-me"> Remember me
-                            </label>
+                <div id="loginRegisterForm" style="display: block">
+                    <form id="login" class="container">
+                        <div class="form-signin">
+                            <!--<label for="txtName" class="sr-only">User Name</label>-->
+                            <!--<input type="text" id="txtName" class="form-control txtNameSignIn"-->
+                                   <!--placeholder="UserName if first time">-->
+                            <label for="txtEmail" class="sr-only">Email address</label>
+                            <input type="email" id="txtEmail" class="form-control txtEmailSignIn"
+                                   placeholder="example@example.com" required>
+                            <label for="txtPassword" class="sr-only">Password</label>
+                            <input type="password" id="txtPassword" class="form-control txtPasswordSignIn"
+                                   placeholder="6+ characters" required>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="remember-me"> Remember me
+                                </label>
+                            </div>
+                            <button id="playBtn" class="btn btn-lg btn-primary btn-block" type="button"
+                                    style="display:block" onclick="checkIfUserExists()">Play!
+                            </button>
                         </div>
-                        <button id="signInButton" class="btn btn-lg btn-primary btn-block" type="button"
-                                style="display:block" onclick="emailAndPasswordLogIn()">Sign in
+                    </form>
+                    <!--GOOGLE SIGN IN-->
+                    <div>
+                        <button class="btn-auth btn-google" onclick="googleSignIn()">
+                            Google Sign-in
                         </button>
-                        <button id="btnRegister" class="btn btn-lg btn-primary btn-block" type="button"
-                                onclick="registerButtonPressed()">Register
+                        <!-- <button onclick="facebookSignIn()">
+                            Facebook Sign-in
                         </button>
-                        <button id="backBtn" class="btn btn-lg btn-primary btn-block" type="button"
-                                style="display: none;" onclick="goBack()">Back
-                        </button>
+                        <button onclick="facebookSignOut()">
+                            Facebook Sign-out
+                        </button> -->
                     </div>
+                </div>
+                <div id="logoutInfo" style="display: none">
+                    <button id="logout" onclick="userSignOut()">
+                        <!--display logout button-->
+                        Logout
+                    </button>
+                    <p id="welcomeUserInfo">
+
+                    </p>
+                </div>
                 </form>
-                <!--GOOGLE SIGN IN -->
-                <!--<div>
-                    <button class="btn-auth btn-google" onclick="googleSignIn()">
-                        Google Sign-in
-                    </button>
-                    <button onclick="facebookSignIn()">
-                        Facebook Sign-in
-                    </button>
-                    <button onclick="facebookSignOut()">
-                        Facebook Sign-out
-                    </button>
-                </div>-->
                 <div class="badges">
                     <a style="padding-top: 10px;" class="badge-link" href="game.html" data-aos="zoom-in">
                         <img src="assets/img/web/play-badge.svg" alt="Play Food Fall">
@@ -268,8 +274,12 @@
             <div class="col-md-4 text-center">
                 <div class="section-heading">
                     <h2>We made a video!</h2>
-                    <p class="text-muted">In Metro Vancouver, over half of all household food waste could, at some point, have been eaten – things like uneaten leftovers or ingredients that spoiled before they were used. That’s over 100,000 tonnes of avoidable food waste per year!</p>
-                    <p style="font-size: 12px;">(Source: <a href="http://www.lovefoodhatewaste.ca/about/Documents/InfoBooklet.pdf" style="color: #00b3ee; text-decoration: none;"> Metro Vancouver’s baseline study</a>)</p>
+                    <p class="text-muted">In Metro Vancouver, over half of all household food waste could, at some
+                        point, have been eaten – things like uneaten leftovers or ingredients that spoiled before they
+                        were used. That’s over 100,000 tonnes of avoidable food waste per year!</p>
+                    <p style="font-size: 12px;">(Source: <a
+                            href="http://www.lovefoodhatewaste.ca/about/Documents/InfoBooklet.pdf"
+                            style="color: #00b3ee; text-decoration: none;"> Metro Vancouver’s baseline study</a>)</p>
                 </div>
             </div>
             <div class="col-md-8 ">

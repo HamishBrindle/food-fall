@@ -11,13 +11,21 @@ h1, h2, h3, button {
 }
 
 button {
+    margin-left: 20px;
+    margin-right: 20px;
     pointer-events: auto;
     outline: none;
     border: none;
 }
 
-button:focus {
+button:focus, button:hover, button::selection {
+    border: none;
     outline:0;
+    background: none;
+}
+
+tr {
+    border-radius: 10px;
 }
 
 i {
@@ -27,8 +35,12 @@ i {
     width: 75px;
     height: 75px;
     padding: 15px;
+    text-align: center;
 }
 
+#leaderboard {
+    position: relative;
+}
 #overlay {
     position: absolute;
     display: table-cell;
@@ -42,9 +54,9 @@ i {
 }
 
 .overlay-title {
-    font-size: 3.5em;
+    font-size: 2.5em;
     padding-top: 5%;
-    color: #000;
+    color: #fff;
 }
 
 /* Leader-board ------------------------------------------------------------------------------------------------------*/
@@ -52,20 +64,22 @@ i {
 #leader-board {
     position: relative;
     display: none;
-    width: 60%;
+    width: 50%;
     height: 90%;
     margin: auto;
     padding: 0;
-    background-color: #fff;
+    background-color: rgba(0, 0, 0, 0.4);
     border-radius: 6px;
-    box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.50);
     z-index: 2;
     vertical-align: middle;
+    color: #fff;
 }
 
 #btn-leader-board-exit {
     font-family: 'LemonMilk', "Arial Black", serif;
     font-size: 1em;
+    margin-top: 0;
+    margin-bottom: 7px;
 }
 
 #table-leader-board {
@@ -84,12 +98,67 @@ i {
 
 /* Main Menu ---------------------------------------------------------------------------------------------------------*/
 
-#btn-main-menu-leader-board {
-    display: none;
+.menu-button {
     margin: 0 auto 0 auto;
     font-size: 48px;
     background: none;
     border: none;
+}
+
+.text-box-header {
+    font-size: 25px;
+}
+
+.menu-button:hover {
+    border: none;
+    background: transparent;
+}
+
+.menu-button::selection {
+    border: none;
+    background: transparent;
+}
+
+#game-header {
+    display: none;
+    position: absolute;
+    width: 100%;
+    margin: auto;
+    padding: 0;
+}
+
+#game-banner {
+    width: 70%;
+    margin: auto;
+}
+
+#btn-main-menu-play {
+    position: absolute;
+    display: none;
+    margin: 0 auto 0 auto;
+    font-size: 80px;
+    background: none;
+    border: none;
+    top: 260px;
+    left: 325px;
+}
+
+#btn-main-menu-play i {
+    width: 120px;
+    height: 120px;
+    background: #40d97c;
+    padding: 20px;
+    padding-left: 35px;
+}
+
+#menu-buttons {
+    position: absolute;
+    top: -230px;
+    left: 250px;
+}
+
+#btn-main-menu-leader-board {
+    display: none;
 }
 
 #btn-main-menu-leader-board i {
@@ -99,15 +168,19 @@ i {
 #btn-main-menu-volume-on,
 #btn-main-menu-volume-off{
     display: none;
-    margin: 0 auto 0 auto;
-    font-size: 48px;
-    background: none;
-    border: none;
 }
 
 #btn-main-menu-volume-on i,
 #btn-main-menu-volume-off i{
     background: #2c64d9;
+}
+
+#btn-main-menu-share {
+    display: none;
+}
+
+#btn-main-menu-share i {
+    background: #d9c846;
 }
 
 #instructions {
@@ -116,7 +189,7 @@ i {
     top: 12em;
     left: 2em;
     background-color: rgba(0,0,0,0.50);
-    width: 20em;
+    width: 15em;
     height: auto;
     color: #fff;
     border-radius: 5px;
@@ -124,7 +197,7 @@ i {
 
 #instructions li {
     padding: 5px;
-    font-family: 'LemonMilk', "Arial Black", serif;
+    font-family: 'Varela Round', sans-serif;
     font-size: medium;
 }
 
@@ -135,13 +208,29 @@ i {
     margin-bottom: 5px;
 }
 
+#instructions-brown {
+    color: #795548;
+}
+
+#instructions-green {
+    color: #12ff19;
+}
+
+#instructions-red {
+    color: #ff0005;
+}
+
+#instructions-yellow {
+    color: #ffd226;
+}
+
 #random-fact {
     position: absolute;
     display: inline-block;
     top: 12em;
     right: 2em;
     background-color: rgba(0,0,0,0.50);
-    width: 20em;
+    width: 15em;
     height: auto;
     color: #fff;
     border-radius: 5px;
@@ -149,7 +238,7 @@ i {
 
 #random-fact p {
     padding: 5px;
-    font-family: 'LemonMilk', "Arial Black", serif;
+    font-family: 'Varela Round', sans-serif;
     font-size: medium;
 }
 
