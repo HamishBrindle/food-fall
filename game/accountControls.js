@@ -1,6 +1,3 @@
-//Most code that is commented out, I don't need currently,
-//but I don't want to delete it just yet.
-
 var config = {
     apiKey: "AIzaSyDLI2-ikgpZ8N4EX89enO8ERiMz63Rv7eo",
     authDomain: "fool-fall.firebaseapp.com",
@@ -15,11 +12,6 @@ var database = firebase.database();
 var auth = firebase.auth();
 
 
-//vars for email and password
-// var idName = document.getElementById('txtName');
-// var idEmail = document.getElementById('txtEmail');
-// var idPassword = document.getElementById('txtPassword');
-
 var txtEmailSignIn = document.getElementsByClassName('txtEmailSignIn');
 var txtPasswordSignIn = document.getElementsByClassName('txtPasswordSignIn');
 
@@ -31,24 +23,6 @@ const score = 0;
 
 //Authentication for Google sign-in
 var googleProvider = new firebase.auth.GoogleAuthProvider();
-
-
-// var playBtn = document.getElementById('playBtn');
-
-//loop through database, and set a variable to true or false;
-//if function() === false {
-// then call the register function
-// }
-// function checkIfUserExists(){
-//
-//     console.log(checked);
-//
-//     if(loopToCheckDatabase(emailLogin, passLogin, checked) === false){
-//         console.log(checked);
-//         console.log("starting registration process!")
-//         register(nameLogin, emailLogin, passLogin);
-//     }
-// }
 
 // This function checks to see if the information used when
 // entering the credentials if the email already exists in the database or not.
@@ -104,9 +78,6 @@ function checkIfUserExists() {
             }
         });
     });
-    //This query is called as I have no clue how to have the above code run before
-    //the bottom code. This is one attempt to solve that issue. This issue is my biggest issue.
-
 }
 
 
@@ -259,41 +230,7 @@ function googleSignIn() {
     googleProvider.addScope('profile');
     googleProvider.addScope('email');
     auth.signInWithRedirect(googleProvider);
-    //after the page is finished loading, get data from the user.
-    //
-    // auth.onAuthStateChanged((user) => {
-    //     auth.getRedirectResult().then(function (result) {
-    //         var person = result.user;
-    //     if (user) {
-    //         alert(person.uid);
-    //         window.location.replace('game.html');
-    //     }
-    // });
-    //
-    // });
 
-    // firebase.auth().getRedirectResult().then(function (result) {
-    //     //error here, get's data while choosing an account.
-    //     var token = result.credential;
-    //     var user = result.user;
-    //
-    //     console.log(result.user);
-    //     var userIDinDatabase = firebase.database().ref("users/");
-    //     userIDinDatabase.once("values", function (snapshot) {
-    //         console.log(shapshot.uid);
-    //         if (snapshot.uid == user.uid) {
-    //             alert("hi");
-    //         }
-    //     });
-    //     console.log(token);
-    //     console.log(user.uid);
-    // }).catch(function (error) {
-    //     var errorCode = error.code;
-    //     var errorMessage = error.message;
-    //
-    //     console.log(errorCode);
-    //     console.log(errorMessage);
-    // });
 }
 
 
