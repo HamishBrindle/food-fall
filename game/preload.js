@@ -213,12 +213,12 @@ var portal;
 
 // Food items in game
 var numberOfFood = 6;
-apple = {name: "apple", weight: 1 / numberOfFood};
-banana = {name: "banana", weight: 1 / numberOfFood};
-bread = {name: "bread", weight: 1 / numberOfFood};
-orange = {name: "orange", weight: 1 / numberOfFood};
-broccoli = {name: "broccoli", weight: 1 / numberOfFood};
-egg = {name: "egg", weight: 1 / numberOfFood};
+apple = {name: "apple", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false, isHitBasket: false};
+banana = {name: "banana", weight: 1 / numberOfFood, scoreValue: 5, isCaught: false, isHitBasket: false};
+bread = {name: "bread", weight: 1 / numberOfFood, scoreValue: 9, isCaught: false, isHitBasket: false};
+orange = {name: "orange", weight: 1 / numberOfFood, scoreValue: 7, isCaught: false, isHitBasket: false};
+broccoli = {name: "broccoli", weight: 1 / numberOfFood, scoreValue: 3, isCaught: false, isHitBasket: false};
+egg = {name: "egg", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false, isHitBasket: false};
 fallingObjects = [apple, banana, bread, orange, broccoli, egg];
 
 //Set the game's current state to `menu`:
