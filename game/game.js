@@ -15,7 +15,6 @@ var lastXPos = 0;
 // check the amount of food caught
 // resets every 5 seconds in current implementation
 var caughtFood = [];
-
 // for combo function
 var eggCount = 0;
 var cowLevelHasBeenActivated = false;
@@ -25,18 +24,6 @@ var score = new PIXI.Text(scoreCount, {
     fontFamily: 'LemonMilk',
     fill: 'white'
 });
-
-/* Scorebox for displaying
-var scoreBox = new PIXI.Sprite(resources['assets/img/sprites/text-box.png'].texture);
-
-scoreBox.x = GAME_WIDTH / 2;
-scoreBox.y = GAME_HEIGHT / 2;
-scoreBox.anchor.x = 0.5;
-scoreBox.width = 100;
-scoreBox.height = 100;
-
-stage.addChild(scoreBox);
-*/
 
 function gameInit() {
     if(gameBuild) {
@@ -225,9 +212,13 @@ function foodCatchCollision() {
 
                 fallingItem.velocityY += deltaVy;
                 fallingItem.rotation += fallingItem.rotateFactor;
+                var isFoodOffScreen = fallingItem.y > GAME_HEIGHT ||
+                                        fallingItem.x > GAME_WIDTH ||
+                                        fallingItem.x < 0;
 
-                if (fallingItem.y > GAME_HEIGHT) {
+                if (isFoodOffScreen) {
                     decreaseScore();
+                    makePointDecrementer(fallingItem);
                     childrenToDelete.push(fallingItem);
                     fallingItem.destroy();
                     --foodCount;
@@ -235,7 +226,7 @@ function foodCatchCollision() {
                     let type = getFoodType(fallingItem);
                     caughtFood.push(type.name);
                     console.log("asdfasdf");
-                    makePointCounter(catcher, fallingItem)
+                    makePointIncrementer(catcher, fallingItem)
                     fadeOut(fallingItem, foodFadeDuration);
                     modScore(fallingItem);
                     isCombo();
@@ -244,6 +235,7 @@ function foodCatchCollision() {
                     fallingItem.velocityY = 10;
                     fallingItem.rotateFactor = 0;
                     fallingItem.isHitBasket = true;
+
                 } else if (isBounce(catcher, fallingItem, catcherVelocityX)) {
                     var newItemVelocityX = 1000 / catcherVelocityX;
                     if(newItemVelocityX > 6) {
@@ -253,9 +245,8 @@ function foodCatchCollision() {
                     }
                     fallingItem.velocityX = -newItemVelocityX;
                 }
-
             }
-            if(fallingItem.isPointCounter) {
+            if(fallingItem.isPointCounter || fallingItem.isPointDecrementer) {
                 fallingItem.y -= 3;
             }
         }
@@ -358,8 +349,28 @@ function endGame() {
     destroyOldObjects();
 }
 
-function makePointCounter(catcher, item) {
+function makePointDecrementer(item) {
+    var pointDecrementer = new PIXI.Text("-2", {
+        fontSize: 50,
+        fontFamily: 'LemonMilk',
+        fill: 'red'
+    });
+    pointDecrementer.isPointDecrementer = true;
+    if(item.x > GAME_WIDTH) {
+        pointDecrementer.x = GAME_WIDTH - 20;
+        pointDecrementer.y = item.y;
+    } else if(item.x < 0){
+        pointDecrementer.x = 10;
+        pointDecrementer.y = item.y;
+    } else {
+        pointDecrementer.y = GAME_HEIGHT - 10;
+        pointDecrementer.x = item.x;
 
+    }
+    stage.addChild(pointDecrementer);
+    fadeOut(pointDecrementer, pointFadeDuration);
+}
+function makePointIncrementer(catcher, item) {
     var pointCounter = new PIXI.Text("+" + item.name.scoreValue, {
         fontSize: 50,
         fontFamily: 'LemonMilk',
