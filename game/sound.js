@@ -5,10 +5,11 @@
  * Created by Hamish Brindle on 2017-05-05.
  */
 
-var coin = new Howl({
-    src: ['assets/sound/SFX-coin.wav'],
+var gameSFX = new Howl({
+    src: ['assets/sound/SFX-8bit.mp3'],
     sprite: {
-        coin: [0, 3000],
+        point: [4600, 1000],
+        gameOver: [6000, 1500],
     },
     volume: 0.15
 });
@@ -31,15 +32,25 @@ var music = new Howl({
     }
 });
 
+var portalSFX = new Howl({
+    src: ['assets/sound/SFX-portal.mp3'],
+    sprite: {
+        portal: [0, 10000],
+    },
+    volume: 0.25,
+    loop: true
+});
+
 function muteSound() {
     music.pause();
-    coin.volume(0);
+    gameSFX.volume(0);
     menuSound.volume(0);
+    portalSFX.volume(0);
 }
 
 function unmuteSound() {
     music.play();
-    coin.volume(0.5);
+    gameSFX.volume(0.5);
     menuSound.volume(0.5);
+    portalSFX.volume(0.5);
 }
-
