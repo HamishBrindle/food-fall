@@ -179,13 +179,13 @@ function foodCatchCollision() {
     var currXPos = catcher.x;
 
     var catcherVelocityX = (lastXPos - currXPos) / deltaTime;
-    // if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
-    //     displayNo();
-    //     if (currentElapsedGameTime == 4) {
-    //         afterCountDown = true;
-    //     }
-    // }
-    if(true) {
+    if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
+        displayNo();
+        if (currentElapsedGameTime == 4) {
+            afterCountDown = true;
+        }
+    }
+    if(afterCountDown) {
         lastXPos = catcher.x;
         makeFood();
         makeObstacle();
