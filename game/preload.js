@@ -138,15 +138,17 @@
         Sprite = PIXI.Sprite;
 
     // Rendering Options.
+    var myView = document.getElementById('myCanvas');
+
     var rendererOptions = {
         antiAliasing: false,
-        transparent: true,
+        transparent: false,
         resolution: window.devicePixelRatio,
         autoResize: true
     };
 
     // Create renderer.
-    var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
+    var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, myView, rendererOptions);
 
     // Create new Container for stage.
     var stage = new Container();
@@ -157,7 +159,7 @@
     renderer.view.style.left = "0px"; // Centers window.
 
     // Add renderer to page.
-    document.getElementById("game-canvas").appendChild(renderer.view);
+    document.getElementById("game-window").appendChild(renderer.view);
 
     //Globals -------------------------------------------------------------------------------Globals
     var font = new Font();
