@@ -4,6 +4,7 @@ let loggedIn = false;
 // These elements are used in preload.js so we must declare them globally for now
 const logOutPanel = document.getElementById("log-out-main-menu");
 const loginPanel = document.getElementById("login-panel");
+const loginBox = document.getElementById("loginbox");
 const signUpPanel = document.getElementById("signupbox");
 
 (function() {
@@ -30,47 +31,42 @@ const signUpPanel = document.getElementById("signupbox");
     const btnLogOutMainMenu = document.getElementById('btnLogOutMainMenu');
 
     // Event listeners for LOGIN button
-    btnLogin.addEventListener('click', e => {
-
+    btnLogin.addEventListener('click', signIn);
+    btnLogin.addEventListener('touchend', signIn);
+    function signIn() {
         // Get email and password fields
         const email = txtEmail.value;
         const password = txtPassword.value;
         const auth = firebase.auth();
-
         // Sign in
         const promise = auth.signInWithEmailAndPassword(email, password);
-
         promise.catch(e => console.log(e.message));
-
-    });
+    }
 
     // Event listeners for SIGN-UP button
-    btnSignUp.addEventListener('click', e => {
-
+    btnSignUp.addEventListener('click', signUp);
+    btnSignUp.addEventListener('touchend', signUp);
+    function signUp() {
         // Get email and password fields
         // TODO: Check for REAL EMAIL
         const email = txtEmailSignUp.value;
         const password = txtPasswordSignUp.value;
         const auth = firebase.auth();
-
-        // Sign in
+        // Sign up
         const promise = auth.createUserWithEmailAndPassword(email, password);
-
         promise.catch(e => console.log(e.message));
-
-    });
+    }
 
     // Event listener for LOGOUT button
-    btnLogOut.addEventListener('click', e => {
-        menuBuild = true;
-        firebase.auth().signOut();
-    });
-
+    btnLogOut.addEventListener('click', logOutMainMenu);
+    btnLogOut.addEventListener('touchend', logOutMainMenu);
     // Event listener for LOGOUT button on the MAIN MENU
-    btnLogOutMainMenu.addEventListener('click', e => {
+    btnLogOutMainMenu.addEventListener('click', logOutMainMenu);
+    btnLogOutMainMenu.addEventListener('touchend', logOutMainMenu);
+    function logOutMainMenu() {
         menuBuild = true;
         firebase.auth().signOut();
-    });
+    }
 
     // Real-time user authentication
     firebase.auth().onAuthStateChanged(firebaseUser => {
@@ -84,7 +80,6 @@ const signUpPanel = document.getElementById("signupbox");
             } catch(exception) {
                 console.log("Login hidden.");
             }
-
             logOutPanel.style.display = "block";
 
         } else {
@@ -93,6 +88,8 @@ const signUpPanel = document.getElementById("signupbox");
             loggedIn = false;
             loginPanel.style.display = "block";
             logOutPanel.style.display = "none";
+            loginBox.style.display = "block";
         }
     });
+
 }());
