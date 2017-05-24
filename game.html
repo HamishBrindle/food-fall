@@ -30,6 +30,127 @@
 <main>
     <div class="container-fluid text-center outer" id="game-window">
         <div id="overlay">
+
+<!-- Start of Login/Signup -------------------------------------------------------------------------------------------->
+
+            <div class="container login-menu">
+
+                <!-- LOGIN -->
+                <div id="login-panel" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-info" id="loginbox">
+                        <div class="panel-heading" id="loginbox-panel-heading">
+                            <div class="panel-title"><h2 class="text-box-header">Sign In</h2></div>
+                        </div>
+
+                        <div style="padding-top:30px" class="panel-body">
+
+                            <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+
+                            <form id="loginform" class="form-horizontal" role="form">
+
+                                <div style="margin-bottom: 25px" class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                    <input id="login-username" type="email" class="form-control txtEmailSignIn" name="username" value=""
+                                           placeholder="username or email">
+                                </div>
+
+                                <div style="margin-bottom: 25px" class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                    <input id="login-password" type="password" class="form-control txtPasswordSignIn" name="password"
+                                           placeholder="password">
+                                </div>
+
+
+                                <div class="input-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="login-remember" type="checkbox" name="remember" value="1">
+                                            Remember me
+                                        </label>
+                                    </div>
+                                </div>
+
+
+                                <div style="margin-top:10px" class="form-group">
+                                    <!-- Button -->
+
+                                    <div class="col-sm-12 controls">
+                                        <button id="btn-login" href="#" class="btn btn-success" onclick="checkIfUserExists()">Login </button>
+                                        <button id="btn-fblogin" href="#" class="btn btn-primary">Login with Facebook</button>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-md-12 control">
+                                        <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">
+                                            Don't have an account?
+                                            <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()">
+                                                Sign Up Here
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SIGNUP -->
+                <div id="signupbox" style="display:none; margin-top:50px"
+                     class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-info">
+                        <div id="signupbox-panel-heading" class="panel-heading">
+                            <div class="panel-title"><h2 class="text-box-header">Sign Up</h2></div>
+                            <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink"
+                                                                                                       href="#"
+                                                                                                       onclick="$('#signupbox').hide(); $('#loginbox').show()">Sign
+                                In</a></div>
+                        </div>
+                        <div class="panel-body">
+                            <form id="signupform" class="form-horizontal" role="form">
+
+                                <div id="signupalert" style="display:none" class="alert alert-danger">
+                                    <p>Error:</p>
+                                    <span></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email" class="col-md-3 control-label">Email</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" id="email" placeholder="Email Address">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="password" class="col-md-3 control-label">Password</label>
+                                    <div class="col-md-9">
+                                        <input type="password" class="form-control" id="password"
+                                               placeholder="Password">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <!-- Button -->
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <button id="btn-signup" type="button" class="btn btn-info"><i
+                                                class="icon-hand-right"></i> &nbsp Sign Up
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+<!-- End of Login/Signup ---------------------------------------------------------------------------------------------->
+
             <div id="game-header">
                 <img id="game-banner" src="assets/img/web/site-logo-white-long.svg" alt="Food-fall-logo"/>
             </div>
@@ -50,20 +171,33 @@
                 <button class="btn btn-success" id="btn-leader-board-exit">EXIT</button>
             </div>
             <div id="main-menu">
-                <button class="btn btn-info bottom-align-text" id="btn-main-menu-play"><i class="fa fa-play"></i></button>
+                <button class="btn btn-info bottom-align-text" id="btn-main-menu-play"><i class="fa fa-play"></i>
+                </button>
                 <div class="btn-group" id="menu-buttons">
-                    <button class="btn btn-info bottom-align-text menu-button" id="btn-main-menu-volume-on"><i class="fa fa-volume-up"></i></button>
-                    <button class="btn btn-info bottom-align-text menu-button" id="btn-main-menu-volume-off"><i class="fa fa-volume-off"></i></button>
-                    <button class="btn btn-info bottom-align-text menu-button" id="btn-main-menu-leader-board"><i class="fa fa-trophy"></i></button>
-                    <button class="btn btn-info bottom-align-text menu-button" id="btn-main-menu-share"><i class="fa fa-share"></i></button>
+                    <button class="btn btn-info bottom-align-text menu-button" id="btn-main-menu-volume-on"><i
+                            class="fa fa-volume-up"></i></button>
+                    <button class="btn btn-info bottom-align-text menu-button" id="btn-main-menu-volume-off"><i
+                            class="fa fa-volume-off"></i></button>
+                    <button class="btn btn-info bottom-align-text menu-button" id="btn-main-menu-leader-board"><i
+                            class="fa fa-trophy"></i></button>
+                    <button class="btn btn-info bottom-align-text menu-button" id="btn-main-menu-share"><i
+                            class="fa fa-share"></i></button>
                 </div>
                 <div class="text-box text-centered" id="instructions">
                     <h2 class="text-box-header">Instructions</h2>
-                    <hr />
+                    <hr/>
                     <ul class="list-unstyled">
-                        <li>Use mouse/touch to drag your <span id="instructions-brown" style="font-family: 'LemonMilk', sans-serif;">basket</span> around.</li>
-                        <li>Catching food for <span id="instructions-green" style="font-family: 'LemonMilk', sans-serif;">points</span>. Don't let it go to <span id="instructions-red" style="font-family: 'LemonMilk', sans-serif;">waste</span>!</li>
-                        <li>Avoid the <span id="instructions-yellow" style="font-family: 'LemonMilk', sans-serif;">obstacles</span>.</li>
+                        <li>Use mouse/touch to drag your <span id="instructions-brown"
+                                                               style="font-family: 'LemonMilk', sans-serif;">basket</span>
+                            around.
+                        </li>
+                        <li>Catching food for <span id="instructions-green"
+                                                    style="font-family: 'LemonMilk', sans-serif;">points</span>. Don't
+                            let it go to <span id="instructions-red"
+                                               style="font-family: 'LemonMilk', sans-serif;">waste</span>!
+                        </li>
+                        <li>Avoid the <span id="instructions-yellow" style="font-family: 'LemonMilk', sans-serif;">obstacles</span>.
+                        </li>
                     </ul>
                 </div>
                 <div class="text-box text-centered" id="random-fact">
@@ -83,6 +217,8 @@
 <script src="game/facts.js" defer></script>
 <script src="game/sound.js" defer></script>
 <script src="game/game.js" defer></script>
+<script src="game/accountControls.js" defer></script>
+
 
 </body>
 </html>

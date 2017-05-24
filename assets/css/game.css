@@ -10,6 +10,10 @@ h1, h2, h3, button {
     font-family: 'LemonMilk', "Arial Black", serif;
 }
 
+input {
+    pointer-events: auto;
+}
+
 button {
     margin-left: 20px;
     margin-right: 20px;
@@ -18,24 +22,8 @@ button {
     border: none;
 }
 
-button:focus, button:hover, button::selection {
-    border: none;
-    outline:0;
-    background: none;
-}
-
 tr {
     border-radius: 10px;
-}
-
-i {
-    display: inline-block;
-    border-radius: 60px;
-    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.5);
-    width: 75px;
-    height: 75px;
-    padding: 15px;
-    text-align: center;
 }
 
 #leaderboard {
@@ -103,6 +91,16 @@ i {
     font-size: 48px;
     background: none;
     border: none;
+}
+
+#main-menu i {
+    display: inline-block;
+    border-radius: 60px;
+    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.5);
+    width: 75px;
+    height: 75px;
+    padding: 15px;
+    text-align: center;
 }
 
 .text-box-header {
@@ -247,6 +245,90 @@ i {
     margin: auto;
     margin-top: 0;
     margin-bottom: 5px;
+}
+
+/* Game Login --------------------------------------------------------------------------------------------------------*/
+
+.login-menu {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    padding: 0;
+    pointer-events: auto;
+    z-index: 999;
+}
+
+#loginbox {
+    height: 90%;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: none;
+    color: #fff;
+}
+
+#game-login {
+    display: inline-block;
+    position: relative;
+    width: 80%;
+    height: 90%;
+    margin: auto;
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 6px;
+    z-index: 2;
+    vertical-align: middle;
+    color: #fff;
+}
+
+#game-login input {
+     width: 50%;
+     margin: 0;
+}
+
+#game-login button {
+    width: 50%;
+    margin: 0;
+}
+
+#login-panel {
+    position: absolute;
+    top: 75px;
+}
+
+#loginbox-panel-heading {
+    color: #fff;
+    background-color: transparent;
+}
+
+#loginform {
+    font-family: 'Varela Round', sans-serif;
+}
+
+/* Game Signup --------------------------------------------------------------------------------------------------------*/
+
+#signupbox a {
+    color: #fff;
+    font-family: 'Varela Round', sans-serif;
+}
+
+#signupbox button{
+    font-family: 'Varela Round', sans-serif;
+}
+
+#signupbox button:hover{
+
+}
+
+#signupbox .panel-info {
+    background-color: rgba(0,0,0,0.4);
+    border: none;
+    color: #fff;
+    font-family: 'Varela Round', sans-serif;
+}
+
+#signupbox-panel-heading {
+    color: #fff;
+    background-color: transparent;
 }
 
 /* Overlay Mobile ----------------------------------------------------------------------------------------------------*/
