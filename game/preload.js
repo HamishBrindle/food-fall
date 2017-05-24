@@ -101,7 +101,7 @@
 
     /* GAME --------------------------------------------------------------------------------------------------------------*/
 
-    // Stage-size parameters
+    // Stage-size parameterss
     var GAME_WIDTH = 800;
     var GAME_HEIGHT = 500;
 
