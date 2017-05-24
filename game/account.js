@@ -139,7 +139,7 @@ const signUpPanel = document.getElementById("signupbox");
                 logOutPanel.style.display = "none";
                 loginBox.style.display = "block";
             } catch (exception) {
-                console.log("Login displayed.");
+                console.log("Login displayed..");
             }
         }
     });
