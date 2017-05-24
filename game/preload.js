@@ -62,10 +62,21 @@ btnMainMenuLeaderBoard.addEventListener("click", btnLeaderBoard);
 btnMainMenuLeaderBoard.addEventListener("touchend", btnLeaderBoard);
 function btnLeaderBoard() {
     document.getElementById("table-body").innerHTML = "";
-    dumpScores();
+    updateLeader().done(function(){
+        popLeaderboard();
+    })
     hideMenu();
     leaderBoard.style.display = "block";
     btnMainMenuLeaderBoard.style.display = "none";
+}
+
+function updateLeader() {
+
+    var def = $.Deferred();
+
+    def.resolve(dumpScores());
+
+    return def.promise();
 }
 
 // Sound on and off buttons
@@ -201,12 +212,12 @@ var portal;
 
 // Food items in game
 var numberOfFood = 6;
-apple = {name: "apple", weight: 1 / numberOfFood};
-banana = {name: "banana", weight: 1 / numberOfFood};
-bread = {name: "bread", weight: 1 / numberOfFood};
-orange = {name: "orange", weight: 1 / numberOfFood};
-broccoli = {name: "broccoli", weight: 1 / numberOfFood};
-egg = {name: "egg", weight: 1 / numberOfFood};
+apple = {name: "apple", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false, isHitBasket: false};
+banana = {name: "banana", weight: 1 / numberOfFood, scoreValue: 5, isCaught: false, isHitBasket: false};
+bread = {name: "bread", weight: 1 / numberOfFood, scoreValue: 9, isCaught: false, isHitBasket: false};
+orange = {name: "orange", weight: 1 / numberOfFood, scoreValue: 7, isCaught: false, isHitBasket: false};
+broccoli = {name: "broccoli", weight: 1 / numberOfFood, scoreValue: 3, isCaught: false, isHitBasket: false};
+egg = {name: "egg", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false, isHitBasket: false};
 fallingObjects = [apple, banana, bread, orange, broccoli, egg];
 
 //Set the game's starting state.
@@ -335,6 +346,8 @@ function setup() {
     //Start the game loop
     gameLoop();
 
+    scores = [];
+    dumpScores();
 }
 
 //Animation loop
@@ -537,6 +550,7 @@ function gameOver() {
 function gameOverDisplay() {
     if (gameOverBuild) {
 
+        // Add logo to menu
         gameOverBanner = new Sprite(resources['assets/img/sprites/game-over.png'].texture);
         gameOverBanner.x = (GAME_WIDTH / 2) - (gameOverBanner.width / 2);
         gameOverBanner.y = GAME_HEIGHT - (gameOverBanner.height * 4);
@@ -593,6 +607,8 @@ function gameOverDisplay() {
             stage.removeChild(gameOverBanner);
             stage.removeChild(menuButton);
             stage.removeChild(score);
+            scores = [];
+            dumpScores();
         });
         menuButton.mouseover = function (mouseData) {
             this.width *= 1.25;
@@ -779,6 +795,7 @@ function dumpScores() {
                 //console.log("Username: " + childName + " Score: " + childScore);
             });
         });
+
     scores.sort(sortFunction);
 
     function sortFunction(a, b) {
@@ -788,6 +805,9 @@ function dumpScores() {
             return (a.childScore > b.childScore) ? -1 : 1;
         }
     }
+
+}
+function popLeaderboard() {
 
     var myTable = "";
 
