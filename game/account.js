@@ -4,7 +4,7 @@ let loggedIn = false;
 // These elements are used in preload.js so we must declare them globally for now
 const logOutPanel = document.getElementById("log-out-main-menu");
 const loginPanel = document.getElementById("login-panel");
-const signUpPanel = document.getElementById("signinbox");
+const signUpPanel = document.getElementById("signupbox");
 
 (function() {
 
@@ -65,7 +65,7 @@ const signUpPanel = document.getElementById("signinbox");
         firebase.auth().signOut();
     });
 
-    // Event listener for LOGOUT button
+    // Event listener for LOGOUT button on the MAIN MENU
     btnLogOutMainMenu.addEventListener('click', e => {
         firebase.auth().signOut();
     });
