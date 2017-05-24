@@ -526,7 +526,7 @@ function onOutOfBounds() {
 function initFacts() {
     var factIndex = getRandomInt(0, 13);
     randomFactBox
-        .innerHTML = '<h2 class="text-box-header">Did You Know</h2><hr /><p>' + foodFacts[factIndex] + '</p>';
+        .innerHTML = '<h2 class="text-box-header">Food Fact</h2><hr /><p>' + foodFacts[factIndex] + '</p>';
 }
 
 function gameOver() {
