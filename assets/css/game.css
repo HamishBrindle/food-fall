@@ -42,10 +42,10 @@ tr {
 /* Leader-board ------------------------------------------------------------------------------------------------------*/
 
 #leader-board {
-    position: relative;
+    position: absolute;
     display: none;
     width: 50%;
-    height: 90%;
+    height: 95%;
     margin: auto;
     padding: 0;
     background-color: rgba(0, 0, 0, 0.4);
@@ -53,6 +53,8 @@ tr {
     z-index: 2;
     vertical-align: middle;
     color: #fff;
+    top: 15px;
+    left: 200px;
 }
 
 #btn-leader-board-exit {
@@ -65,7 +67,6 @@ tr {
 #table-leader-board {
     width: 60%;
     margin: 10px auto 10px auto;
-    padding-bottom: 10px;
     font-family: 'LemonMilk', "Arial Black", serif;
     text-align: left;
 }

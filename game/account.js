@@ -62,11 +62,13 @@ const signUpPanel = document.getElementById("signupbox");
 
     // Event listener for LOGOUT button
     btnLogOut.addEventListener('click', e => {
+        menuBuild = true;
         firebase.auth().signOut();
     });
 
     // Event listener for LOGOUT button on the MAIN MENU
     btnLogOutMainMenu.addEventListener('click', e => {
+        menuBuild = true;
         firebase.auth().signOut();
     });
 

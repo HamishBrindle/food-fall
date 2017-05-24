@@ -53,6 +53,8 @@ btnLeaderBoardExit.addEventListener("click", btnExitLeaderBoard);
 btnLeaderBoardExit.addEventListener("touchend", btnExitLeaderBoard);
 function btnExitLeaderBoard() {
     showMenu();
+    displayLogOutMainMenu();
+    logOutPanel.style.display = "block";
     leaderBoard.style.display = "none";
     btnMainMenuLeaderBoard.style.display = "block";
 }
@@ -64,18 +66,17 @@ function btnLeaderBoard() {
     document.getElementById("table-body").innerHTML = "";
     updateLeader().done(function(){
         popLeaderboard();
-    })
+    });
+    console.log('LEADER BOARD');
     hideMenu();
+    logOutPanel.style.display = "none";
     leaderBoard.style.display = "block";
     btnMainMenuLeaderBoard.style.display = "none";
 }
 
 function updateLeader() {
-
     var def = $.Deferred();
-
     def.resolve(dumpScores());
-
     return def.promise();
 }
 
@@ -100,10 +101,6 @@ function btnVolumeOff() {
 // Stage-size parameters
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 500;
-
-//Variables
-var maxXSpeed = 50;
-var maxYSpeed = 25;
 
 // Background elements relative speeds
 var backgroundScrollSpeed = {
@@ -396,7 +393,6 @@ function showMenu() {
     logo.style.display = "block";
     instructions.style.display = "inline-block";
     randomFactBox.style.display = "inline-block";
-    menuBuild = false;
 }
 
 function hideMenu() {
@@ -409,7 +405,6 @@ function hideMenu() {
     randomFactBox.style.display = "none";
     logo.style.display = "none";
     btnShare.style.display = "none";
-    menuBuild = true;
 }
 
 function gameMenuDisplay() {
@@ -418,6 +413,7 @@ function gameMenuDisplay() {
         // Add a fact to the stage
         initFacts();
         // Set game state indicators (e.i. has menu been built / has catcher been built)
+        menuBuild = false;
         catcherBuild = true;
     }
 }
@@ -485,7 +481,6 @@ function playGameFromMenu() {
 function menu() {
     animateBackground();
     gameMenuDisplay();
-    displayLogOutMainMenu();
 }
 
 function initCatcher() {
