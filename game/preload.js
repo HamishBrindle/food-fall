@@ -72,10 +72,21 @@ btnMainMenuLeaderBoard.addEventListener("click", btnLeaderBoard);
 btnMainMenuLeaderBoard.addEventListener("touchend", btnLeaderBoard);
 function btnLeaderBoard() {
     document.getElementById("table-body").innerHTML = "";
-    dumpScores();
+    updateLeader().done(function(){
+        popLeaderboard();
+    })
     hideMenu();
     leaderBoard.style.display = "block";
     btnMainMenuLeaderBoard.style.display = "none";
+}
+
+function updateLeader() {
+
+    var def = $.Deferred();
+
+    def.resolve(dumpScores());
+
+    return def.promise();
 }
 
 // Sound on and off buttons
@@ -345,6 +356,8 @@ function setup() {
     //Start the game loop
     gameLoop();
 
+    scores = [];
+    dumpScores();
 }
 
 //Animation loop
@@ -523,6 +536,7 @@ function gameOver() {
 function gameOverDisplay() {
     if (gameOverBuild) {
 
+        // Add logo to menu
         gameOverBanner = new Sprite(resources['assets/img/sprites/game-over.png'].texture);
         gameOverBanner.x = (GAME_WIDTH / 2) - (gameOverBanner.width / 2);
         gameOverBanner.y = GAME_HEIGHT - (gameOverBanner.height * 4);
@@ -579,6 +593,8 @@ function gameOverDisplay() {
             stage.removeChild(gameOverBanner);
             stage.removeChild(menuButton);
             stage.removeChild(score);
+            scores = [];
+            dumpScores();
         });
         menuButton.mouseover = function (mouseData) {
             this.width *= 1.25;
@@ -765,6 +781,7 @@ function dumpScores() {
                 //console.log("Username: " + childName + " Score: " + childScore);
             });
         });
+
     scores.sort(sortFunction);
 
     function sortFunction(a, b) {
@@ -774,6 +791,9 @@ function dumpScores() {
             return (a.childScore > b.childScore) ? -1 : 1;
         }
     }
+
+}
+function popLeaderboard() {
 
     var myTable = "";
 

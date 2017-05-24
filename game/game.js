@@ -104,8 +104,8 @@ function isInBasket(basket, food) {
     // TODO: change naming conventions - Kerry
     var basketBotY = basket.y + BASKET_HEIGHT - Y_OFFSET;
 
-    var upperLeftBasket = {x:basketLeftX, y:basketTopY};
-    var lowerRightBasket = {x:basketRightX, y:(basketTopY + 30)};
+    var upperLeftBasket = {x:basketLeftX + 10, y:basketTopY};
+    var lowerRightBasket = {x:basketRightX - 10, y:(basketTopY + 30)};
 
     var inBasket = (food.x > upperLeftBasket.x) && (food.y > upperLeftBasket.y)
         && (food.x < lowerRightBasket.x) && (food.y < lowerRightBasket.y);
@@ -240,8 +240,7 @@ function foodCatchCollision() {
                     fallingItem.velocityY = 10;
                     fallingItem.rotateFactor = 0;
                     fallingItem.isHitBasket = true;
-
-                } else if (isBounce(catcher, fallingItem, catcherVelocityX)) {
+                } else if (!fallingItem.isHitBasket && isBounce (catcher, fallingItem, catcherVelocityX)) {
                     var newItemVelocityX = 1000 / catcherVelocityX;
                     if(newItemVelocityX > 6) {
                         newItemVelocityX = 6;
@@ -386,7 +385,7 @@ function makePointDecrementer(item) {
     });
     pointDecrementer.isPointDecrementer = true;
     if(item.x > GAME_WIDTH) {
-        pointDecrementer.x = GAME_WIDTH - 20;
+        pointDecrementer.x = GAME_WIDTH - pointDecrementer.width;
         pointDecrementer.y = item.y;
     } else if(item.x < 0){
         pointDecrementer.x = 10;
