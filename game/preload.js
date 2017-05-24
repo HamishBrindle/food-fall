@@ -16,8 +16,8 @@ var i = 0;
 
 var scoresRef = firebase.database().ref("users").orderByKey();
 scoresRef.once("value")
-    .then(function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
+    .then(function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
             var user = {};
             var key = childSnapshot.key;
             var childData = childSnapshot.val();
@@ -41,19 +41,28 @@ var leaderBoard = document.getElementById("leader-board");
 var instructions = document.getElementById("instructions");
 var randomFactBox = document.getElementById("random-fact");
 var logo = document.getElementById("game-header");
+var btnShare = document.getElementById("btn-main-menu-share");
+
+// Main-menu share button
+btnShare.addEventListener("click", shareBtn);
+btnShare.addEventListener("touchend", shareBtn);
+function shareBtn() {
+    console.log("SHARE BUTTON CLICKED");
+}
 
 // Main-menu play button
 btnPlay.addEventListener("click", playBtn);
 btnPlay.addEventListener("touchend", playBtn);
 function playBtn() {
     playGameFromMenu();
-    menuSound.play('menu')
+    menuSound.play('menu');
 }
 
 // Listeners for exiting the leader-board
 btnLeaderBoardExit.addEventListener("click", btnExitLeaderBoard);
 btnLeaderBoardExit.addEventListener("touchend", btnExitLeaderBoard);
-function btnExitLeaderBoard(){
+function btnExitLeaderBoard() {
+    showMenu();
     leaderBoard.style.display = "none";
     btnMainMenuLeaderBoard.style.display = "block";
 }
@@ -61,13 +70,13 @@ function btnExitLeaderBoard(){
 // Listeners for entering the leader-board
 btnMainMenuLeaderBoard.addEventListener("click", btnLeaderBoard);
 btnMainMenuLeaderBoard.addEventListener("touchend", btnLeaderBoard);
-function btnLeaderBoard(){
+function btnLeaderBoard() {
     document.getElementById("table-body").innerHTML = "";
-
     updateLeader().done(function(){
         popLeaderboard();
     })
-
+    dumpScores();
+    hideMenu();
     leaderBoard.style.display = "block";
     btnMainMenuLeaderBoard.style.display = "none";
 }
@@ -174,7 +183,6 @@ var scale = scaleToWindow(renderer.view);
 var setupDone = false;
 var pointer;
 var gameBuild = true;
-var playButton;
 var menuBuild;
 var catcherBuild;
 
@@ -217,15 +225,13 @@ var portal;
 
 // Food items in game
 var numberOfFood = 6;
-apple = {name: "apple", weight: 1 / numberOfFood};
-banana = {name: "banana", weight: 1 / numberOfFood};
-bread = {name: "bread", weight: 1 / numberOfFood};
-orange = {name: "orange", weight: 1 / numberOfFood};
-broccoli = {name: "broccoli", weight: 1 / numberOfFood};
-egg = {name: "egg", weight: 1 / numberOfFood};
+apple = {name: "apple", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false, isHitBasket: false};
+banana = {name: "banana", weight: 1 / numberOfFood, scoreValue: 5, isCaught: false, isHitBasket: false};
+bread = {name: "bread", weight: 1 / numberOfFood, scoreValue: 9, isCaught: false, isHitBasket: false};
+orange = {name: "orange", weight: 1 / numberOfFood, scoreValue: 7, isCaught: false, isHitBasket: false};
+broccoli = {name: "broccoli", weight: 1 / numberOfFood, scoreValue: 3, isCaught: false, isHitBasket: false};
+egg = {name: "egg", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false, isHitBasket: false};
 fallingObjects = [apple, banana, bread, orange, broccoli, egg];
-
-console.log(fallingObjects);
 
 //Set the game's current state to `menu`:
 var state = menu;
@@ -310,14 +316,14 @@ function animateBackground() {
 }
 
 /*
-Prints loading log to console.
+ Prints loading log to console.
  */
 function loadProgressHandler() {
     console.log("loading");
 }
 
 /*
-Main game driver.
+ Main game driver.
  */
 function setup() {
 
@@ -332,8 +338,10 @@ function setup() {
     //Touch and Mouse Controls
     pointer = tk.makePointer();
     //Pointer Definition
-    pointer.press = function () {};
-    pointer.release = function () {};
+    pointer.press = function () {
+    };
+    pointer.release = function () {
+    };
 
     setupDone = true;
 
@@ -372,14 +380,33 @@ function play() {
     addScore();
 }
 
+function showMenu() {
+    // Add button and logo
+    btnShare.style.display = "block";
+    btnPlay.style.display = "block";
+    btnMainMenuVolumeOn.style.display = "inline-block";
+    btnMainMenuLeaderBoard.style.display = "block";
+    logo.style.display = "block";
+    instructions.style.display = "inline-block";
+    randomFactBox.style.display = "inline-block";
+}
+
+function hideMenu() {
+    btnPlay.style.display = "none";
+    btnMainMenuVolumeOn.style.display = "none";
+    btnMainMenuVolumeOff.style.display = "none";
+    btnMainMenuLeaderBoard.style.display = "none";
+    leaderBoard.style.display = "none";
+    instructions.style.display = "none";
+    randomFactBox.style.display = "none";
+    logo.style.display = "none";
+    btnShare.style.display = "none";
+}
+
 function gameMenuDisplay() {
     if (menuBuild) {
 
-        // Add button and logo
-        btnPlay.style.display = "block";
-        btnMainMenuVolumeOn.style.display = "inline-block";
-        btnMainMenuLeaderBoard.style.display = "block";
-        logo.style.display = "block";
+        showMenu();
 
         // Add a fact to the stage
         initFacts();
@@ -435,19 +462,16 @@ function soundButtonDisplay() {
 
 function playGameFromMenu() {
     state = play;
-    btnPlay.style.display = "none";
-    btnMainMenuVolumeOn.style.display = "none";
-    btnMainMenuVolumeOff.style.display = "none";
-    btnMainMenuLeaderBoard.style.display = "none";
-    leaderBoard.style.display = "none";
-    instructions.style.display = "none";
-    randomFactBox.style.display = "none";
-    logo.style.display = "none";
+    hideMenu();
 }
 
 function menu() {
     animateBackground();
     gameMenuDisplay();
+}
+
+function menuLeaderBoard() {
+    animateBackground();
 }
 
 function initCatcher() {
@@ -500,12 +524,9 @@ function onOutOfBounds() {
  * Adds a random zero food waste tip to the screen.
  */
 function initFacts() {
-
     var factIndex = getRandomInt(0, 13);
-    instructions.style.display = "inline-block";
     randomFactBox
-        .innerHTML = '<h2>Did You Know</h2><hr /><p>' + foodFacts[factIndex] + '</p>';
-    randomFactBox.style.display = "inline-block";
+        .innerHTML = '<h2 class="text-box-header">Did You Know</h2><hr /><p>' + foodFacts[factIndex] + '</p>';
 }
 
 function gameOver() {
@@ -521,7 +542,6 @@ function gameOverDisplay() {
         gameOverBanner.x = (GAME_WIDTH / 2) - (gameOverBanner.width / 2);
         gameOverBanner.y = GAME_HEIGHT - (gameOverBanner.height * 4);
 
-        // Add play-button to menu
         retryButton = new Sprite(resources['assets/img/sprites/retry.png'].texture);
         retryButton.interactive = true;
         retryButton.width /= 2;
@@ -530,7 +550,6 @@ function gameOverDisplay() {
         retryButton.x = GAME_WIDTH - (retryButton.width);
         retryButton.y = GAME_HEIGHT - (retryButton.height * 2);
 
-        // Add logo to menu
         menuButton = new Sprite(resources['assets/img/sprites/menu.png'].texture);
         menuButton.interactive = true;
         menuButton.width /= 2;
@@ -544,7 +563,6 @@ function gameOverDisplay() {
         score.y = GAME_HEIGHT / 2;
         score.text = scoreCount;
 
-            // Add button and logo
         stage.addChild(retryButton);
         stage.addChild(gameOverBanner);
         stage.addChild(menuButton);
@@ -558,11 +576,11 @@ function gameOverDisplay() {
             stage.removeChild(menuButton);
             stage.removeChild(score);
         });
-        retryButton.mouseover = function(mouseData) {
+        retryButton.mouseover = function (mouseData) {
             this.width *= 1.25;
             this.height *= 1.25;
         };
-        retryButton.mouseout = function(mouseData) {
+        retryButton.mouseout = function (mouseData) {
             this.width /= 1.25;
             this.height /= 1.25;
         };
@@ -579,11 +597,11 @@ function gameOverDisplay() {
             scores = [];
             dumpScores();
         });
-        menuButton.mouseover = function(mouseData) {
+        menuButton.mouseover = function (mouseData) {
             this.width *= 1.25;
             this.height *= 1.25;
         };
-        menuButton.mouseout = function(mouseData) {
+        menuButton.mouseout = function (mouseData) {
             this.width /= 1.25;
             this.height /= 1.25;
         };
@@ -736,15 +754,15 @@ function cowLevel() {
 }
 
 function cowLevelEnd() {
-        catcher.alpha = 1;
-        catcher.x = (GAME_WIDTH / 2) - (catcher.width / 2);
-        catcher.y = (GAME_HEIGHT / 2) - (catcher.height / 2);
-        obstacleCount = 0;
-        countDownIndex = 0;
-        foodCount = 0;
-        afterCountDown = true;
-        catcher.alpha = 1;
-        score.alpha = 1;
+    catcher.alpha = 1;
+    catcher.x = (GAME_WIDTH / 2) - (catcher.width / 2);
+    catcher.y = (GAME_HEIGHT / 2) - (catcher.height / 2);
+    obstacleCount = 0;
+    countDownIndex = 0;
+    foodCount = 0;
+    afterCountDown = true;
+    catcher.alpha = 1;
+    score.alpha = 1;
 }
 
 function speedUpGame(deltaTime) {
@@ -752,18 +770,14 @@ function speedUpGame(deltaTime) {
 }
 
 var scoreRef = firebase.database().ref("users").orderByKey();
-
-//Leaderboard Variables and Functions
-var childName;
-var childScore;
 var scores = [];
 function dumpScores() {
     scoreRef.once("value")
         .then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 var key = childSnapshot.key;
-                childName = childSnapshot.child("userName").val();
-                childScore = childSnapshot.child("score").val();
+                var childName = childSnapshot.child("userName").val();
+                var childScore = childSnapshot.child("score").val();
                 scores.push({childName, childScore});
                 //console.log("Username: " + childName + " Score: " + childScore);
             });
@@ -795,5 +809,4 @@ function popLeaderboard() {
 
     document.getElementById('table-body').innerHTML = myTable;
     scores = [];
-
 }
