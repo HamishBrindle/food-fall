@@ -1,15 +1,5 @@
 /* DATABASE ----------------------------------------------------------------------------------------------------------*/
 
-var config = {
-    apiKey: "AIzaSyDLI2-ikgpZ8N4EX89enO8ERiMz63Rv7eo",
-    authDomain: "fool-fall.firebaseapp.com",
-    databaseURL: "https://fool-fall.firebaseio.com",
-    projectId: "fool-fall",
-    storageBucket: "fool-fall.appspot.com",
-    messagingSenderId: "884200936745"
-};
-
-firebase.initializeApp(config);
 var database = firebase.database();
 var userData = [];
 var i = 0;
@@ -137,17 +127,15 @@ var Container = PIXI.Container,
     Sprite = PIXI.Sprite;
 
 // Rendering Options.
-var myView = document.getElementById('myCanvas');
-
 var rendererOptions = {
     antiAliasing: false,
-    transparent: false,
+    transparent: true,
     resolution: window.devicePixelRatio,
     autoResize: true
 };
 
 // Create renderer.
-var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, myView, rendererOptions);
+var renderer = autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, rendererOptions);
 
 // Create new Container for stage.
 var stage = new Container();
@@ -158,7 +146,7 @@ renderer.view.style.top = "0px";
 renderer.view.style.left = "0px"; // Centers window.
 
 // Add renderer to page.
-document.getElementById("game-window").appendChild(renderer.view);
+document.getElementById("game-canvas").appendChild(renderer.view);
 
 //Globals -------------------------------------------------------------------------------Globals
 var font = new Font();
@@ -221,8 +209,18 @@ broccoli = {name: "broccoli", weight: 1 / numberOfFood};
 egg = {name: "egg", weight: 1 / numberOfFood};
 fallingObjects = [apple, banana, bread, orange, broccoli, egg];
 
-//Set the game's current state to `menu`:
-var state = login;
+//Set the game's starting state.
+var state;
+
+firebase.auth().onAuthStateChanged(firebaseUser => {
+    if (firebaseUser) {
+        state = menu;
+    } else {
+        state = login;
+    }
+});
+
+
 menuBuild = true;
 catcherBuild = false;
 cowLevelBuild = true;
@@ -260,7 +258,6 @@ loader
         "assets/img/sprites/cow-level-banner.png",
         "assets/img/sprites/text-box.png"
     ])
-    .on("progress", loadProgressHandler)
     .load(setup);
 
 
@@ -301,13 +298,6 @@ function animateBackground() {
     grass.tilePosition.x -= BG_RATE * delta + backgroundScrollSpeed.grass;
     // Draw the stage and prepare for the next frame
     lastTime = currtime;
-}
-
-/*
- Prints loading log to console.
- */
-function loadProgressHandler() {
-    console.log("loading");
 }
 
 /*
@@ -359,10 +349,20 @@ function gameLoop() {
 function login() {
     animateBackground();
     loginDisplay();
+    hideMenu();
 }
 
 function loginDisplay() {
+    loginPanel.style.display = "block";
+}
 
+function loginHide() {
+    try {
+        loginPanel.style.display = "none";
+        signUpPanel.style.display = "none";
+    } catch(exception) {
+        console.log("Login hidden.");
+    }
 }
 
 //State definition for "playing" the game
@@ -371,7 +371,6 @@ function play() {
     foodCatchCollision();
     soundButtonDisplay();
     animateBackground();
-    playerMovement();
     addScore();
 }
 
@@ -384,6 +383,7 @@ function showMenu() {
     logo.style.display = "block";
     instructions.style.display = "inline-block";
     randomFactBox.style.display = "inline-block";
+    menuBuild = false;
 }
 
 function hideMenu() {
@@ -396,20 +396,27 @@ function hideMenu() {
     randomFactBox.style.display = "none";
     logo.style.display = "none";
     btnShare.style.display = "none";
+    menuBuild = true;
 }
 
 function gameMenuDisplay() {
     if (menuBuild) {
-
         showMenu();
-
         // Add a fact to the stage
         initFacts();
-
         // Set game state indicators (e.i. has menu been built / has catcher been built)
-        menuBuild = false;
         catcherBuild = true;
     }
+}
+
+function displayLogOutMainMenu() {
+    if (loggedIn) {
+        logOutPanel.style.display = "block";
+    }
+}
+
+function hideLogOutMainMenu() {
+    logOutPanel.style.display = "none";
 }
 
 function soundButtonDisplay() {
@@ -457,16 +464,15 @@ function soundButtonDisplay() {
 
 function playGameFromMenu() {
     state = play;
+    loginHide();
     hideMenu();
+    hideLogOutMainMenu();
 }
 
 function menu() {
     animateBackground();
     gameMenuDisplay();
-}
-
-function menuLeaderBoard() {
-    animateBackground();
+    displayLogOutMainMenu();
 }
 
 function initCatcher() {
@@ -486,7 +492,6 @@ function initCatcher() {
         catcher.anchor.y = 0.5;
         catcher.interactive = true;
 
-        keyControls();
         tk.makeDraggable(catcher);
 
         stage.addChild(catcher);

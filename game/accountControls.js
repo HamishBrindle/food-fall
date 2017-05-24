@@ -6,20 +6,19 @@ var config = {
     storageBucket: "fool-fall.appspot.com",
     messagingSenderId: "884200936745"
 };
+
 firebase.initializeApp(config);
 
 var database = firebase.database();
 var auth = firebase.auth();
 
-
-var txtEmailSignIn = document.getElementsByClassName('txtEmailSignIn');
-var txtPasswordSignIn = document.getElementsByClassName('txtPasswordSignIn');
+var txtEmailSignIn = document.getElementById('login-username');
+var txtPasswordSignIn = document.getElementById('login-password');
 
 var logoutInfo = document.getElementById('logoutInfo');
 var loginRegisterForm = document.getElementById('loginRegisterForm');
 
-
-const score = 0;
+const userScore = 0;
 
 //Authentication for Google sign-in
 var googleProvider = new firebase.auth.GoogleAuthProvider();
@@ -80,7 +79,6 @@ function checkIfUserExists() {
     });
 }
 
-
 function login(emailLogin, passLogin){
     auth.signInWithEmailAndPassword(emailLogin, passLogin)
         .catch(function (error) {
@@ -90,9 +88,8 @@ function login(emailLogin, passLogin){
             alert(errorMessage);
             console.log(error);
         });
-
-
 }
+
 function register(nameLogin, emailLogin, passLogin) {
     auth.createUserWithEmailAndPassword(emailLogin, passLogin)
         .then(user => createUser(user, nameLogin, emailLogin, passLogin))
@@ -120,7 +117,7 @@ function createUser(user, name, email, pass) {
             userName: name,
             email: email,
             password: pass,
-            score: score
+            score: userScore
         });
     }
 }
@@ -195,17 +192,16 @@ function checkUser(){
             }
             //
 
-        }else {
+        } else {
             //no user is signed in
             //display div that shows login/register information
             if(logoutInfo.style.display === 'block'){
                 logoutInfo.style.display = 'none';
             }
             //if user isn't logged in, show forms.
-            if(loginRegisterForm.style.display === 'none'){
+            if(loginRegisterForm.style.display === 'none') {
                 loginRegisterForm.style.display = 'block';
             }
-
         }
     });
 }
@@ -224,28 +220,22 @@ function displayScore(user) {
 //Authentication for Facebook sign-in
 var facebookProvider = new firebase.auth.FacebookAuthProvider();
 
-
 function googleSignIn() {
     //Sign in and redirect to a page to select an account
     googleProvider.addScope('profile');
     googleProvider.addScope('email');
     auth.signInWithRedirect(googleProvider);
-
 }
-
-
 
 function facebookSignIn() {
     firebase.auth().signInWithRedirect(facebookProvider).then(function (result) {
         var token = result.credential.accessToken;
         var user = result.user;
-
         console.log(token);
         console.log(user);
     }).catch(function (error) {
         var errorCode = error.code;
         var errorMessage = error.message;
-
         console.log(errorCode);
         console.log(errorMessage);
     });
