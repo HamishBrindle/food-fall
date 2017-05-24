@@ -132,11 +132,15 @@ const signUpPanel = document.getElementById("signupbox");
         } else {
             console.log("Not logged in");
             btnLogOut.classList.add('hide');
-            music.pause();
-            loggedIn = false;
-            loginPanel.style.display = "block";
-            logOutPanel.style.display = "none";
-            loginBox.style.display = "block";
+            try {
+                music.pause();
+                loggedIn = false;
+                loginPanel.style.display = "block";
+                logOutPanel.style.display = "none";
+                loginBox.style.display = "block";
+            } catch (exception) {
+                console.log("Login displayed.");
+            }
         }
     });
 
