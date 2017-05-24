@@ -386,7 +386,7 @@ function makePointDecrementer(item) {
     });
     pointDecrementer.isPointDecrementer = true;
     if(item.x > GAME_WIDTH) {
-        pointDecrementer.x = GAME_WIDTH - 20;
+        pointDecrementer.x = GAME_WIDTH - pointDecrementer.width;
         pointDecrementer.y = item.y;
     } else if(item.x < 0){
         pointDecrementer.x = 10;
