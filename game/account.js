@@ -19,7 +19,7 @@ const signUpPanel = document.getElementById("signupbox");
 
     firebase.initializeApp(config);
 
-    // Get DOM elements
+    // Get DOM elements!
     const txtEmail = document.getElementById('txtEmail');
     const txtEmailSignUp = document.getElementById('txtEmailSignUp');
     const txtPassword = document.getElementById('txtPassword');
