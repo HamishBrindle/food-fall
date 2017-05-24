@@ -63,9 +63,22 @@ btnMainMenuLeaderBoard.addEventListener("click", btnLeaderBoard);
 btnMainMenuLeaderBoard.addEventListener("touchend", btnLeaderBoard);
 function btnLeaderBoard(){
     document.getElementById("table-body").innerHTML = "";
-    popLeaderboard();
+
+    updateLeader().done(function(){
+        popLeaderboard();
+    })
+
     leaderBoard.style.display = "block";
     btnMainMenuLeaderBoard.style.display = "none";
+}
+
+function updateLeader() {
+
+    var def = $.Deferred();
+
+    def.resolve(dumpScores());
+
+    return def.promise();
 }
 
 // Sound on and off buttons
@@ -333,12 +346,11 @@ function setup() {
     // Tell the 'renderer' to 'render' the 'stage'.
     renderer.render(stage);
 
-    //Grabs top 10 scores from database
-    dumpScores();
-
     //Start the game loop
     gameLoop();
 
+    scores = [];
+    dumpScores();
 }
 
 //Animation loop
@@ -504,8 +516,6 @@ function gameOver() {
 function gameOverDisplay() {
     if (gameOverBuild) {
 
-        dumpScores();
-
         // Add logo to menu
         gameOverBanner = new Sprite(resources['assets/img/sprites/game-over.png'].texture);
         gameOverBanner.x = (GAME_WIDTH / 2) - (gameOverBanner.width / 2);
@@ -566,6 +576,8 @@ function gameOverDisplay() {
             stage.removeChild(gameOverBanner);
             stage.removeChild(menuButton);
             stage.removeChild(score);
+            scores = [];
+            dumpScores();
         });
         menuButton.mouseover = function(mouseData) {
             this.width *= 1.25;
@@ -746,7 +758,6 @@ var childName;
 var childScore;
 var scores = [];
 function dumpScores() {
-    scores = [];
     scoreRef.once("value")
         .then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
@@ -757,6 +768,7 @@ function dumpScores() {
                 //console.log("Username: " + childName + " Score: " + childScore);
             });
         });
+
     scores.sort(sortFunction);
 
     function sortFunction(a, b) {
@@ -766,25 +778,22 @@ function dumpScores() {
             return (a.childScore > b.childScore) ? -1 : 1;
         }
     }
+
 }
 function popLeaderboard() {
 
-    if (scores === null) {
-        dumpScores();
-        popLeaderboard();
-    } else {
-        var myTable = "";
+    var myTable = "";
 
-        console.log(scores[0].childName);
-        for (var i = 0; i < 8; i++) {
-            myTable += "<tr><td>" + (i + 1) + "</td>"
-            myTable += "<td>" + scores[i].childName + "</td>";
-            myTable += "<td>" + scores[i].childScore + "</td></tr>";
-            console.log(scores[i].childName);
-        }
-        myTable += "";
-
-        document.getElementById('table-body').innerHTML = myTable;
+    console.log(scores[0].childName);
+    for (var i = 0; i < 8; i++) {
+        myTable += "<tr><td>" + (i + 1) + "</td>"
+        myTable += "<td>" + scores[i].childName + "</td>";
+        myTable += "<td>" + scores[i].childScore + "</td></tr>";
+        console.log(scores[i].childName);
     }
+    myTable += "";
+
+    document.getElementById('table-body').innerHTML = myTable;
+    scores = [];
 
 }
