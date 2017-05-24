@@ -75,7 +75,6 @@ function btnLeaderBoard() {
     updateLeader().done(function(){
         popLeaderboard();
     })
-    dumpScores();
     hideMenu();
     leaderBoard.style.display = "block";
     btnMainMenuLeaderBoard.style.display = "none";
