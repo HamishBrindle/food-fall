@@ -24,7 +24,7 @@ var menuSound = new Howl({
 
 var music = new Howl({
     src: ['assets/sound/music-fall-together.mp3'],
-    autoplay: false,
+    autoplay: true,
     loop: true,
     volume: 0.5,
     onend: function() {
