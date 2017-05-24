@@ -9,6 +9,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 
+    <meta property="og:url" content="http://foodfall.ca/" />
+    <meta property="og:title" content="Food Fall | JS Game" />
+    <meta property="og:description" content="A JavaScript game written at BCIT to promote issue of food-waste in Vancouver." />
+    <meta property="og:image" content="http://foodfall.ca/assets/img/web/artwork.jpg" />
+    <meta property="fb:app_id" content="452294205121403" />
     <title>Food Fall | Group 9</title>
 
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
@@ -26,6 +31,26 @@
 </head>
 
 <body>
+
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appID: '452294205121403',
+            autoLogAppEvents: true,
+            status: true,
+            xfbml: true,
+            version: 'v2.9'
+        });
+        FB.AppEvents.logPageView();
+    };
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=452294205121403";
+        fjs.parentNode.insertBefore(js, fjs);
+    } (document, 'script', 'facebook-jssdk'));
+</script>
 
 <main>
     <div class="container-fluid text-center outer" id="game-window">

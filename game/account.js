@@ -86,11 +86,11 @@ const signUpPanel = document.getElementById("signupbox");
         const auth = firebase.auth();
         // Sign up
         auth.createUserWithEmailAndPassword(email, password)
-            .then(user => createUser(user, userName, email, password))
+            .then(user => createUser(user, userName, email, password, 0))
             .catch(e => console.log(e.message));
     }
 
-    function createUser(user, name, email, pass) {
+    function createUser(user, name, email, pass, userScore) {
         if (user) {
             var rootRef = firebase.database().ref();
             var storesRef = rootRef.child('users/' + user.uid);

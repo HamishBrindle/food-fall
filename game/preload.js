@@ -37,7 +37,10 @@
     btnShare.addEventListener("click", shareBtn);
     btnShare.addEventListener("touchend", shareBtn);
     function shareBtn() {
-        console.log("SHARE BUTTON CLICKED");
+        FB.ui({
+            method: 'share',
+            href: 'http://www.foodfall.ca',
+        }, function(response){});
     }
 
     // Main-menu play button
