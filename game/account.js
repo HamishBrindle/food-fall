@@ -25,10 +25,41 @@ const signUpPanel = document.getElementById("signupbox");
     const txtEmailSignUp = document.getElementById('txtEmailSignUp');
     const txtPassword = document.getElementById('txtPassword');
     const txtPasswordSignUp = document.getElementById('txtPasswordSignUp');
+    const txtUserName = document.getElementById('txtUserName');
     const btnLogin = document.getElementById('btnLogin');
     const btnSignUp = document.getElementById('btnSignUp');
     const btnLogOut = document.getElementById('btnLogOut');
     const btnLogOutMainMenu = document.getElementById('btnLogOutMainMenu');
+    const goToSignUp = document.getElementById('goToSignUp');
+    const signInLink = document.getElementById('signinlink');
+
+    // Text area select on touch
+    txtEmail.addEventListener('touchend', function() {
+        this.focus();
+        this.select();
+    });
+    txtPassword.addEventListener('touchend', function() {
+        this.focus();
+        this.select();
+    });
+    txtEmailSignUp.addEventListener('touchend', function() {
+        this.focus();
+        this.select();
+    });
+    txtPasswordSignUp.addEventListener('touchend', function() {
+        this.focus();
+        this.select();
+    });
+    txtUserName.addEventListener('touchend', function() {
+        this.focus();
+        this.select();
+    });
+    goToSignUp.addEventListener('touchend', function() {
+        $('#loginbox').hide(); $('#signupbox').show();
+    });
+    signInLink.addEventListener('touchend', function() {
+        $('#signupbox').hide(); $('#loginbox').show()
+    });
 
     // Event listeners for LOGIN button
     btnLogin.addEventListener('click', signIn);
@@ -51,10 +82,25 @@ const signUpPanel = document.getElementById("signupbox");
         // TODO: Check for REAL EMAIL
         const email = txtEmailSignUp.value;
         const password = txtPasswordSignUp.value;
+        const userName = txtUserName.value;
         const auth = firebase.auth();
         // Sign up
-        const promise = auth.createUserWithEmailAndPassword(email, password);
-        promise.catch(e => console.log(e.message));
+        auth.createUserWithEmailAndPassword(email, password)
+            .then(user => createUser(user, userName, email, password))
+            .catch(e => console.log(e.message));
+    }
+
+    function createUser(user, name, email, pass) {
+        if (user) {
+            var rootRef = firebase.database().ref();
+            var storesRef = rootRef.child('users/' + user.uid);
+            storesRef.set({
+                userName: name,
+                email: email,
+                password: pass,
+                score: userScore
+            });
+        }
     }
 
     // Event listener for LOGOUT button
@@ -75,6 +121,7 @@ const signUpPanel = document.getElementById("signupbox");
             btnLogOut.classList.remove('hide');
             loggedIn = true;
             try {
+                music.play();
                 loginPanel.style.display = "none";
                 signUpPanel.style.display = "none";
             } catch(exception) {
@@ -85,6 +132,7 @@ const signUpPanel = document.getElementById("signupbox");
         } else {
             console.log("Not logged in");
             btnLogOut.classList.add('hide');
+            music.pause();
             loggedIn = false;
             loginPanel.style.display = "block";
             logOutPanel.style.display = "none";

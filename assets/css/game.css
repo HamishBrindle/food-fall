@@ -20,6 +20,10 @@ tr {
     border-radius: 10px;
 }
 
+input {
+    pointer-events: auto;
+}
+
 #overlay {
     position: absolute;
     display: table-cell;
@@ -30,7 +34,6 @@ tr {
     height: 500px;
     z-index: 1;
     pointer-events: none;
-
 }
 
 .overlay-title {
@@ -248,10 +251,12 @@ tr {
 /* Game Login --------------------------------------------------------------------------------------------------------*/
 
 .login-menu {
-    position: relative;
+    position: absolute;
     margin: 0;
     width: 100%;
     height: 100%;
+    top: -7%;
+    left: 0;
     display: inline-block;
     padding: 0;
     -webkit-user-select: auto;
@@ -286,6 +291,7 @@ tr {
 
 #login-panel {
     top: 75px;
+    height: 80%;
 }
 
 #loginbox-panel-heading {
@@ -301,7 +307,7 @@ tr {
     position: absolute;
     display: none;
     top: 7px;
-    left: 317px;
+    left: 320px;
 }
 
 #log-out-main-menu button{
@@ -310,10 +316,28 @@ tr {
     background-color: #9c76d5;
     border: none;
 }
+
+#goToSignUp {
+
+}
+
+#login-buttons button {
+    margin: 0 5px 0 5px;
+}
+
+#btn-glogin {
+    background-color: #ac2925;
+    border: none;
+    padding: 7px;
+}
+
 /* Game Signup --------------------------------------------------------------------------------------------------------*/
 
 #signupbox {
     pointer-events: auto;
+    position: absolute;
+    top: 25px;
+    left: 0;
 }
 
 #signupbox a {
@@ -322,7 +346,6 @@ tr {
 }
 
 #signupbox button{
-    font-family: 'Varela Round', sans-serif;
 }
 
 #signupbox button:hover{
@@ -341,25 +364,48 @@ tr {
     background-color: transparent;
 }
 
+#switch-login-signup {
+    position: absolute;
+    top: 310px;
+    left: 0;
+    margin: 10px auto 10px auto;
+}
+
 /* Overlay Mobile ----------------------------------------------------------------------------------------------------*/
 
 @media only screen and (max-width: 320px) {
     .overlay-title {
         font-size: 2em;
     }
+
 }
 
 @media only screen and (max-width: 430px) {
     .overlay-title {
         font-size: 2.5em;
     }
+
 }
 
 @media only screen and (max-width: 640px) {
     .overlay-title {
         font-size: 3em;
     }
+    #signupbox {
+        top: 25px;
+        left: 200px;
+    }
 }
+
+@media only screen and (max-width: 768px) {
+
+    #signupbox {
+        top: 30px;
+        left: 80px;
+        width: 80%;
+    }
+}
+
 
 /* Misc --------------------------------------------------------------------------------------------------------------*/
 

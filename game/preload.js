@@ -317,9 +317,6 @@
 
         tk = new Tink(PIXI, renderer.view, scale);
 
-        // Display sound on/off button
-        soundButtonDisplay();
-
         //Touch and Mouse Controls
         pointer = tk.makePointer();
         //Pointer Definition

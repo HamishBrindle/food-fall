@@ -6,14 +6,13 @@ var config = {
     storageBucket: "fool-fall.appspot.com",
     messagingSenderId: "884200936745"
 };
-
 firebase.initializeApp(config);
 
 var database = firebase.database();
 var auth = firebase.auth();
 
 var txtEmailSignIn = document.getElementById('login-username');
-var txtPasswordSignIn = document.getElementById('login-password');
+var txtPasswordSignIn = document.getElementById('');
 
 var logoutInfo = document.getElementById('logoutInfo');
 var loginRegisterForm = document.getElementById('loginRegisterForm');
