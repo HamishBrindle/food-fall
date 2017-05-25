@@ -54,8 +54,9 @@ function gameInit() {
         BASKET_WIDTH = catcher.width;
         X_OFFSET = BASKET_WIDTH / 2;
         Y_OFFSET = BASKET_HEIGHT / 2;
-        catcher.alpha = 1;
-        score.alpha = 1;
+
+        score.style.fontSize = 50;
+        score.style.fill = "#fff";
     }
     gameBuild = false;
 
