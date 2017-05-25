@@ -214,10 +214,10 @@
     // Food items in game
     var numberOfFood = 6;
     apple = {name: "apple", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false, isHitBasket: false};
-    banana = {name: "banana", weight: 1 / numberOfFood, scoreValue: 5, isCaught: false, isHitBasket: false};
-    bread = {name: "bread", weight: 1 / numberOfFood, scoreValue: 9, isCaught: false, isHitBasket: false};
-    orange = {name: "orange", weight: 1 / numberOfFood, scoreValue: 7, isCaught: false, isHitBasket: false};
-    broccoli = {name: "broccoli", weight: 1 / numberOfFood, scoreValue: 3, isCaught: false, isHitBasket: false};
+    banana = {name: "banana", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false, isHitBasket: false};
+    bread = {name: "bread", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false, isHitBasket: false};
+    orange = {name: "orange", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false, isHitBasket: false};
+    broccoli = {name: "broccoli", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false, isHitBasket: false};
     egg = {name: "egg", weight: 1 / numberOfFood, scoreValue: 10, isCaught: false, isHitBasket: false};
     fallingObjects = [apple, banana, bread, orange, broccoli, egg];
 
@@ -380,7 +380,7 @@
     //State definition for "playing" the game
     function play() {
         gameInit();
-        foodCatchCollision();
+        foodFall();
         soundButtonDisplay();
         animateBackground();
         addScore();
@@ -570,8 +570,10 @@
 
             // Change score position
             score.x = (GAME_WIDTH / 2);
-            score.y = GAME_HEIGHT / 2;
+            score.y = GAME_HEIGHT / 2 - 40;
             score.text = scoreCount;
+            score.style.fontSize = 100;
+            score.style.fill = "#12ff19";
 
             stage.addChild(retryButton);
             stage.addChild(gameOverBanner);
