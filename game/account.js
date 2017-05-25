@@ -1,4 +1,4 @@
-$(window).on('load', function () {
+$(window).on('load', function() {
     setTimeout(function () {
         $("#loader").fadeOut("slow");
     }, 2000);
@@ -15,7 +15,7 @@ const signUpPanel = document.getElementById("signupbox");
 const loginAlert = document.getElementById('login-alert');
 const signUpAlert = document.getElementById('signupalert');
 
-(function () {
+(function() {
 
     const config = {
         apiKey: "AIzaSyDLI2-ikgpZ8N4EX89enO8ERiMz63Rv7eo",
@@ -71,13 +71,11 @@ const signUpAlert = document.getElementById('signupalert');
     });
     
     // Facebook login
-    fblogin.addEventListener('click', fbSignIn);
-    fblogin.addEventListener('touchend', fbSignIn);
-    function fbSignIn() {
-        var facebookProvider = new firebase.auth.FacebookAuthProvider();
-        facebookProvider.addScope('email');
-        firebase.auth().signInWithRedirect(facebookProvider);
-    }
+    // fblogin.addEventListener('click', fbSignIn);
+    // fblogin.addEventListener('touchend', fbSignIn);
+    // function fbSignIn() {
+    //    console.log("facebook login");
+    // }
 
     // Event listeners for LOGIN button
     btnLogin.addEventListener('click', signIn);
@@ -107,27 +105,25 @@ const signUpAlert = document.getElementById('signupalert');
         const auth = firebase.auth();
         // Sign up
         auth.createUserWithEmailAndPassword(email, password)
-            .then(user => createUser(user, userName, email, 0))
+            .then(user => createUser(user, userName, email, password, 0))
             .catch(e => {
                 showSignUpAlert();
                 console.log(e.message)
             });
     }
 
-    function createUser(user, name, email, userScore) {
+    function createUser(user, name, email, pass, userScore) {
         if (user) {
             var rootRef = firebase.database().ref();
             var storesRef = rootRef.child('users/' + user.uid);
             storesRef.set({
                 userName: name,
                 email: email,
-
+                password: pass,
                 score: userScore
             });
         }
     }
-
-
 
     // Event listener for LOGOUT button
     btnLogOut.addEventListener('click', logOutMainMenu);
@@ -149,7 +145,7 @@ const signUpAlert = document.getElementById('signupalert');
                 music.play();
                 loginPanel.style.display = "none";
                 signUpPanel.style.display = "none";
-            } catch (exception) {
+            } catch(exception) {
             }
             logOutPanel.style.display = "block";
 

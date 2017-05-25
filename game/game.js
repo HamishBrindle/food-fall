@@ -409,54 +409,6 @@ function addScore() {
     stage.addChild(score);
 }
 
-function checkUserExists() {
-    firebase.auth().onAuthStateChanged((user) => {
-        if(user) {
-            var userInSystem;
-            var checkDatabase = firebase.database().ref("users");
-            checkDatabase.once('value', function(snapshotOfDatabase) {
-               snapshotOfDatabase.forEach(function(userSnapshot) {
-                   if(user.uid === userSnapshot.key){
-                       userInSystem = true;
-                       return userInSystem;
-                   }
-                   userInSystem = false;
-               });
-               if(userInSystem === false){
-                   var nameReg = createGameNameFromEmail(user.email);
-                   var emailReg = user.email;
-                   createUser(user, nameReg, emailReg, 0);
-
-               }
-            });
-        }
-    });
-}
-
-function createUser(user, name, email, userScore) {
-    if (user) {
-        var rootRef = firebase.database().ref();
-        var storesRef = rootRef.child('users/' + user.uid);
-        storesRef.set({
-            userName: name,
-            email: email,
-
-            score: userScore
-        });
-    }
-}
-
-function createGameNameFromEmail(email) {
-    var name;
-    for (var i = 0; i < email.length; i++) {
-        if (email[i] === '@') {
-            break;
-        }
-    }
-    name = email.substr(0, i);
-    return name;
-}
-
 function addHighScore(scoreCount){
     firebase.auth().onAuthStateChanged((user) => {
         //If there is a user signed in
@@ -481,7 +433,6 @@ function endGame() {
     }
     menuBuild = true;
     gameBuild = true;
-    checkUserExists();
     addHighScore(scoreCount);
     destroyOldObjects();
     stage.removeChild(comboDisplay);
