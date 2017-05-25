@@ -248,6 +248,24 @@ input {
     margin-bottom: 5px;
 }
 
+#welcomeUserInfo {
+    /*position: re;*/
+    display: block;
+    /*bottom: 1em;*/
+    /*top: 26em;*/
+    /*text-align: center;*/
+    background-color: rgba(0, 0, 0, 0.50);
+    height: auto;
+    color: #fff;
+    border-radius: 5px;
+    padding: 8px 10px 0 10px;
+    margin-top: 5px;
+}
+
+.inline-font {
+    font-family: 'LemonMilk', "Arial Black", serif;
+}
+
 /* Game Login --------------------------------------------------------------------------------------------------------*/
 
 .login-menu {

@@ -32,6 +32,7 @@
     var randomFactBox = document.getElementById("random-fact");
     var logo = document.getElementById("game-header");
     var btnShare = document.getElementById("btn-main-menu-share");
+    var welcomeUserInfo = document.getElementById('welcomeUserInfo');
 
     // Main-menu share button
     btnShare.addEventListener("click", shareBtn);
@@ -396,6 +397,7 @@
         logo.style.display = "block";
         instructions.style.display = "inline-block";
         randomFactBox.style.display = "inline-block";
+        welcomeUserInfo.style.display = "inline-block";
     }
 
     function hideMenu() {
@@ -408,6 +410,7 @@
         randomFactBox.style.display = "none";
         logo.style.display = "none";
         btnShare.style.display = "none";
+        welcomeUserInfo.style.display ="none";
     }
 
     function gameMenuDisplay() {
