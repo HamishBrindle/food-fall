@@ -23,7 +23,7 @@ var menuSound = new Howl({
 });
 
 var music = new Howl({
-    src: ['assets/sound/music-fall-together.mp3'],
+    src: ['assets/sound/MUSIC-its-not-my-ship.mp3'],
     autoplay: false,
     loop: true,
     volume: 0.5
