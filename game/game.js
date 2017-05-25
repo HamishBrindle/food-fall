@@ -14,6 +14,7 @@ const MAX_OBSTACLE = 1;
 const comboColors = ["#fff", "#ffb347", "#d9c846", "#40d97c ", "#12ff19"];
 const foodScoreVal = 10;
 var lastXPos = 0;
+var lastYPos = 0;
 var maxPossibleScore = 0;
 
 //#d92c3f
@@ -88,7 +89,7 @@ function makeFood() {
     newFood.isFood = true;
     newFood.velocityY = 0; //10 pixels per second
     newFood.velocityX = 0;
-    newFood.accelerationY = 210;
+    newFood.accelerationY = 210; // was at 210
     var randomBoolean = Math.random() >= 0.5;
     if (randomBoolean) {
         newFood.rotateFactor = Math.random() * 0.1;
@@ -109,15 +110,14 @@ function isInBasket(basket, food) {
     var basketLeftX = basket.x - X_OFFSET;
     var basketRightX = basket.x  + BASKET_WIDTH - X_OFFSET;
     var basketTopY = basket.y - Y_OFFSET;
-
-    // TODO: change naming conventions - Kerry
     var basketBotY = basket.y + BASKET_HEIGHT - Y_OFFSET;
 
     var upperLeftBasket = {x:basketLeftX + 10, y:basketTopY};
     var lowerRightBasket = {x:basketRightX - 10, y:(basketTopY + 30)};
+    var foodTopY = food.y - (food.height/2) + 5;
 
-    var inBasket = (food.x > upperLeftBasket.x) && (food.y > upperLeftBasket.y)
-        && (food.x < lowerRightBasket.x) && (food.y < lowerRightBasket.y);
+    var inBasket = (food.x > upperLeftBasket.x) && (foodTopY > upperLeftBasket.y)
+        && (food.x < lowerRightBasket.x) && (foodTopY < lowerRightBasket.y);
     return inBasket;
 }
 
@@ -178,8 +178,25 @@ function isBounce(basket, food, catcherVelocityX) {
     return isBounce;
 }
 
-function bounceOffBottom(basket, food) {
+function isBounceOffBottom(basket, food) {
 
+    var foodTopY = food.y - (food.height / 2);
+    var basketBotY = basket.y + BASKET_HEIGHT - Y_OFFSET;
+    var foodIsBelowBasket = (foodTopY > basketBotY);
+    if(!foodIsBelowBasket) return false;
+    else {
+        var basketBotLeftX = basket.x - X_OFFSET + 10;
+        var basketBotRightX = basket.x - X_OFFSET + BASKET_WIDTH - 10;
+        var foodX = food.x;
+        var foodIsInLineBasket = (foodX > basketBotLeftX) && (foodX < basketBotRightX);
+        if (!foodIsInLineBasket) return false;
+        else {
+            var upperBoundY = basketBotY + 20;
+            var isBounceOffBottom = foodTopY > basketBotY && foodTopY < upperBoundY;
+            food.isBounceOffBottom = isBounceOffBottom;
+            return isBounceOffBottom;
+        }
+    }
 }
 
 function velocityOfRotatingFruits() {
@@ -200,8 +217,11 @@ function foodFall() {
     var deltaTime = parseFloat((currtime - lastTime)/1000);
     var currentElapsedGameTime = parseInt((currtime - gameBuildTime)/1000);
     var currXPos = catcher.x;
+    var currYPos = catcher.y;
 
     var catcherVelocityX = (lastXPos - currXPos) / deltaTime;
+    var catcherVelocityY = (lastYPos - currYPos) / deltaTime;
+
     if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
         displayNo();
         if (currentElapsedGameTime == 4) {
@@ -210,8 +230,9 @@ function foodFall() {
     }
     if(afterCountDown) {
         lastXPos = catcher.x;
+        lastYPos = catcher.y;
         makeFood();
-        if(currentElapsedGameTime < 20) {
+        if(currentElapsedGameTime < 25) {
             makeObstacle();
         } else {
             makeTwoObstacles();
@@ -238,7 +259,11 @@ function foodFall() {
                 fallingItem.y += deltaY;
                 fallingItem.x += fallingItem.velocityX;
 
-                fallingItem.velocityY += deltaVy;
+                if(!fallingItem.isBounceOffBottom) {
+                    fallingItem.velocityY += deltaVy;
+                } else {
+                    fallingItem.velocityY += fallingItem.newVelocityY;
+                }
                 fallingItem.rotation += fallingItem.rotateFactor;
                 var isFoodOffScreen = fallingItem.y > GAME_HEIGHT ||
                     fallingItem.x > GAME_WIDTH ||
@@ -273,6 +298,14 @@ function foodFall() {
                         newItemVelocityX = -6;
                     }
                     fallingItem.velocityX = -newItemVelocityX;
+                } else if(!fallingItem.isHitBasket && isBounceOffBottom(catcher, fallingItem)) {
+                    var newItemVelocityY = 1000 / catcherVelocityY;
+                    if(newItemVelocityY > 6) {
+                        newItemVelocityY = 6;
+                    } else if(newItemVelocityY < -6) {
+                        newItemVelocityY = -6;
+                    }
+                    fallingItem.newVelocityY = (fallingItem.velocityY / 10) + -newItemVelocityY;
                 }
             }
             if(fallingItem.isPointCounter || fallingItem.isPointDecrementer) {
@@ -291,7 +324,6 @@ function foodFall() {
         }
         clearTimer();
     }
-
 }
 
 function makeTwoObstacles() {
@@ -315,7 +347,6 @@ function makeTwoObstacles() {
 }
 
 function makeObstacle() {
-
     if(obstacleCount >= MAX_OBSTACLE) return;
     var randomBoolean = Math.random() >= 0.5;
 

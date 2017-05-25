@@ -43,35 +43,33 @@ const signUpAlert = document.getElementById('signupalert');
     const fblogin = document.getElementById('btn-fblogin');
 
     // Text area select on touch
-    txtEmail.addEventListener('touchend', function () {
+    txtEmail.addEventListener('touchend', function() {
         this.focus();
         this.select();
     });
-    txtPassword.addEventListener('touchend', function () {
+    txtPassword.addEventListener('touchend', function() {
         this.focus();
         this.select();
     });
-    txtEmailSignUp.addEventListener('touchend', function () {
+    txtEmailSignUp.addEventListener('touchend', function() {
         this.focus();
         this.select();
     });
-    txtPasswordSignUp.addEventListener('touchend', function () {
+    txtPasswordSignUp.addEventListener('touchend', function() {
         this.focus();
         this.select();
     });
-    txtUserName.addEventListener('touchend', function () {
+    txtUserName.addEventListener('touchend', function() {
         this.focus();
         this.select();
     });
-    goToSignUp.addEventListener('touchend', function () {
-        $('#loginbox').hide();
-        $('#signupbox').show();
+    goToSignUp.addEventListener('touchend', function() {
+        $('#loginbox').hide(); $('#signupbox').show();
     });
-    signInLink.addEventListener('touchend', function () {
-        $('#signupbox').hide();
-        $('#loginbox').show()
+    signInLink.addEventListener('touchend', function() {
+        $('#signupbox').hide(); $('#loginbox').show()
     });
-
+    
     // Facebook login
     fblogin.addEventListener('click', fbSignIn);
     fblogin.addEventListener('touchend', fbSignIn);
@@ -158,6 +156,8 @@ const signUpAlert = document.getElementById('signupalert');
             loginAlert.style.display = "none";
             loginAlert.innerHTML = "";
 
+            displayScore(firebaseUser);
+
         } else {
             btnLogOut.classList.add('hide');
             try {
@@ -172,6 +172,17 @@ const signUpAlert = document.getElementById('signupalert');
     });
 
 }());
+
+function displayScore(user) {
+    var welcomeUserInfo = document.getElementById('welcomeUserInfo');
+    var userInDatabase = database.ref("users/" + user.uid);
+    // var welcomeUserInfo = database.ref("users/" + user.uid + "/userName");
+    userInDatabase.on('value', function(userSnapshot) {
+        console.log(userSnapshot.val());
+        welcomeUserInfo.innerHTML = "<p>Welcome <span class='inline-font'>" + userSnapshot.child("userName").val()
+            + "</span>, your highscore is <span style='color: #12ff19;' class='inline-font'>" + userSnapshot.child("score").val() + "</span></p>";
+    });
+}
 
 function showLoginAlert() {
     loginAlert.style.display = "block";

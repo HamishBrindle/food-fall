@@ -32,6 +32,7 @@
     var randomFactBox = document.getElementById("random-fact");
     var logo = document.getElementById("game-header");
     var btnShare = document.getElementById("btn-main-menu-share");
+    var welcomeUserInfo = document.getElementById('welcomeUserInfo');
 
     // Main-menu share button
     btnShare.addEventListener("click", shareBtn);
@@ -103,15 +104,16 @@
     // Stage-size parameterss
     var GAME_WIDTH = 800;
     var GAME_HEIGHT = 500;
+    var slowDown = 0.2;
 
     // Background elements relative speeds
     var backgroundScrollSpeed = {
-        mtnFar: 0,
-        mtnMid: 0.25,
-        clouds: 0.25,
-        trees: 0.50,
-        grass: 1.5,
-        obstacle: 1.5
+        mtnFar: -0.7,
+        mtnMid: -0.45,
+        clouds: -0.45,
+        trees: -0.2,
+        grass: 0.5,
+        obstacle: 1.3
     };
 
     // Overall background rate
@@ -399,6 +401,7 @@
         logo.style.display = "block";
         instructions.style.display = "inline-block";
         randomFactBox.style.display = "inline-block";
+        welcomeUserInfo.style.display = "inline-block";
     }
 
     function hideMenu() {
@@ -411,6 +414,7 @@
         randomFactBox.style.display = "none";
         logo.style.display = "none";
         btnShare.style.display = "none";
+        welcomeUserInfo.style.display ="none";
     }
 
     function gameMenuDisplay() {
@@ -784,7 +788,7 @@
     }
 
     function speedUpGame(deltaTime) {
-        BG_RATE += deltaTime * 20;
+        BG_RATE += deltaTime * 15;
     }
 
     var scoreRef = firebase.database().ref("users").orderByKey();
