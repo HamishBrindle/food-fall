@@ -295,7 +295,6 @@
 
         // Prepare for first frame of game loop/animation
         lastTime = new Date().getTime();
-
     }
 
     function animateBackground() {

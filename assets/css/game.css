@@ -333,6 +333,15 @@ input {
 
 /* Game Signup --------------------------------------------------------------------------------------------------------*/
 
+#signupalert {
+    height: 30px;
+    padding: 0;
+}
+
+#signupalert p {
+    padding-top: 5px;
+}
+
 #signupbox {
     pointer-events: auto;
     position: absolute;
@@ -356,6 +365,7 @@ input {
 }
 
 #signupbox .panel-info {
+    margin: 0;
     background-color: rgba(0, 0, 0, 0.4);
     border: none;
     color: #fff;

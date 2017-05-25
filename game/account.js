@@ -13,6 +13,7 @@ const loginPanel = document.getElementById("login-panel");
 const loginBox = document.getElementById("loginbox");
 const signUpPanel = document.getElementById("signupbox");
 const loginAlert = document.getElementById('login-alert');
+const signUpAlert = document.getElementById('signupalert');
 
 (function() {
 
@@ -39,6 +40,7 @@ const loginAlert = document.getElementById('login-alert');
     const btnLogOutMainMenu = document.getElementById('btnLogOutMainMenu');
     const goToSignUp = document.getElementById('goToSignUp');
     const signInLink = document.getElementById('signinlink');
+
 
     // Text area select on touch
     txtEmail.addEventListener('touchend', function() {
@@ -97,7 +99,10 @@ const loginAlert = document.getElementById('login-alert');
         // Sign up
         auth.createUserWithEmailAndPassword(email, password)
             .then(user => createUser(user, userName, email, password, 0))
-            .catch(e => console.log(e.message));
+            .catch(e => {
+                showSignUpAlert();
+                console.log(e.message)
+            });
     }
 
     function createUser(user, name, email, pass, userScore) {
@@ -162,5 +167,9 @@ const loginAlert = document.getElementById('login-alert');
 function showLoginAlert() {
     loginAlert.style.display = "block";
     loginAlert.innerHTML = "<p>Uh Oh! Unable to login. Are you sure that's your email and password?</p>";
+}
 
+function showSignUpAlert() {
+    signUpAlert.style.display = "block";
+    signUpAlert.innerHTML = "<p>Hmm, your email is improperly formatted. Can you make sure it's correct?</p>";
 }
