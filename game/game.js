@@ -211,7 +211,6 @@ function velocityOfRotatingFruits() {
     return maxPossibleScore < scoreCount;
 }
 
-
 function foodFall() {
     var currtime = new Date().getTime();
     var deltaTime = parseFloat((currtime - lastTime)/1000);
@@ -219,8 +218,7 @@ function foodFall() {
     var currXPos = catcher.x;
     var currYPos = catcher.y;
 
-    var catcherVelocityX = (lastXPos - currXPos) / deltaTime;
-    var catcherVelocityY = (lastYPos - currYPos) / deltaTime;
+
 
     if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
         displayNo();
@@ -229,6 +227,8 @@ function foodFall() {
         }
     }
     if(afterCountDown) {
+        var catcherVelocityX = (lastXPos - currXPos) / deltaTime;
+        var catcherVelocityY = (lastYPos - currYPos) / deltaTime;
         lastXPos = catcher.x;
         lastYPos = catcher.y;
         makeFood();
@@ -323,10 +323,37 @@ function foodFall() {
             removeItem(childrenToDelete[i]);
         }
         clearTimer();
+        tiltBasket(catcherVelocityX);
     }
 }
 
+function tiltBasket(catcherVelocityX) {
+    var newCatcherRotation = -catcherVelocityX / 30000;
+    var currCatcherOrientation = catcher.rotation;
+    console.log(currCatcherOrientation);
+    var decelerationRate;
+    if(currCatcherOrientation > 0.5) {
+        catcher.rotation = 0.5;
+    } else if (currCatcherOrientation < -0.5) {
+        catcher.rotation = -0.5
+    } else if (Math.floor(catcherVelocityX == 0)) {
+
+        if(currCatcherOrientation < 0.01 && currCatcherOrientation > -0.01) {
+            catcher.rotation = 0;
+
+        } else if(currCatcherOrientation > 0) {
+            decelerationRate = -0.05;
+            catcher.rotation += decelerationRate;
+        } else if (currCatcherOrientation < 0){
+            decelerationRate = 0.05;
+            catcher.rotation += decelerationRate;
+        }
+    } else {
+        catcher.rotation += newCatcherRotation;
+    }
+}
 function makeTwoObstacles() {
+    return;
     if(obstacleCount >= MAX_OBSTACLE) return;
     var newTopObstacle = new Sprite(resources['assets/img/sprites/obstacle.png'].texture);
     newTopObstacle.x = GAME_WIDTH;
@@ -347,6 +374,7 @@ function makeTwoObstacles() {
 }
 
 function makeObstacle() {
+    return;
     if(obstacleCount >= MAX_OBSTACLE) return;
     var randomBoolean = Math.random() >= 0.5;
 
