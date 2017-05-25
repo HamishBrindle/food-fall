@@ -790,6 +790,13 @@
                 });
             });
 
+        for (var i = 0; i < 8; i++) {
+            if (scores[i] === undefined ){
+                var childName = "---";
+                var childScore = "0";
+                scores[i] = {childName, childScore};
+            }
+        }
         scores.sort(sortFunction);
 
         function sortFunction(a, b) {
@@ -803,14 +810,19 @@
     }
     function popLeaderboard() {
 
-        var myTable = "";
-        for (var i = 0; i < 8; i++) {
-            myTable += "<tr><td>" + (i + 1) + "</td>"
-            myTable += "<td>" + scores[i].childName + "</td>";
-            myTable += "<td>" + scores[i].childScore + "</td></tr>";
-        }
-        myTable += "";
+        try {
+            var myTable = "";
+            for (var i = 0; i < 8; i++) {
+                myTable += "<tr><td>" + (i + 1) + "</td>"
+                myTable += "<td>" + scores[i].childName + "</td>";
+                myTable += "<td>" + scores[i].childScore + "</td></tr>";
+            }
+            myTable += "";
 
-        document.getElementById('table-body').innerHTML = myTable;
-        scores = [];
+            document.getElementById('table-body').innerHTML = myTable;
+            scores = [];
+        } catch (error) {
+
+        }
+
     }
