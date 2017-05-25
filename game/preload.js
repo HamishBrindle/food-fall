@@ -355,11 +355,7 @@
     //Animation loop
     function gameLoop() {
         requestAnimationFrame(gameLoop);
-        try{
-            state();
-        } catch(Exception){
-            // Game stat switches back and forth
-        }
+        state();
         lastTime = new Date().getTime();
         tk.update();
         renderer.render(stage);
