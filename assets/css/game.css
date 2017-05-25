@@ -250,6 +250,20 @@ input {
 
 /* Game Login --------------------------------------------------------------------------------------------------------*/
 
+#welcomeUserInfo {
+    display: block;
+    background-color: rgba(0, 0, 0, 0.50);
+    height: auto;
+    color: #fff;
+    border-radius: 5px;
+    padding: 8px 10px 0 10px;
+    margin-top: 5px;
+}
+
+.inline-font {
+    font-family: 'LemonMilk', "Arial Black", serif;
+}
+
 .login-menu {
     position: absolute;
     margin: auto;
