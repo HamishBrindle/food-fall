@@ -11,8 +11,12 @@ const foodFadeDuration = 90;
 const displayNoFadeDuration = 100;
 const pointFadeDuration = 80;
 const MAX_OBSTACLE = 1;
-
+const comboColors = ["#fff", "#ffb347", "#d9c846", "#40d97c ", "#12ff19"];
+const foodScoreVal = 10;
 var lastXPos = 0;
+var maxPossibleScore = 0;
+
+//#d92c3f
 // check the amount of food caught
 // resets every 5 seconds in current implementation
 var caughtFood = [];
@@ -40,7 +44,12 @@ function gameInit() {
         var go = new Sprite(resources['assets/img/sprites/cd-go.png'].texture);
         countDownNumbers = [three, two, one, go];
         gameBuildTime = new Date().getTime();
+        comboMultiplier = 1;
+        isCombo = false;
+        numOfFoodFallen = 0;
+        maxPossibleScore = 0;
         initCatcher();
+        initComboDisplay();
         BASKET_HEIGHT = catcher.height;
         BASKET_WIDTH = catcher.width;
         X_OFFSET = BASKET_WIDTH / 2;
@@ -53,8 +62,8 @@ function gameInit() {
 }
 
 /*
-    For displaying and removing the numbers for the countdown.
-*/
+ For displaying and removing the numbers for the countdown.
+ */
 function displayNo() {
     if(countDownIndex >= 4) return;
     var curNum = countDownNumbers[countDownIndex];
@@ -66,7 +75,7 @@ function displayNo() {
 }
 
 function makeFood() {
-    const MAX_FOOD = 2;
+    const MAX_FOOD = 5;
     if(foodCount >= MAX_FOOD) return;
     ++foodCount;
     var newFoodIndex = weightedRand(fallingObjects);
@@ -86,7 +95,7 @@ function makeFood() {
     }
     else
         newFood.rotateFactor = -Math.random() * 0.1;
-
+    ++numOfFoodFallen;
     stage.addChild(newFood);
 }
 
@@ -173,7 +182,20 @@ function bounceOffBottom(basket, food) {
 
 }
 
-function foodCatchCollision() {
+function velocityOfRotatingFruits() {
+
+    for (var i = 1; i <= numOfFoodFallen; i++){
+        if(i >= 5) {
+            maxPossibleScore += 5 * foodScoreVal;
+        } else {
+            maxPossibleScore += foodScoreVal * i;
+        }
+    }
+    return maxPossibleScore < scoreCount;
+}
+
+
+function foodFall() {
     var currtime = new Date().getTime();
     var deltaTime = parseFloat((currtime - lastTime)/1000);
     var currentElapsedGameTime = parseInt((currtime - gameBuildTime)/1000);
@@ -219,26 +241,29 @@ function foodCatchCollision() {
                 fallingItem.velocityY += deltaVy;
                 fallingItem.rotation += fallingItem.rotateFactor;
                 var isFoodOffScreen = fallingItem.y > GAME_HEIGHT ||
-                                        fallingItem.x > GAME_WIDTH ||
-                                        fallingItem.x < 0;
+                    fallingItem.x > GAME_WIDTH ||
+                    fallingItem.x < 0;
 
-                if (isFoodOffScreen) {
+                if (!fallingItem.isHitBasket && isFoodOffScreen) {
                     decreaseScore();
                     makePointDecrementer(fallingItem);
+                    breakCombo();
                     childrenToDelete.push(fallingItem);
                     fallingItem.destroy();
+                    resetComboMulitplier();
+                    updateComboDisplay();
                     --foodCount;
                 } else if (!fallingItem.isHitBasket && isInBasket(catcher, fallingItem)) {
                     let type = getFoodType(fallingItem);
-                    caughtFood.push(type.name);
+                    caughtFood.push(fallingItem.name);
                     makePointIncrementer(catcher, fallingItem)
-                    fadeOut(fallingItem, foodFadeDuration);
                     modScore(fallingItem);
-                    isCombo();
+                    increaseComboMultiplier();
+                    updateComboDisplay();
+                    fadeOutFood(fallingItem);
+                    isCowLevelCombo();
                     gameSFX.play('point');
                     stage.removeChild(score);
-                    fallingItem.velocityY = 10;
-                    fallingItem.rotateFactor = 0;
                     fallingItem.isHitBasket = true;
                 } else if (!fallingItem.isHitBasket && isBounce (catcher, fallingItem, catcherVelocityX)) {
                     var newItemVelocityX = 1000 / catcherVelocityX;
@@ -318,8 +343,11 @@ function makeObstacle() {
 /*
  need xspeed
  */
-function bounce() {
-
+function fadeOutFood(fallingItem) {
+    fallingItem.velocityY = 10;
+    fallingItem.rotateFactor = 0;
+    fallingItem.isHitBasket = true;
+    fadeOut(fallingItem, foodFadeDuration);
 }
 
 function obstacleCollision(catcher, obstacle) {
@@ -348,11 +376,9 @@ function addScore() {
     score.text = scoreCount;
 
     stage.addChild(score);
-
 }
 
 function addHighScore(scoreCount){
-    console.log(scoreCount);
     firebase.auth().onAuthStateChanged((user) => {
         //If there is a user signed in
         if(user){
@@ -371,14 +397,18 @@ function addHighScore(scoreCount){
 }
 
 function endGame() {
+    if(velocityOfRotatingFruits()) {
+        scoreCount = 0;
+    }
     menuBuild = true;
     gameBuild = true;
     addHighScore(scoreCount);
     destroyOldObjects();
+    stage.removeChild(comboDisplay);
 }
 
 function makePointDecrementer(item) {
-    var pointDecrementer = new PIXI.Text("-2", {
+    var pointDecrementer = new PIXI.Text("-10", {
         fontSize: 50,
         fontFamily: 'LemonMilk',
         fill: '#ff0005'
@@ -398,8 +428,9 @@ function makePointDecrementer(item) {
     stage.addChild(pointDecrementer);
     fadeOut(pointDecrementer, pointFadeDuration);
 }
+
 function makePointIncrementer(catcher, item) {
-    var pointCounter = new PIXI.Text("+" + item.name.scoreValue, {
+    var pointCounter = new PIXI.Text("+" + comboMultiplier * item.name.scoreValue, {
         fontSize: 50,
         fontFamily: 'LemonMilk',
         fill: '#12ff19'
@@ -411,12 +442,14 @@ function makePointIncrementer(catcher, item) {
     fadeOut(pointCounter, pointFadeDuration);
 }
 /**
-  * Adds all food and obstacles to list and destroys them.
-  */
+ * Adds all food and obstacles to list and destroys them.
+ */
 function destroyOldObjects () {
     for (var i in stage.children) {
         var item = stage.children[i];
-        if(item.isFood || item.isObstacle || item.name == 'score') {
+        var isRemoved = item.isFood || item.isObstacle
+            || item.name == 'score';
+        if(isRemoved) {
             childrenToDelete.push(stage.children[i]);
         }
     }
@@ -446,7 +479,7 @@ function clearCaughtFood() {
  */
 function modScore(food) {
     var type = getFoodType(food);
-    scoreCount += type.scoreValue;
+    scoreCount += comboMultiplier * type.scoreValue;
 }
 
 /**
@@ -454,17 +487,49 @@ function modScore(food) {
  */
 function decreaseScore() {
     if (scoreCount > 0) {
-        scoreCount -= 5;
+        scoreCount -= 10;
     }
     if (scoreCount < 0) {
         scoreCount = 0;
     }
 }
+
+function increaseComboMultiplier() {
+    if (comboMultiplier == 5) return;
+    comboMultiplier += 1;
+}
+
+function resetComboMulitplier() {
+    comboMultiplier = 1;
+}
+
+function breakCombo() {
+    isCombo = false;
+    comboMultiplier = 1;
+}
+
+function initComboDisplay() {
+    var color = comboColors[comboMultiplier - 1];
+    comboDisplay = new PIXI.Text(comboMultiplier + "x", {
+        fontSize: 50,
+        fontFamily: 'LemonMilk',
+        fill: color
+    });
+    comboDisplay.name = "comboDisplay";
+    comboDisplay.x = GAME_WIDTH - 70;
+    comboDisplay.y = GAME_HEIGHT - 200;
+    stage.addChild(comboDisplay);
+}
+
+function updateComboDisplay() {
+    comboDisplay.text = comboMultiplier + "x";
+    comboDisplay.style.fill = comboColors[comboMultiplier - 1];
+}
 /**
  * Shows in logs how much food has been caught for a certain period
  * @returns {boolean} : whether x (3 right now) eggs have been caught.
  */
-function isCombo() {
+function isCowLevelCombo() {
     for (i = 0; i < caughtFood.length; i++) {
         if (caughtFood[i] === "egg") {
             eggCount++;
