@@ -332,9 +332,13 @@
         setupDone = true;
 
         // Resize screen when window size is adjusted.
-        window.addEventListener("resize", function (event) {
-            let scale = scaleToWindow(renderer.view);
-            tk.scale = scale;
+        window.addEventListener("resize", function () {
+            tk.scale = scaleToWindow(renderer.view);
+        });
+
+        // If device changes orientation
+        $(window).on("orientationchange",function(){
+            tk.scale = scaleToWindow(renderer.view);
         });
 
         // Tell the 'renderer' to 'render' the 'stage'.
