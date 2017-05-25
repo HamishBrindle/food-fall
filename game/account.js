@@ -79,34 +79,6 @@ const signUpAlert = document.getElementById('signupalert');
         var facebookProvider = new firebase.auth.FacebookAuthProvider();
         facebookProvider.addScope('email');
         firebase.auth().signInWithRedirect(facebookProvider);
-        firebase.auth().getRedirectResult().then(function (result) {
-            if(result.credential){
-                var token = result.credential.accessToken;
-                console.log(token);
-            }
-            var fuser = result.user;
-            console.log(fuser);
-            console.log(fuser.uid);
-            console.log(fuser.email);
-            firebase.auth().onAuthStateChanged((fuser) => {
-                var newfuser = firebase.database().ref("users/" + fuser.uid);
-                newfuser.set({
-                    userName: createGameNameFromEmail(fuser.email),
-                    email: fuser.email,
-                    password: "123456",
-                    score: 0
-                });
-            });
-
-
-        }).catch(function (error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            var email = error.email;
-            console.log(email);
-            console.log(errorCode);
-            console.log(errorMessage);
-        });
     }
 
     // Event listeners for LOGIN button
@@ -137,36 +109,27 @@ const signUpAlert = document.getElementById('signupalert');
         const auth = firebase.auth();
         // Sign up
         auth.createUserWithEmailAndPassword(email, password)
-            .then(user => createUser(user, userName, email, password, 0))
+            .then(user => createUser(user, userName, email, 0))
             .catch(e => {
                 showSignUpAlert();
                 console.log(e.message)
             });
     }
 
-    function createUser(user, name, email, pass, userScore) {
+    function createUser(user, name, email, userScore) {
         if (user) {
             var rootRef = firebase.database().ref();
             var storesRef = rootRef.child('users/' + user.uid);
             storesRef.set({
                 userName: name,
                 email: email,
-                password: pass,
+
                 score: userScore
             });
         }
     }
 
-    function createGameNameFromEmail(email) {
-        var name;
-        for (var i = 0; i < email.length; i++) {
-            if (email[i] === '@') {
-                break;
-            }
-        }
-        name = email.substr(0, i);
-        return name;
-    }
+
 
     // Event listener for LOGOUT button
     btnLogOut.addEventListener('click', logOutMainMenu);
