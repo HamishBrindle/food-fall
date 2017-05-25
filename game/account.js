@@ -81,7 +81,6 @@ const signUpAlert = document.getElementById('signupalert');
         const promise = auth.signInWithEmailAndPassword(email, password);
         promise.catch(e => {
             showLoginAlert();
-            console.log(e.message);
         });
     }
 
@@ -100,7 +99,6 @@ const signUpAlert = document.getElementById('signupalert');
             .then(user => createUser(user, userName, email, password, 0))
             .catch(e => {
                 showSignUpAlert();
-                console.log(e.message)
             });
     }
 
@@ -165,7 +163,6 @@ function displayScore(user) {
     var userInDatabase = database.ref("users/" + user.uid);
     // var welcomeUserInfo = database.ref("users/" + user.uid + "/userName");
     userInDatabase.on('value', function(userSnapshot) {
-        console.log(userSnapshot.val());
         welcomeUserInfo.innerHTML = "<p>Welcome <span class='inline-font'>" + userSnapshot.child("userName").val()
             + "</span>, your highscore is <span style='color: #12ff19;' class='inline-font'>" + userSnapshot.child("score").val() + "</span></p>";
     });
