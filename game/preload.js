@@ -317,10 +317,10 @@
      */
     function setup() {
 
+        tk = new Tink(PIXI, renderer.view, scale);
+
         // Initialize the the tiling-sprites background
         initBackground();
-
-        tk = new Tink(PIXI, renderer.view, scale);
 
         //Touch and Mouse Controls
         pointer = tk.makePointer();

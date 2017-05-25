@@ -1,3 +1,9 @@
+$(window).on('load', function() {
+    setTimeout(function () {
+        $("#loader").fadeOut("slow");
+    }, 2000);
+});
+
 // Global - indicates if user is logged in or not
 let loggedIn = false;
 
@@ -6,6 +12,7 @@ const logOutPanel = document.getElementById("log-out-main-menu");
 const loginPanel = document.getElementById("login-panel");
 const loginBox = document.getElementById("loginbox");
 const signUpPanel = document.getElementById("signupbox");
+const loginAlert = document.getElementById('login-alert');
 
 (function() {
 
@@ -71,7 +78,10 @@ const signUpPanel = document.getElementById("signupbox");
         const auth = firebase.auth();
         // Sign in
         const promise = auth.signInWithEmailAndPassword(email, password);
-        promise.catch(e => console.log(e.message));
+        promise.catch(e => {
+            showLoginAlert();
+            console.log(e.message);
+        });
     }
 
     // Event listeners for SIGN-UP button
@@ -129,6 +139,9 @@ const signUpPanel = document.getElementById("signupbox");
             }
             logOutPanel.style.display = "block";
 
+            loginAlert.style.display = "none";
+            loginAlert.innerHTML = "";
+
         } else {
             console.log("Not logged in");
             btnLogOut.classList.add('hide');
@@ -145,3 +158,9 @@ const signUpPanel = document.getElementById("signupbox");
     });
 
 }());
+
+function showLoginAlert() {
+    loginAlert.style.display = "block";
+    loginAlert.innerHTML = "<p>Uh Oh! Unable to login. Are you sure that's your email and password?</p>";
+
+}
