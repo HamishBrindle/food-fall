@@ -49,6 +49,7 @@ function gameInit() {
         isCombo = false;
         numOfFoodFallen = 0;
         maxPossibleScore = 0;
+        isFirstRun = true;
         initCatcher();
         initComboDisplay();
         BASKET_HEIGHT = catcher.height;
@@ -151,11 +152,11 @@ function isBounce(basket, food, catcherVelocityX) {
     if(foodJustAboveBasket) {
         if (foodIsLeftOfBasket) {
             var upperLeftBasket = {x:basketLeftX, y:basketTopY + 20};
-            isBounce = (catcherVelocityX > 0) && (foodRightX > upperLeftBasket.x);
+            isBounce = (catcherVelocityX > 0) && (foodLeftX > upperLeftBasket.x);
         }
         else if(foodIsRightOfBasket) {
             var upperRightBasket = {x:basketRightX, y:basketTopY + 20};
-            isBounce = (catcherVelocityX < 0) && (foodLeftX < upperRightBasket.x);
+            isBounce = (catcherVelocityX < 0) && (foodRightX < upperRightBasket.x);
         }
     } else if(foodWithinHeightBasket) {
         if (foodIsLeftOfBasket) {
@@ -211,16 +212,12 @@ function velocityOfRotatingFruits() {
     return maxPossibleScore < scoreCount;
 }
 
-
 function foodFall() {
     var currtime = new Date().getTime();
     var deltaTime = parseFloat((currtime - lastTime)/1000);
     var currentElapsedGameTime = parseInt((currtime - gameBuildTime)/1000);
     var currXPos = catcher.x;
     var currYPos = catcher.y;
-
-    var catcherVelocityX = (lastXPos - currXPos) / deltaTime;
-    var catcherVelocityY = (lastYPos - currYPos) / deltaTime;
 
     if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
         displayNo();
@@ -229,6 +226,13 @@ function foodFall() {
         }
     }
     if(afterCountDown) {
+        if(isFirstRun) {
+            var catcherVelocityX = 0;
+        } else {
+            var catcherVelocityX = (lastXPos - currXPos) / deltaTime;
+        }
+        var catcherVelocityY = (lastYPos - currYPos) / deltaTime;
+
         lastXPos = catcher.x;
         lastYPos = catcher.y;
         makeFood();
@@ -323,9 +327,34 @@ function foodFall() {
             removeItem(childrenToDelete[i]);
         }
         clearTimer();
+        tiltBasket(catcherVelocityX);
+        isFirstRun = false;
     }
 }
 
+function tiltBasket(catcherVelocityX) {
+    var newCatcherRotation = -catcherVelocityX / 30000;
+    var currCatcherOrientation = catcher.rotation;
+    var decelerationRate;
+    if(currCatcherOrientation > 0.2) {
+        catcher.rotation = 0.2;
+    } else if (currCatcherOrientation < -0.2) {
+        catcher.rotation = -0.2;
+    } else if (Math.floor(catcherVelocityX == 0)) {
+
+        if(currCatcherOrientation < 0.01 && currCatcherOrientation > -0.01) {
+            catcher.rotation = 0;
+        } else if(currCatcherOrientation > 0) {
+            decelerationRate = -0.04;
+            catcher.rotation += decelerationRate;
+        } else if (currCatcherOrientation < 0){
+            decelerationRate = 0.04;
+            catcher.rotation += decelerationRate;
+        }
+    } else {
+        catcher.rotation += newCatcherRotation;
+    }
+}
 function makeTwoObstacles() {
     if(obstacleCount >= MAX_OBSTACLE) return;
     var newTopObstacle = new Sprite(resources['assets/img/sprites/obstacle.png'].texture);
