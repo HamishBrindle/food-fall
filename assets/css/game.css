@@ -163,13 +163,13 @@ input {
 }
 
 #btn-main-menu-volume-on,
-#btn-main-menu-volume-off{
+#btn-main-menu-volume-off {
     display: none;
     border: none;
 }
 
 #btn-main-menu-volume-on i,
-#btn-main-menu-volume-off i{
+#btn-main-menu-volume-off i {
     background: #2c64d9;
 }
 
@@ -187,7 +187,7 @@ input {
     display: none;
     top: 12em;
     left: 2em;
-    background-color: rgba(0,0,0,0.50);
+    background-color: rgba(0, 0, 0, 0.50);
     width: 15em;
     height: auto;
     color: #fff;
@@ -228,7 +228,7 @@ input {
     display: inline-block;
     top: 12em;
     right: 2em;
-    background-color: rgba(0,0,0,0.50);
+    background-color: rgba(0, 0, 0, 0.50);
     width: 15em;
     height: auto;
     color: #fff;
@@ -252,46 +252,32 @@ input {
 
 .login-menu {
     position: absolute;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    top: -7%;
-    left: 0;
+    margin: auto;
+    top: 10%;
+    left: 12%;
+    width: 600px;
+    height: 400px;
     display: inline-block;
     padding: 0;
     -webkit-user-select: auto;
 }
 
+#login-panel {
+    height: 100%;
+}
+
 #loginbox {
     position: relative;
-    height: 90%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.4);
     border: none;
     color: #fff;
     pointer-events: auto;
 }
 
-#game-login {
-    display: inline-block;
-    position: relative;
-    width: 80%;
-    height: 90%;
-    margin: auto;
-    padding: 0;
-    background-color: rgba(0, 0, 0, 0.4);
-    border-radius: 6px;
-    vertical-align: middle;
-    color: #fff;
-}
-
 #game-login button {
     width: 50%;
     margin: 0;
-}
-
-#login-panel {
-    top: 75px;
-    height: 80%;
 }
 
 #loginbox-panel-heading {
@@ -310,15 +296,16 @@ input {
     left: 320px;
 }
 
-#log-out-main-menu button{
+#log-out-main-menu button {
     font-size: 20px;
     box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.5);
     background-color: #9c76d5;
     border: none;
 }
 
-#goToSignUp {
-
+#login-buttons {
+    height: auto;
+    padding-top: 0;
 }
 
 #login-buttons button {
@@ -331,12 +318,37 @@ input {
     padding: 7px;
 }
 
+#login-alert {
+    height: 30px;
+    padding: 0;
+}
+
+#login-alert p {
+    padding-top: 5px;
+}
+
+#loginRegisterForm {
+    height: 300px;
+}
+
 /* Game Signup --------------------------------------------------------------------------------------------------------*/
+
+#signupalert {
+    height: 30px;
+    padding: 0;
+}
+
+#signupalert p {
+    padding-top: 5px;
+}
 
 #signupbox {
     pointer-events: auto;
     position: absolute;
-    top: 25px;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    top: 0;
     left: 0;
 }
 
@@ -345,15 +357,16 @@ input {
     font-family: 'Varela Round', sans-serif;
 }
 
-#signupbox button{
+#signupbox button {
 }
 
-#signupbox button:hover{
+#signupbox button:hover {
 
 }
 
 #signupbox .panel-info {
-    background-color: rgba(0,0,0,0.4);
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0.4);
     border: none;
     color: #fff;
     font-family: 'Varela Round', sans-serif;
@@ -366,9 +379,15 @@ input {
 
 #switch-login-signup {
     position: absolute;
-    top: 310px;
-    left: 0;
+    top: 90%;
+    left: 3%;
     margin: 10px auto 10px auto;
+}
+
+#signupform .form-group {
+    width: 500px;
+    margin: auto;
+    padding-bottom: 20px;
 }
 
 /* Overlay Mobile ----------------------------------------------------------------------------------------------------*/
@@ -377,35 +396,19 @@ input {
     .overlay-title {
         font-size: 2em;
     }
-
 }
 
 @media only screen and (max-width: 430px) {
     .overlay-title {
         font-size: 2.5em;
     }
-
 }
 
 @media only screen and (max-width: 640px) {
     .overlay-title {
         font-size: 3em;
     }
-    #signupbox {
-        top: 25px;
-        left: 200px;
-    }
 }
-
-@media only screen and (max-width: 768px) {
-
-    #signupbox {
-        top: 30px;
-        left: 80px;
-        width: 80%;
-    }
-}
-
 
 /* Misc --------------------------------------------------------------------------------------------------------------*/
 
@@ -413,4 +416,132 @@ input {
     position: relative;
     top: 400px;
     text-align: center;
+}
+
+#loader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 4;
+}
+
+/* Center the loader */
+#loader-spinner {
+    position: relative;
+    width: 80%;
+    height: 80%;
+    margin: 140px auto 0 auto;
+
+    -webkit-animation: ld-heartbeat 1.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation: ld-heartbeat 1.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+    z-index: 5;
+}
+
+@-moz-keyframes ld-heartbeat {
+    0% {
+        -webkit-transform: scale(1.05);
+        transform: scale(1.05)
+    }
+    5% {
+        -webkit-transform: scale(1.25);
+        transform: scale(1.25)
+    }
+    39% {
+        -webkit-transform: scale(0.9);
+        transform: scale(0.9)
+    }
+    45% {
+        -webkit-transform: scale(1.15);
+        transform: scale(1.15)
+    }
+    600% {
+        -webkit-transform: scale(1.05);
+        transform: scale(1.05)
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+}
+
+@-webkit-keyframes ld-heartbeat {
+    0% {
+        -webkit-transform: scale(1.05);
+        transform: scale(1.05)
+    }
+    5% {
+        -webkit-transform: scale(1.25);
+        transform: scale(1.25)
+    }
+    39% {
+        -webkit-transform: scale(0.9);
+        transform: scale(0.9)
+    }
+    45% {
+        -webkit-transform: scale(1.15);
+        transform: scale(1.15)
+    }
+    600% {
+        -webkit-transform: scale(1.05);
+        transform: scale(1.05)
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+}
+
+@-o-keyframes ld-heartbeat {
+    0% {
+        -webkit-transform: scale(1.05);
+        transform: scale(1.05)
+    }
+    5% {
+        -webkit-transform: scale(1.25);
+        transform: scale(1.25)
+    }
+    39% {
+        -webkit-transform: scale(0.9);
+        transform: scale(0.9)
+    }
+    45% {
+        -webkit-transform: scale(1.15);
+        transform: scale(1.15)
+    }
+    600% {
+        -webkit-transform: scale(1.05);
+        transform: scale(1.05)
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+}
+
+@keyframes ld-heartbeat {
+    0% {
+        -webkit-transform: scale(1.05);
+        transform: scale(1.05)
+    }
+    5% {
+        -webkit-transform: scale(1.25);
+        transform: scale(1.25)
+    }
+    39% {
+        -webkit-transform: scale(0.9);
+        transform: scale(0.9)
+    }
+    45% {
+        -webkit-transform: scale(1.15);
+        transform: scale(1.15)
+    }
+    600% {
+        -webkit-transform: scale(1.05);
+        transform: scale(1.05)
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
 }

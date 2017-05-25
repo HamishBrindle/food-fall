@@ -1,3 +1,9 @@
+$(window).on('load', function() {
+    setTimeout(function () {
+        $("#loader").fadeOut("slow");
+    }, 2000);
+});
+
 // Global - indicates if user is logged in or not
 let loggedIn = false;
 
@@ -6,6 +12,8 @@ const logOutPanel = document.getElementById("log-out-main-menu");
 const loginPanel = document.getElementById("login-panel");
 const loginBox = document.getElementById("loginbox");
 const signUpPanel = document.getElementById("signupbox");
+const loginAlert = document.getElementById('login-alert');
+const signUpAlert = document.getElementById('signupalert');
 
 (function() {
 
@@ -32,6 +40,7 @@ const signUpPanel = document.getElementById("signupbox");
     const btnLogOutMainMenu = document.getElementById('btnLogOutMainMenu');
     const goToSignUp = document.getElementById('goToSignUp');
     const signInLink = document.getElementById('signinlink');
+
 
     // Text area select on touch
     txtEmail.addEventListener('touchend', function() {
@@ -71,7 +80,10 @@ const signUpPanel = document.getElementById("signupbox");
         const auth = firebase.auth();
         // Sign in
         const promise = auth.signInWithEmailAndPassword(email, password);
-        promise.catch(e => console.log(e.message));
+        promise.catch(e => {
+            showLoginAlert();
+            console.log(e.message);
+        });
     }
 
     // Event listeners for SIGN-UP button
@@ -87,7 +99,10 @@ const signUpPanel = document.getElementById("signupbox");
         // Sign up
         auth.createUserWithEmailAndPassword(email, password)
             .then(user => createUser(user, userName, email, password, 0))
-            .catch(e => console.log(e.message));
+            .catch(e => {
+                showSignUpAlert();
+                console.log(e.message)
+            });
     }
 
     function createUser(user, name, email, pass, userScore) {
@@ -129,6 +144,9 @@ const signUpPanel = document.getElementById("signupbox");
             }
             logOutPanel.style.display = "block";
 
+            loginAlert.style.display = "none";
+            loginAlert.innerHTML = "";
+
         } else {
             console.log("Not logged in");
             btnLogOut.classList.add('hide');
@@ -145,3 +163,13 @@ const signUpPanel = document.getElementById("signupbox");
     });
 
 }());
+
+function showLoginAlert() {
+    loginAlert.style.display = "block";
+    loginAlert.innerHTML = "<p>Uh Oh! Unable to login. Are you sure that's your email and password?</p>";
+}
+
+function showSignUpAlert() {
+    signUpAlert.style.display = "block";
+    signUpAlert.innerHTML = "<p>Hmm, your email is improperly formatted. Can you make sure it's correct?</p>";
+}
