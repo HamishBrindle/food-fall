@@ -356,7 +356,6 @@ function tiltBasket(catcherVelocityX) {
     }
 }
 function makeTwoObstacles() {
-    return;
     if(obstacleCount >= MAX_OBSTACLE) return;
     var newTopObstacle = new Sprite(resources['assets/img/sprites/obstacle.png'].texture);
     newTopObstacle.x = GAME_WIDTH;
@@ -377,7 +376,6 @@ function makeTwoObstacles() {
 }
 
 function makeObstacle() {
-    return;
     if(obstacleCount >= MAX_OBSTACLE) return;
     var randomBoolean = Math.random() >= 0.5;
 
