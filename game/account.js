@@ -40,7 +40,7 @@ const signUpAlert = document.getElementById('signupalert');
     const btnLogOutMainMenu = document.getElementById('btnLogOutMainMenu');
     const goToSignUp = document.getElementById('goToSignUp');
     const signInLink = document.getElementById('signinlink');
-
+    const fblogin = document.getElementById('btn-fblogin');
 
     // Text area select on touch
     txtEmail.addEventListener('touchend', function() {
@@ -69,6 +69,28 @@ const signUpAlert = document.getElementById('signupalert');
     signInLink.addEventListener('touchend', function() {
         $('#signupbox').hide(); $('#loginbox').show()
     });
+    
+    // Facebook login
+    fblogin.addEventListener('click', fbSignIn);
+    fblogin.addEventListener('touchend', fbSignIn);
+    function fbSignIn() {
+        var facebookProvider = new firebase.auth.FacebookAuthProvider();
+        facebookProvider.addScope('email');
+        firebase.auth().signInWithRedirect(facebookProvider).then(function (result) {
+            var token = result.credential.accessToken;
+            var user = result.user;
+
+            console.log(token);
+            console.log(user);
+            console.log(user.uid);
+        }).catch(function (error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+
+            console.log(errorCode);
+            console.log(errorMessage);
+        });
+    }
 
     // Event listeners for LOGIN button
     btnLogin.addEventListener('click', signIn);
