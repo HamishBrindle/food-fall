@@ -249,11 +249,7 @@ input {
 }
 
 #welcomeUserInfo {
-    /*position: re;*/
     display: block;
-    /*bottom: 1em;*/
-    /*top: 26em;*/
-    /*text-align: center;*/
     background-color: rgba(0, 0, 0, 0.50);
     height: auto;
     color: #fff;

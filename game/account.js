@@ -71,26 +71,11 @@ const signUpAlert = document.getElementById('signupalert');
     });
     
     // Facebook login
-    fblogin.addEventListener('click', fbSignIn);
-    fblogin.addEventListener('touchend', fbSignIn);
-    function fbSignIn() {
-        var facebookProvider = new firebase.auth.FacebookAuthProvider();
-        facebookProvider.addScope('email');
-        firebase.auth().signInWithRedirect(facebookProvider).then(function (result) {
-            var token = result.credential.accessToken;
-            var user = result.user;
-
-            console.log(token);
-            console.log(user);
-            console.log(user.uid);
-        }).catch(function (error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-
-            console.log(errorCode);
-            console.log(errorMessage);
-        });
-    }
+    // fblogin.addEventListener('click', fbSignIn);
+    // fblogin.addEventListener('touchend', fbSignIn);
+    // function fbSignIn() {
+    //    console.log("facebook login");
+    // }
 
     // Event listeners for LOGIN button
     btnLogin.addEventListener('click', signIn);
