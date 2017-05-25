@@ -352,7 +352,6 @@ function addScore() {
 }
 
 function addHighScore(scoreCount){
-    console.log(scoreCount);
     firebase.auth().onAuthStateChanged((user) => {
         //If there is a user signed in
         if(user){

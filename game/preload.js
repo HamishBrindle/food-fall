@@ -70,7 +70,6 @@
         updateLeader().done(function(){
             popLeaderboard();
         });
-        console.log('LEADER BOARD');
         hideMenu();
         logOutPanel.style.display = "none";
         leaderBoard.style.display = "block";
@@ -371,7 +370,6 @@
             loginPanel.style.display = "none";
             signUpPanel.style.display = "none";
         } catch(exception) {
-            console.log("Login hidden.");
         }
     }
 
@@ -789,7 +787,6 @@
                     var childName = childSnapshot.child("userName").val();
                     var childScore = childSnapshot.child("score").val();
                     scores.push({childName, childScore});
-                    //console.log("Username: " + childName + " Score: " + childScore);
                 });
             });
 
@@ -807,13 +804,10 @@
     function popLeaderboard() {
 
         var myTable = "";
-
-        console.log(scores[0].childName);
         for (var i = 0; i < 8; i++) {
             myTable += "<tr><td>" + (i + 1) + "</td>"
             myTable += "<td>" + scores[i].childName + "</td>";
             myTable += "<td>" + scores[i].childScore + "</td></tr>";
-            console.log(scores[i].childName);
         }
         myTable += "";
 

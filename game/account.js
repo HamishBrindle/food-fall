@@ -132,7 +132,6 @@ const signUpAlert = document.getElementById('signupalert');
     // Real-time user authentication
     firebase.auth().onAuthStateChanged(firebaseUser => {
         if (firebaseUser) {
-            console.log("User logged in.");
             btnLogOut.classList.remove('hide');
             loggedIn = true;
             try {
@@ -140,7 +139,6 @@ const signUpAlert = document.getElementById('signupalert');
                 loginPanel.style.display = "none";
                 signUpPanel.style.display = "none";
             } catch(exception) {
-                console.log("Login hidden.");
             }
             logOutPanel.style.display = "block";
 
@@ -148,7 +146,6 @@ const signUpAlert = document.getElementById('signupalert');
             loginAlert.innerHTML = "";
 
         } else {
-            console.log("Not logged in");
             btnLogOut.classList.add('hide');
             try {
                 music.pause();
@@ -157,7 +154,6 @@ const signUpAlert = document.getElementById('signupalert');
                 logOutPanel.style.display = "none";
                 loginBox.style.display = "block";
             } catch (exception) {
-                console.log("Login displayed..");
             }
         }
     });
