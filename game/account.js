@@ -1,4 +1,4 @@
-$(window).on('load', function() {
+$(window).on('load', function () {
     setTimeout(function () {
         $("#loader").fadeOut("slow");
     }, 2000);
@@ -15,7 +15,7 @@ const signUpPanel = document.getElementById("signupbox");
 const loginAlert = document.getElementById('login-alert');
 const signUpAlert = document.getElementById('signupalert');
 
-(function() {
+(function () {
 
     const config = {
         apiKey: "AIzaSyDLI2-ikgpZ8N4EX89enO8ERiMz63Rv7eo",
@@ -43,50 +43,67 @@ const signUpAlert = document.getElementById('signupalert');
     const fblogin = document.getElementById('btn-fblogin');
 
     // Text area select on touch
-    txtEmail.addEventListener('touchend', function() {
+    txtEmail.addEventListener('touchend', function () {
         this.focus();
         this.select();
     });
-    txtPassword.addEventListener('touchend', function() {
+    txtPassword.addEventListener('touchend', function () {
         this.focus();
         this.select();
     });
-    txtEmailSignUp.addEventListener('touchend', function() {
+    txtEmailSignUp.addEventListener('touchend', function () {
         this.focus();
         this.select();
     });
-    txtPasswordSignUp.addEventListener('touchend', function() {
+    txtPasswordSignUp.addEventListener('touchend', function () {
         this.focus();
         this.select();
     });
-    txtUserName.addEventListener('touchend', function() {
+    txtUserName.addEventListener('touchend', function () {
         this.focus();
         this.select();
     });
-    goToSignUp.addEventListener('touchend', function() {
-        $('#loginbox').hide(); $('#signupbox').show();
+    goToSignUp.addEventListener('touchend', function () {
+        $('#loginbox').hide();
+        $('#signupbox').show();
     });
-    signInLink.addEventListener('touchend', function() {
-        $('#signupbox').hide(); $('#loginbox').show()
+    signInLink.addEventListener('touchend', function () {
+        $('#signupbox').hide();
+        $('#loginbox').show()
     });
-    
+
     // Facebook login
     fblogin.addEventListener('click', fbSignIn);
     fblogin.addEventListener('touchend', fbSignIn);
     function fbSignIn() {
         var facebookProvider = new firebase.auth.FacebookAuthProvider();
         facebookProvider.addScope('email');
-        firebase.auth().signInWithRedirect(facebookProvider).then(function (result) {
-            var token = result.credential.accessToken;
-            var user = result.user;
+        firebase.auth().signInWithRedirect(facebookProvider);
+        firebase.auth().getRedirectResult().then(function (result) {
+            if(result.credential){
+                var token = result.credential.accessToken;
+                console.log(token);
+            }
+            var fuser = result.user;
+            console.log(fuser);
+            console.log(fuser.uid);
+            console.log(fuser.email);
+            firebase.auth().onAuthStateChanged((fuser) => {
+                var newfuser = firebase.database().ref("users/" + fuser.uid);
+                newfuser.set({
+                    userName: createGameNameFromEmail(fuser.email),
+                    email: fuser.email,
+                    password: "123456",
+                    score: 0
+                });
+            });
 
-            console.log(token);
-            console.log(user);
-            console.log(user.uid);
+
         }).catch(function (error) {
             var errorCode = error.code;
             var errorMessage = error.message;
-
+            var email = error.email;
+            console.log(email);
             console.log(errorCode);
             console.log(errorMessage);
         });
@@ -140,6 +157,17 @@ const signUpAlert = document.getElementById('signupalert');
         }
     }
 
+    function createGameNameFromEmail(email) {
+        var name;
+        for (var i = 0; i < email.length; i++) {
+            if (email[i] === '@') {
+                break;
+            }
+        }
+        name = email.substr(0, i);
+        return name;
+    }
+
     // Event listener for LOGOUT button
     btnLogOut.addEventListener('click', logOutMainMenu);
     btnLogOut.addEventListener('touchend', logOutMainMenu);
@@ -160,7 +188,7 @@ const signUpAlert = document.getElementById('signupalert');
                 music.play();
                 loginPanel.style.display = "none";
                 signUpPanel.style.display = "none";
-            } catch(exception) {
+            } catch (exception) {
             }
             logOutPanel.style.display = "block";
 
