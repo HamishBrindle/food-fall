@@ -49,6 +49,7 @@ function gameInit() {
         isCombo = false;
         numOfFoodFallen = 0;
         maxPossibleScore = 0;
+        isFirstRun = true;
         initCatcher();
         initComboDisplay();
         BASKET_HEIGHT = catcher.height;
@@ -151,11 +152,11 @@ function isBounce(basket, food, catcherVelocityX) {
     if(foodJustAboveBasket) {
         if (foodIsLeftOfBasket) {
             var upperLeftBasket = {x:basketLeftX, y:basketTopY + 20};
-            isBounce = (catcherVelocityX > 0) && (foodRightX > upperLeftBasket.x);
+            isBounce = (catcherVelocityX > 0) && (foodLeftX > upperLeftBasket.x);
         }
         else if(foodIsRightOfBasket) {
             var upperRightBasket = {x:basketRightX, y:basketTopY + 20};
-            isBounce = (catcherVelocityX < 0) && (foodLeftX < upperRightBasket.x);
+            isBounce = (catcherVelocityX < 0) && (foodRightX < upperRightBasket.x);
         }
     } else if(foodWithinHeightBasket) {
         if (foodIsLeftOfBasket) {
@@ -218,8 +219,6 @@ function foodFall() {
     var currXPos = catcher.x;
     var currYPos = catcher.y;
 
-
-
     if(!afterCountDown && currentElapsedGameTime == countDownIndex) {
         displayNo();
         if (currentElapsedGameTime == 4) {
@@ -227,8 +226,13 @@ function foodFall() {
         }
     }
     if(afterCountDown) {
-        var catcherVelocityX = (lastXPos - currXPos) / deltaTime;
+        if(isFirstRun) {
+            var catcherVelocityX = 0;
+        } else {
+            var catcherVelocityX = (lastXPos - currXPos) / deltaTime;
+        }
         var catcherVelocityY = (lastYPos - currYPos) / deltaTime;
+
         lastXPos = catcher.x;
         lastYPos = catcher.y;
         makeFood();
@@ -324,28 +328,27 @@ function foodFall() {
         }
         clearTimer();
         tiltBasket(catcherVelocityX);
+        isFirstRun = false;
     }
 }
 
 function tiltBasket(catcherVelocityX) {
     var newCatcherRotation = -catcherVelocityX / 30000;
     var currCatcherOrientation = catcher.rotation;
-    console.log(currCatcherOrientation);
     var decelerationRate;
-    if(currCatcherOrientation > 0.5) {
-        catcher.rotation = 0.5;
-    } else if (currCatcherOrientation < -0.5) {
-        catcher.rotation = -0.5
+    if(currCatcherOrientation > 0.2) {
+        catcher.rotation = 0.2;
+    } else if (currCatcherOrientation < -0.2) {
+        catcher.rotation = -0.2;
     } else if (Math.floor(catcherVelocityX == 0)) {
 
         if(currCatcherOrientation < 0.01 && currCatcherOrientation > -0.01) {
             catcher.rotation = 0;
-
         } else if(currCatcherOrientation > 0) {
-            decelerationRate = -0.05;
+            decelerationRate = -0.04;
             catcher.rotation += decelerationRate;
         } else if (currCatcherOrientation < 0){
-            decelerationRate = 0.05;
+            decelerationRate = 0.04;
             catcher.rotation += decelerationRate;
         }
     } else {

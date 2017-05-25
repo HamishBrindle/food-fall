@@ -502,6 +502,7 @@
             catcher.anchor.x = 0.5;
             catcher.anchor.y = 0.5;
             catcher.interactive = true;
+            catcher.rotation = 0;
 
             tk.makeDraggable(catcher);
 
