@@ -117,7 +117,6 @@ const signUpPanel = document.getElementById("signupbox");
     // Real-time user authentication
     firebase.auth().onAuthStateChanged(firebaseUser => {
         if (firebaseUser) {
-            console.log("User logged in.");
             btnLogOut.classList.remove('hide');
             loggedIn = true;
             try {
@@ -125,12 +124,10 @@ const signUpPanel = document.getElementById("signupbox");
                 loginPanel.style.display = "none";
                 signUpPanel.style.display = "none";
             } catch(exception) {
-                console.log("Login hidden.");
             }
             logOutPanel.style.display = "block";
 
         } else {
-            console.log("Not logged in");
             btnLogOut.classList.add('hide');
             try {
                 music.pause();
@@ -139,7 +136,6 @@ const signUpPanel = document.getElementById("signupbox");
                 logOutPanel.style.display = "none";
                 loginBox.style.display = "block";
             } catch (exception) {
-                console.log("Login displayed..");
             }
         }
     });

@@ -47,26 +47,3 @@ function clearTimer() {
         clearInterval(timerToBeDeleted[i]);
     }
 }
-//
-// function fadeOut(object, duration) {
-//     // if(typeof object.velocity != 'undefined') {
-//     //     alphaFactor =
-//     // }
-//     var alphaFactor = (1 / duration);
-//
-//     timer = setInterval(
-//         function(){
-//             if(object == null) return;
-//             if (object.alpha < 0.1 && object.alpha > 0) {
-//                 clearTimeout(timer);
-//                 stage.removeChild(object);
-//                 object.destroy();
-//
-//                 --foodCount;
-//                 console.log("int setInterval foodCount after dec", foodCount);
-//                 console.log();
-//                 return;
-//              }
-//             object.alpha -= alphaFactor;
-//         }, duration / 20);
-// }

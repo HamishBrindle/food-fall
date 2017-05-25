@@ -26,10 +26,7 @@ var music = new Howl({
     src: ['assets/sound/music-fall-together.mp3'],
     autoplay: false,
     loop: true,
-    volume: 0.5,
-    onend: function() {
-        console.log('Finished!');
-    }
+    volume: 0.5
 });
 
 var portalSFX = new Howl({
