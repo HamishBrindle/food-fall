@@ -71,11 +71,26 @@ const signUpAlert = document.getElementById('signupalert');
     });
     
     // Facebook login
-    // fblogin.addEventListener('click', fbSignIn);
-    // fblogin.addEventListener('touchend', fbSignIn);
-    // function fbSignIn() {
-    //    console.log("facebook login");
-    // }
+    fblogin.addEventListener('click', fbSignIn);
+    fblogin.addEventListener('touchend', fbSignIn);
+    function fbSignIn() {
+        var facebookProvider = new firebase.auth.FacebookAuthProvider();
+        facebookProvider.addScope('email');
+        firebase.auth().signInWithRedirect(facebookProvider).then(function (result) {
+            var token = result.credential.accessToken;
+            var user = result.user;
+
+            console.log(token);
+            console.log(user);
+            console.log(user.uid);
+        }).catch(function (error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+
+            console.log(errorCode);
+            console.log(errorMessage);
+        });
+    }
 
     // Event listeners for LOGIN button
     btnLogin.addEventListener('click', signIn);
@@ -152,8 +167,6 @@ const signUpAlert = document.getElementById('signupalert');
             loginAlert.style.display = "none";
             loginAlert.innerHTML = "";
 
-            displayScore(firebaseUser);
-
         } else {
             btnLogOut.classList.add('hide');
             try {
@@ -168,17 +181,6 @@ const signUpAlert = document.getElementById('signupalert');
     });
 
 }());
-
-function displayScore(user) {
-    var welcomeUserInfo = document.getElementById('welcomeUserInfo');
-    var userInDatabase = database.ref("users/" + user.uid);
-    // var welcomeUserInfo = database.ref("users/" + user.uid + "/userName");
-    userInDatabase.on('value', function(userSnapshot) {
-        console.log(userSnapshot.val());
-        welcomeUserInfo.innerHTML = "<p>Welcome <span class='inline-font'>" + userSnapshot.child("userName").val()
-            + "</span>, your highscore is <span style='color: #12ff19;' class='inline-font'>" + userSnapshot.child("score").val() + "</span></p>";
-    });
-}
 
 function showLoginAlert() {
     loginAlert.style.display = "block";
