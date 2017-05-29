@@ -1,7 +1,7 @@
 # food-fall
 Fun ~~physics-based~~ graphics-based JavaScript game for our 2017 COMP 2910 project.
 
-![alt text](https://github.com/HamishBrindle/food-fall/blob/master/data/images/artwork.jpg "Artwork")
+![alt text](https://github.com/HamishBrindle/food-fall/blob/master/assets/img/web/artwork.jpg "Artwork")
 
 ---
 
